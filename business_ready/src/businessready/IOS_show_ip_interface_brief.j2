@@ -1,0 +1,56 @@
+{%- if filetype_loop == 0 %}Interface,IP Address,Status,Protocol,Method,Interface is OK
+{%-     for interface in to_parse_interfaces %}
+{{ interface }},{{ to_parse_interfaces[interface].ip_address }},{{ to_parse_interfaces[interface].status }},{{ to_parse_interfaces[interface].protocol }},{{ to_parse_interfaces[interface].method }},{{ to_parse_interfaces[interface].interface_is_ok }}
+{%-     endfor %}
+{%- else %}
+{%-     if filetype_loop == 1 %}
+# Show IP Interface Brief
+| Interface | IP Address | Status | Protocol | Method | Interface is OK |
+| --------- | ---------- | ------ | -------- | ------ | --------------- |
+{%-         for interface in to_parse_interfaces %}
+| {{ interface }} | {{ to_parse_interfaces[interface].ip_address }} | {{ to_parse_interfaces[interface].status }} | {{ to_parse_interfaces[interface].protocol }} | {{ to_parse_interfaces[interface].method }} | {{ to_parse_interfaces[interface].interface_is_ok }} |
+{%-         endfor %}
+{%-     else %}
+{%-         if filetype_loop == 2 %}
+<html><head><link rel="stylesheet" href="../../../styles.css"></head><body>
+<h1>Show IP Interface Brief</h1>
+<table class="merlin-table">
+  <thead>
+    <tr>
+      <th>Interface</th>
+      <th>IP Address</th>
+      <th>Status</th>
+      <th>Protocol</th>
+      <th>Method</th>   
+      <th>Interface is OK</th>   
+    </tr>
+  </thead>
+  <tbody>
+{%-             for interface in to_parse_interfaces %}  
+  <tr>
+    <td>{{ interface }}</td>
+    <td>{{ to_parse_interfaces[interface].ip_address }}</td>
+    <td>{{ to_parse_interfaces[interface].status }}</td>
+    <td>{{ to_parse_interfaces[interface].protocol }}</td>
+    <td>{{ to_parse_interfaces[interface].method }}</td>
+    <td>{{ to_parse_interfaces[interface].interface_is_ok }}</td>
+  </tr>
+{%-             endfor %}
+  </tbody>
+</table>
+</body></html>
+{%-         else %}
+# Show IP Interface Brief
+## Interfaces
+{%-             for interface in to_parse_interfaces %}
+### {{ interface }}
+#### Health
+##### Status: {{ to_parse_interfaces[interface].status }}
+##### Interface is OK: {{ to_parse_interfaces[interface].interface_is_ok }}
+#### IP Address: {{ to_parse_interfaces[interface].ip_address }}
+#### Protocol: {{ to_parse_interfaces[interface].protocol }}
+#### Method: {{ to_parse_interfaces[interface].method }}
+{%-             endfor %}
+{%-         endif %}
+{%-     endif %}
+{%- endif %}
