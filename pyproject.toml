@@ -1,6 +1,6 @@
 [tool.poetry]
 name = 'businessready'
-version = "0.1.6"
+version = "0.2.0"
 description = "Transform Cisco CLIs and APIs into Business Ready Documents"
 authors = ["John Capobianco <ptcapo@gmail.com>"]
 packages = [{ include = "businessready", from = "src"}]
@@ -11,6 +11,7 @@ wikimd = 'brd.script:run'
 [tool.poetry.dependencies]
 python = "^3.9"
 Jinja2 = "2.11.2"
+requests = "^2.27.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
