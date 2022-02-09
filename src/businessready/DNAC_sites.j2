@@ -1,0 +1,95 @@
+{%- if filetype_loop == 0 %}Name,Hierarchy Name,Site ID,Instance Tenant ID,Site Hierarchy ID,Type,Namespace,Country,Address,Latitude,Longitude,ETA Ready
+{%-     for site in sites %}{%- for info in site.additionalInfo %}
+{{ site.name }},{{ site.siteNameHierarchy }},{{ site.id }},{{ site.instanceTenantId }},{{ site.siteHierarchy }},{{ info.attributes.type | default("N/A") }},{{ info.nameSpace | default("N/A") }},{{ info.attributes.country | default("N/A") }},{{ info.attributes.address | replace(","," ") | default("N/A")}},{{ info.attributes.latitude | default("N/A") }},{{ info.attributes.longitude | default("N/A") }},{{ info.attributes.ETAReady | default("N/A") }}
+{%-     endfor %}{%- endfor%}
+{%- else %}
+{%-     if filetype_loop == 1 %}
+# Sites
+| Name | Hierarchy Name | Site ID | Instance Tenant ID | Site Hierarchy ID | Type | Namespace | Country | Address | Latitude | Longitude | ETA Ready |
+| ---- | -------------- | ------- | ------------------ | ----------------- | ---- | --------- | ------- | ------- | -------- | --------- | --------- |
+{%-         for site in sites %}{%- for info in site.additionalInfo %}
+| {{ site.name }} | {{ site.siteNameHierarchy }} | {{ site.id }} | {{ site.instanceTenantId }} | {{ site.siteHierarchy }} | {{ info.attributes.type | default("N/A") }} | {{ info.nameSpace | default("N/A") }} | {{ info.attributes.country | default("N/A") }} | {{ info.attributes.address | replace(","," ") | default("N/A")}} | {{ info.attributes.latitude | default("N/A") }} | {{ info.attributes.longitude | default("N/A") }} | {{ info.attributes.ETAReady | default("N/A") }} |
+{%-         endfor %}{% endfor %}
+{%-     else %}
+{%-         if filetype_loop == 2 %}
+<html><body>
+<h1>DNAC Sites</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Hierarchy Name</th>
+      <th>Site ID</th>
+      <th>Instance Tenant ID</th>
+      <th>Site Hierarchy ID</th>
+      <th>Type</th>
+      <th>Namespace</th>
+      <th>Country</th>
+      <th>Address</th>
+      <th>Latitude</th>
+      <th>Longitude</th>
+      <th>ETA Ready</th>
+    </tr>
+  </thead>
+  <tbody>
+{%-         for site in sites %}{%- for info in site.additionalInfo %}
+  <tr>
+    <td>{{ site.name }}</td>
+    <td>{{ site.siteNameHierarchy }}</td>
+    <td>{{ site.id }}</td>
+    <td>{{ site.instanceTenantId }}</td>
+    <td>{{ site.siteHierarchy }}</td>
+    <td>{{ info.attributes.type | default("N/A") }}</td>
+    <td>{{ info.nameSpace | default("N/A") }}</td>
+    <td>{{ info.attributes.country | default("N/A") }}</td>
+    <td>{{ info.attributes.address | replace(","," ") | default("N/A")}}</td>
+    <td>{{ info.attributes.latitude | default("N/A") }}</td>
+    <td>{{ info.attributes.longitude | default("N/A") }}</td>
+    <td>{{ info.attributes.ETAReady | default("N/A") }}</td>
+  </tr>
+{%-             endfor %}{% endfor %}
+  </tbody>
+</table>
+</body></html>
+{%-         else %}
+# Sites
+{%-             for site in sites %}
+## {{ site.name }}
+### Site Hierarchy Name: {{ site.siteNameHierarchy }}
+### IDs
+#### ID: {{ site.id }}
+#### Instance Tenant ID: {{ site.instanceTenantId }}
+#### Site Hierarchy ID: {{ site.siteHierarchy }}
+{%-                 if site.additionalInfo %}
+{%-                     for info in site.additionalInfo %}
+{%-                         if info.attributes.type %}
+### Type: {{ info.attributes.type }}
+{%-                         endif %}
+{%-                         if info.nameSpace == "UMBRELLA" %}
+### Umbrella
+{%-                             for att in info.attributes %}
+#### Attribute: {{ info.attributes }}
+{%-                             endfor %}
+{%-                         endif %}
+{%-                         if info.nameSpace == "Location" %}
+### Location
+{%-                             if info.attributes.type == "area" %}
+#### Type: {{ info.attributes.type }}
+{%-                             else %}
+#### Country: {{ info.attributes.country }}
+#### Address: {{ info.attributes.address }}
+#### Latitude: {{ info.attributes.latitude }}
+#### Longitude: {{ info.attributes.longitude }}
+#### Type: {{ info.attributes.type }}
+{%-                             endif %}
+{%-                         endif %}
+{%-                         if info.nameSpace == "ETA" %}
+### ETA
+#### Ready: {{ info.attributes.ETAReady }}
+{%-                         endif %}
+{%-                     endfor %}
+{%-                 endif %}
+{%-             endfor %}
+{%-         endif %}
+{%-     endif %}
+{%- endif %}
