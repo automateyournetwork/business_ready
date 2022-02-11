@@ -371,7 +371,7 @@ def IOS_learned_lldp(hostname, username, password, ip):
         for device in new_testbed:
             device.connect()
 
-        # Learn Interace to JSON
+        # Learn LLDP to JSON
 
             try:
                 learned_lldp = device.learn("lldp").info
@@ -426,6 +426,119 @@ def IOS_learned_lldp(hostname, username, password, ip):
                     fh.close()
 
         return(learned_lldp)
+    except Exception as e:
+        logging.exception(e)
+
+def IOS_learned_ntp(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'iosxe',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Learn NTP to JSON
+
+            try:
+                learned_ntp = device.learn("ntp").info
+            except:
+                learned_ntp = f"{ hostname } has no NTP to Learn"
+
+        # Pass to template 
+
+        if learned_ntp != f"{ hostname } has no NTP to Learn":
+            IOS_learned_ntp_template = env.get_template('IOS_learned_ntp.j2')
+            IOS_learned_ntp_associations_template = env.get_template('learned_ntp_associations.j2')
+            IOS_learned_ntp_unicast_template = env.get_template('learned_ntp_unicast.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = IOS_learned_lldp_template.render(to_parse_ntp=learned_ntp['clock_state'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Learn NTP Clock State.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Learn NTP Clock State Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Learn NTP.json", "w") as fh:
+                    json.dump(learned_ntp, fh, indent=4, sort_keys=True)
+                    fh.close()
+
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = IOS_learned_ntp_associations_template.render(to_parse_ntp=learned_ntp['vrf'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Learn NTP Associations.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Learn NTP Associations Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Learn NTP Associations.json", "w") as fh:
+                    json.dump(learned_ntp, fh, indent=4, sort_keys=True)
+                    fh.close()
+
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = IOS_learned_ntp_unicast_template.render(to_parse_ntp=learned_ntp['vrf'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Learn NTP Unicast.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Learn NTP Unicast Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Learn NTP Unicast.json", "w") as fh:
+                    json.dump(learned_ntp, fh, indent=4, sort_keys=True)
+                    fh.close()
+
+        return(learned_ntp)
     except Exception as e:
         logging.exception(e)
 
