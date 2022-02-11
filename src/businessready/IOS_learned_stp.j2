@@ -1,0 +1,40 @@
+{%- if filetype_loop == 0 %}BPDU Filter,BPDU Guard,BPDU Guard Recovery Timeout,EtherChannel Misconfig Guard,Loop Guard
+{{ to_parse_stp.bpdu_filter }},{{ to_parse_stp.bpdu_guard }},{{ to_parse_stp.bpduguard_timeout_recovery }},{{ to_parse_stp.etherchannel_misconfig_guard }},{{ to_parse_stp.loop_guard }}
+{%- else %}
+{%- if filetype_loop == 1 %}
+# Learn STP Global
+| BPDU Filter | BPDU Guard | BPDU Guard Recovery Timeout | EtherChannel Misconfig Guard | Loop Guard |
+| ----------- | ---------- | --------------------------- | ---------------------------- | ---------- |
+| {{ to_parse_stp.bpdu_filter }} | {{ to_parse_stp.bpdu_guard }} | {{ to_parse_stp.bpduguard_timeout_recovery }} | {{ to_parse_stp.etherchannel_misconfig_guard }} | {{ to_parse_stp.loop_guard }} |
+{%- else %}{%- if filetype_loop == 2 %}
+<html><body>
+<h1>Learn STP Global</h1>
+<table>
+  <thead>
+  <tr>
+    <th>BPDU Filter</th>
+    <th>BPDU Guard</th>
+    <th>BPDU Guard Recovery Timeout</th>
+    <th>EtherChannel Misconfig Guard</th>
+    <th>Loop Guard</th>
+  </tr>
+  </thead>
+  <tbody>  
+  <tr>
+    <td>{{ to_parse_stp.bpdu_filter }}</td>
+    <td>{{ to_parse_stp.bpdu_guard }}</td>
+    <td>{{ to_parse_stp.bpduguard_timeout_recovery }}</td>
+    <td>{{ to_parse_stp.etherchannel_misconfig_guard }}</td>
+    <td>{{ to_parse_stp.loop_guard }}</td>
+  </tr>
+  </tbody>  
+</table>
+</body></html>{% else %}
+# Learn Spanning Tree                     
+## BPDU
+### Filter: {{ to_parse_stp.bpdu_filter }}
+### Guard: {{ to_parse_stp.bpdu_guard }}
+### Guard Recovery Timeout: {{ to_parse_stp.bpduguard_timeout_recovery }}
+## EtherChannel Misconfig Guard: {{ to_parse_stp.etherchannel_misconfig_guard }}
+## Loop Guard: {{ to_parse_stp.loop_guard }}
+{% endif %}{% endif %}{% endif %}
