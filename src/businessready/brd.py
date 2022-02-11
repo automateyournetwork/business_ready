@@ -338,6 +338,97 @@ def IOS_learned_interface(hostname, username, password, ip):
     except Exception as e:
         logging.exception(e)
 
+def IOS_learned_lldp(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'iosxe',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Learn Interace to JSON
+
+            try:
+                learned_lldp = device.learn("lldp").info
+            except:
+                learned_lldp = f"{ hostname } has no LLDP to Learn"
+
+        # Pass to template 
+
+        if learned_lldp != f"{ hostname } has no LLDP to Learn":
+            IOS_learned_lldp_template = env.get_template('IOS_learned_lldp.j2')
+            IOS_learned_lldp_interfaces_template = env.get_template('learned_lldp_interfaces.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = IOS_learned_lldp_template.render(to_parse_lldp=self.learned_lldp,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Learn LLDP.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Learn LLDP Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Learn LLDP.json", "w") as fh:
+                    json.dump(learned_lldp, fh, indent=4, sort_keys=True)
+                    fh.close()
+
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = IOS_learned_lldp_interfaces_template.render(to_parse_lldp=self.learned_lldp['interfaces'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Learn LLDP Interface.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Learn LLDP Interface Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Learn LLDP Interface.json", "w") as fh:
+                    json.dump(learned_lldp, fh, indent=4, sort_keys=True)
+                    fh.close()
+
+        return(learned_lldp)
+    except Exception as e:
+        logging.exception(e)
+
 def IOS_learned_ospf(hostname, username, password, ip):
     try:
     # Create Testbed
