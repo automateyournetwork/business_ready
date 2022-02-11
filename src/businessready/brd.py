@@ -65,12 +65,14 @@ def IOS_learned_acl(hostname, username, password, ip):
             device.connect()
 
         # Learn ACL to JSON
-
-            learned_acl = device.learn("acl").info
+            try:
+                learned_acl = device.learn("acl").info
+            except:
+                learned_acl = f"{ hostname } Has NO ACLs to Learn"
 
         # Pass to template 
 
-        if learned_acl is not None:
+        if learned_acl != f"{ hostname } Has NO ACLs to Learn":
             IOS_learned_acl_template = env.get_template('IOS_learned_acl.j2')
             loop_counter = 0
         # Render Templates
@@ -131,11 +133,14 @@ def IOS_learned_arp(hostname, username, password, ip):
 
         # Learn ARP to JSON
 
-            learned_arp = device.learn("arp").info
+            try:
+                learned_arp = device.learn("arp").info
+            except:
+                learned_arp = f"{ hostname } has no ARP to Learn"
 
         # Pass to template 
 
-        if learned_arp is not None:
+        if learned_arp != f"{ hostname } has no ARP to Learn":
             IOS_learned_arp_template = env.get_template('IOS_learned_arp.j2')
             IOS_learned_arp_statistics_template = env.get_template('IOS_learned_arp_statistics.j2')
             loop_counter = 0
@@ -181,6 +186,90 @@ def IOS_learned_arp(hostname, username, password, ip):
     except Exception as e:
         logging.exception(e)
 
+def IOS_learned_dot1x(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'iosxe',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Learn dot1x to JSON
+
+            try:
+                learned_dot1x = device.learn("dot1x").info
+            except:
+                learned_dot1x = f"{ hostname } has no dot1x to Learn"
+        # Pass to template 
+
+        if learned_dot1x != f"{ hostname } has no dot1x to Learn":
+            IOS_learned_dot1x_template = env.get_template('IOS_learned_dot1x.j2')
+            IOS_learned_dot1x_sessions_template = env.get_template('IOS_learned_dot1x_sessions.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output_statistics = IOS_learned_dot1x_sessions_template.render(to_parse_dot1x=learned_dot1x,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+        # -------------------------
+        # Save the files
+        # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Learn dot1x Sessions.{ filetype }", "w") as fh:
+                        fh.write(parsed_output_statistics)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Learn dot1x Sessions Mind Map.md", "w") as fh:
+                        fh.write(parsed_output_statistics)               
+                        fh.close()
+
+        # Render Templates
+            loop_counter = 0
+            for filetype in filetype_loop:
+                parsed_output = IOS_learned_dot1x_template.render(to_parse_dot1x=self.learned_dot1x,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+        # -------------------------
+        # Save the files
+        # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Learn dot1x.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Learn dot1x Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Learn dot1x.json", "w") as fh:
+                    json.dump(learned_dot1x, fh, indent=4, sort_keys=True)
+                    fh.close()
+        return(learned_dot1x)
+    except Exception as e:
+        logging.exception(e)
+
 def IOS_learned_interface(hostname, username, password, ip):
     try:
     # Create Testbed
@@ -216,11 +305,14 @@ def IOS_learned_interface(hostname, username, password, ip):
 
         # Learn Interace to JSON
 
-            learned_interface = device.learn("interface").info
+            try:
+                learned_interface = device.learn("interface").info
+            except:
+                learned_interface = f"{ hostname } has no Interface to Learn"
 
         # Pass to template 
 
-        if learned_interface is not None:
+        if learned_interface != f"{ hostname } has no Interface to Learn":
             IOS_learned_interface_template = env.get_template('IOS_learned_interface.j2')
             loop_counter = 0
         # Render Templates
@@ -243,6 +335,74 @@ def IOS_learned_interface(hostname, username, password, ip):
                     json.dump(learned_interface, fh, indent=4, sort_keys=True)
                     fh.close()
         return(learned_interface)
+    except Exception as e:
+        logging.exception(e)
+
+def IOS_learned_ospf(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'iosxe',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Learn OSPF to JSON
+
+            try:
+                learned_ospf = device.learn("ospf").info
+            except:
+                learned_ospf = f"{ hostname } has no OSPF to Learn"
+
+        # Pass to template 
+
+        if learned_ospf != f"{ hostname } has no OSPF to Learn":
+            IOS_learned_ospf_template = env.get_template('IOS_learned_ospf.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = IOS_learned_ospf_template.render(to_parse_routing=learned_ospf['vrf'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Learn OSPF.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Learn OSPF Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Learn OSPF.json", "w") as fh:
+                    json.dump(learned_ospf, fh, indent=4, sort_keys=True)
+                    fh.close()
+        return(learned_ospf)
     except Exception as e:
         logging.exception(e)
 
@@ -281,7 +441,10 @@ def IOS_learned_routing(hostname, username, password, ip):
 
         # Learn Routing to JSON
 
-            learned_routing = device.learn("routing").info
+            try:
+                learned_routing = device.learn("routing").info
+            except:
+                learned_routing = f"{ hostname } has no Routing to Learn"
 
         # Pass to template 
 
@@ -308,6 +471,253 @@ def IOS_learned_routing(hostname, username, password, ip):
                     json.dump(learned_routing, fh, indent=4, sort_keys=True)
                     fh.close()
         return(learned_routing)
+    except Exception as e:
+        logging.exception(e)
+
+def IOS_learned_stp(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'iosxe',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Learn STP to JSON
+
+            try: 
+                learned_stp = device.learn("stp").info
+            except:
+                learned_stp = f"{ hostname } Has No STP to Learn"
+
+        # Pass to template 
+
+        if learned_stp != f"{ hostname } Has No STP to Learn":
+            IOS_learned_stp_template = env.get_template('IOS_learned_stp.j2')
+            IOS_learned_stp_rpvst_template = env.get_template('IOS_learned_stp_rpvst.j2')
+            IOS_learned_stp_mstp_template = env.get_template('IOS_learned_stp_mstp.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = IOS_learned_stp_template.render(to_parse_stp=learned_stp['global'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Learn Spanning Tree Protocol.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Learn Spanning Tree Protocol Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Learn Spanning Tree Protocol.json", "w") as fh:
+                    json.dump(learned_stp, fh, indent=4, sort_keys=True)
+                    fh.close()
+            loop_counter = 0
+
+        # Render Templates
+            if "rapid_pvst" in learned_stp:
+                for filetype in filetype_loop:
+                    parsed_output = IOS_learned_stp_template.render(to_parse_stp=learned_stp['rapid_pvst'],filetype_loop=loop_counter)
+                    loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                    if loop_counter <= 3:
+                        with open(f"{ filename }_Learn Rapid Per VLAN Spanning Tree.{ filetype }", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()
+                    else:
+                        with open(f"{ filename }_Learn Rapid Per VLAN Spanning Tree Mind Map.md", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()
+                    with open(f"{ filename }_Learn Rapid Per VLAN Spanning Tree.json", "w") as fh:
+                        json.dump(learned_stp, fh, indent=4, sort_keys=True)
+                        fh.close()
+
+        # Render Templates
+            if learned_stp['mstp']: 
+                for filetype in filetype_loop:
+                    parsed_output = IOS_learned_stp_mstp_template.render(to_parse_stp=learned_stp['mstp'],filetype_loop=loop_counter)
+                    loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                    if loop_counter <= 3:
+                        with open(f"{ filename }_Learn Spanning Tree Multiple.{ filetype }", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()
+                    else:
+                        with open(f"{ filename }_Learn Spanning Multiple Tree Mind Map.md", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()
+                    with open(f"{ filename }_Learn Spanning Tree Multiple.json", "w") as fh:
+                        json.dump(learned_stp, fh, indent=4, sort_keys=True)
+                        fh.close()                        
+        return(learned_stp)
+    except Exception as e:
+        logging.exception(e)
+
+def IOS_learned_vlan(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'iosxe',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Learn VLAN to JSON
+            try:
+                learned_vlan = device.learn("vlan").info
+            except:
+                learned_vlan = f"{ hostname } Has No VLANs to Learn"
+            
+        # Pass to template 
+
+        if learned_vlan != f"{ hostname } Has No VLANs to Learn":
+            IOS_learned_vlan_template = env.get_template('IOS_learned_vlan.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = IOS_learned_vlan_template.render(to_parse_vlan=learned_vlan['vlans'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Learn VLAN.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Learn VLAN Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Learn VLAN.json", "w") as fh:
+                    json.dump(learned_vlan, fh, indent=4, sort_keys=True)
+                    fh.close()
+        return(learned_vlan)
+    except Exception as e:
+        logging.exception(e)
+
+def IOS_learned_vrf(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'iosxe',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Learn VLAN to JSON
+            try:
+                learned_vrf = device.learn("vrf").info
+            except:
+                learned_vrf = f"{ hostname } Has No VRFs to Learn"
+            
+        # Pass to template 
+
+        if learned_vrf != f"{ hostname } Has No VRFs to Learn":
+            IOS_learned_vrf_template = env.get_template('IOS_learned_vrf.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = IOS_learned_vrf_template.render(to_parse_vrf=learned_vrf['vrfs'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Learn VRF.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Learn VRF Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Learn VRF.json", "w") as fh:
+                    json.dump(learned_vrf, fh, indent=4, sort_keys=True)
+                    fh.close()
+        return(learned_vrf)
     except Exception as e:
         logging.exception(e)
 
@@ -346,11 +756,14 @@ def IOS_show_ip_interface_brief(hostname, username, password, ip):
 
         # Show IP Interface Brief to JSON
 
-            show_ip_interface_brief = device.parse("show ip interface brief")
+            try:
+                show_ip_interface_brief = device.parse("show ip interface brief")
+            except:
+                show_ip_interface_brief = f"{ hostname } Can't Parse"
 
         # Pass to template 
 
-        if show_ip_interface_brief is not None:
+        if show_ip_interface_brief != f"{ hostname } Can't Parse":
             IOS_show_ip_interface_brief_template = env.get_template('IOS_show_ip_interface_brief.j2')
             loop_counter = 0
         # Render Templates

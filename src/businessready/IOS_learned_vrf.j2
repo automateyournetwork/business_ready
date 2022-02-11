@@ -1,0 +1,55 @@
+{% if filetype_loop == 0 %}VRF,Description,Address Family,Route Target,Route Target Type,Route Distinguisher{% for vrf in to_parse_vrf %}{% for address_family in to_parse_vrf[vrf].address_family %}{% if to_parse_vrf[vrf].address_family[address_family].route_targets is defined %}{% for target in to_parse_vrf[vrf].address_family[address_family].route_targets %}
+{{ vrf }},{{ to_parse_vrf[vrf].description }},{{ target }},{{ to_parse_vrf[vrf].address_family[address_family].route_targets[target].rt_type }},{{ address_family }},{{ to_parse_vrf[vrf].route_distinguisher }}{% endfor %}{% else %}
+{{ vrf }},{{ to_parse_vrf[vrf].description }},N/A,N/A,{{ address_family }},{{ to_parse_vrf[vrf].route_distinguisher }}{% endif %}{% endfor %}{% endfor %}{% else %}{% if filetype_loop == 1 %}
+# Learn VRF
+| VRF | Description | Address Family | Route Target | Route Target Type | Route Distinguisher |
+| --- | ----------- | -------------- | ------------ | ----------------- | ------------------- |{% for vrf in to_parse_vrf %}{% for address_family in to_parse_vrf[vrf].address_family %}{% if to_parse_vrf[vrf].address_family[address_family].route_targets is defined %}{% for target in to_parse_vrf[vrf].address_family[address_family].route_targets %}
+| {{ vrf }} | {{ to_parse_vrf[vrf].description }} | {{ target }} | {{ to_parse_vrf[vrf].address_family[address_family].route_targets[target].rt_type }} | {{ address_family }} | {{ to_parse_vrf[vrf].route_distinguisher }} |{% endfor %}{% else %}
+| {{ vrf }} | {{ to_parse_vrf[vrf].description }} | N/A | N/A | {{ address_family }} | {{ to_parse_vrf[vrf].route_distinguisher }} |{% endif %}{% endfor %}{% endfor %}{% else %}{% if filetype_loop == 2 %}
+<html><body>
+<h1>Learn VRF</h1>
+<table>
+  <thead>
+  <tr>
+    <th>VRF</th>
+    <th>Description</th>
+    <th>Address Family</th>
+    <th>Route Target</th>
+    <th>Route Target Type</th>
+    <th>Route Distinguisher</th>
+  </tr>
+  </thead>
+  <tbody>{% for vrf in to_parse_vrf %}{% for address_family in to_parse_vrf[vrf].address_family %}{% if to_parse_vrf[vrf].address_family[address_family].route_targets is defined %}{% for target in to_parse_vrf[vrf].address_family[address_family].route_targets %}
+  <tr>
+    <td>{{ vrf }}</td>
+    <td>{{ to_parse_vrf[vrf].description }}</td>
+    <td>{{ address_family }}</td>
+    <td>{{ target }}</td>
+    <td>{{ to_parse_vrf[vrf].address_family[address_family].route_targets[target].rt_type }}</td>
+    <td>{{ to_parse_vrf[vrf].route_distinguisher }}</td>
+  </tr>{% endfor %}{% else %}
+  <tr>
+    <td>{{ vrf }}</td>
+    <td>{{ to_parse_vrf[vrf].description }}</td>
+    <td>{{ address_family }}</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>{{ to_parse_vrf[vrf].route_distinguisher }}</td>
+  </tr>  
+  </tbody>  
+</table>
+</body></html>{% endif %}{% endfor %}{% endfor %}{% else %}
+# Learn VRF
+{%- for vrf in to_parse_vrf %}
+## {{ vrf }}
+{%-     for address_family in to_parse_vrf[vrf].address_family %}
+### {{ address_family }}
+{%-         if to_parse_vrf[vrf].address_family[address_family].route_targets is defined %}
+{%-             for target in to_parse_vrf[vrf].address_family[address_family].route_targets %}
+#### Target: {{ target }}
+{%-             endfor %}
+{%-         endif %}
+#### Route Distinguisher: {{ to_parse_vrf[vrf].route_distinguisher }}
+{%-     endfor %}
+{%- endfor %}
+{% endif %}{% endif %}{% endif %}

@@ -1,0 +1,41 @@
+{%- if filetype_loop == 0 %}Domain,Name,Revision
+{%-     for domain in to_parse_stp %}
+{{ domain }},{{ to_parse_stp[domain].revision.name | default("Not named") }},{{ to_parse_stp[domain].revision }}
+{%-     endfor %}
+{%- else %}
+{%- if filetype_loop == 1 %}
+# Learn Multiple STP
+| Domain | Name | Revision |
+| ------ | ---- | -------- |
+{%-     for domain in to_parse_stp %}
+| {{ domain }} | {{ to_parse_stp[domain].name | default("Not named") }} | {{ to_parse_stp[domain].revision }} |
+{%-     endfor %}
+{%- else %}{%- if filetype_loop == 2 %}
+<html><body>
+<h1>Learn Mutliple STP</h1>
+<table>
+  <thead>
+  <tr>
+    <th>Domain</th>
+    <th>Name</th>
+    <th>Revision</th>
+  </tr>
+  </thead>
+  <tbody>
+{%-     for domain in to_parse_stp %}  
+  <tr>
+    <td>{{ domain }}</td>
+    <td>{{ to_parse_stp[domain].name | default("Not named") }}</td>
+    <td>{{ to_parse_stp[domain].revision }}</td>
+  </tr>
+{%-     endfor %}  
+  </tbody>  
+</table>
+</body></html>{% else %}
+# Learn Spanning Tree                     
+{%-     for domain in to_parse_stp %}
+## Domain: {{ domain }}
+### Name: {{ to_parse_stp[domain].name | default("Not named") }}
+### Revision: {{ to_parse_stp[domain].revision }}
+{%-     endfor %}
+{% endif %}{% endif %}{% endif %}
