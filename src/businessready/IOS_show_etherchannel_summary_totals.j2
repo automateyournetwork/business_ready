@@ -1,0 +1,28 @@
+{% if filetype_loop == 0 %}Number of Aggregators,Number of LAG in use
+{{ to_parse_etherchannel_summary.number_of_aggregators }},{{ to_parse_etherchannel_summary.number_of_lag_in_use }}{% else %}{% if filetype_loop == 1 %}
+# Etherchannel Totals
+| Number of Aggregators | Number of LAG in use |
+| --------------------- | -------------------- |
+| {{ to_parse_etherchannel_summary.number_of_aggregators }} | {{ to_parse_etherchannel_summary.number_of_lag_in_use }} |{% else %}{% if filetype_loop == 2 %}
+<html><body>
+<h1>Show Etherchannel Summary</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Number of Aggregators</th>
+      <th>Number of LAG In Use</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>{{ to_parse_etherchannel_summary.number_of_aggregators }}</td>
+      <td>{{ to_parse_etherchannel_summary.number_of_lag_in_use }}</td>
+    </tr>
+  </tbody>
+</table>
+</body></html>{% else %}
+# Show Etherchannel Summary Totals
+## Number of Aggregators: {{ to_parse_etherchannel_summary.number_of_aggregators }}
+## Number of LAG in Use: {{ to_parse_etherchannel_summary.number_of_lag_in_use }}
+{% endif %}{% endif %}{% endif %}
