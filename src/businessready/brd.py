@@ -31,6 +31,24 @@ log = logging.getLogger(__name__)
 
 filetype_loop = ["csv","md","html","md"]
 
+# ----------------
+# IOS LEARN SECTION
+# ----------------
+
+def IOS_learned_all(hostname, username, password, ip):
+    IOS_learned_acl(hostname, username, password, ip)
+    IOS_learned_arp(hostname, username, password, ip)
+    IOS_learned_dot1x(hostname, username, password, ip)
+    IOS_learned_interface(hostname, username, password, ip)
+    IOS_learned_lldp(hostname, username, password, ip)
+    IOS_learned_ntp(hostname, username, password, ip)
+    IOS_learned_ospf(hostname, username, password, ip)
+    IOS_learned_routing(hostname, username, password, ip)
+    IOS_learned_stp(hostname, username, password, ip)
+    IOS_learned_vlan(hostname, username, password, ip)
+    IOS_learned_vrf(hostname, username, password, ip)
+    return("Learned All Functions")
+
 def IOS_learned_acl(hostname, username, password, ip):
     try:
     # Create Testbed
@@ -250,7 +268,7 @@ def IOS_learned_dot1x(hostname, username, password, ip):
         # Render Templates
             loop_counter = 0
             for filetype in filetype_loop:
-                parsed_output = IOS_learned_dot1x_template.render(to_parse_dot1x=self.learned_dot1x,filetype_loop=loop_counter)
+                parsed_output = IOS_learned_dot1x_template.render(to_parse_dot1x=learned_dot1x,filetype_loop=loop_counter)
                 loop_counter = loop_counter + 1
         # -------------------------
         # Save the files
@@ -386,7 +404,7 @@ def IOS_learned_lldp(hostname, username, password, ip):
             loop_counter = 0
         # Render Templates
             for filetype in filetype_loop:
-                parsed_output = IOS_learned_lldp_template.render(to_parse_lldp=self.learned_lldp,filetype_loop=loop_counter)
+                parsed_output = IOS_learned_lldp_template.render(to_parse_lldp=learned_lldp,filetype_loop=loop_counter)
                 loop_counter = loop_counter + 1
 
     # -------------------------
@@ -407,7 +425,7 @@ def IOS_learned_lldp(hostname, username, password, ip):
             loop_counter = 0
         # Render Templates
             for filetype in filetype_loop:
-                parsed_output = IOS_learned_lldp_interfaces_template.render(to_parse_lldp=self.learned_lldp['interfaces'],filetype_loop=loop_counter)
+                parsed_output = IOS_learned_lldp_interfaces_template.render(to_parse_lldp=learned_lldp['interfaces'],filetype_loop=loop_counter)
                 loop_counter = loop_counter + 1
 
     # -------------------------
@@ -925,6 +943,78 @@ def IOS_learned_vrf(hostname, username, password, ip):
     except Exception as e:
         logging.exception(e)
 
+# ----------------
+# IOS SHOW PARSE SECTION
+# ----------------
+
+def IOS_show_access_lists(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'iosxe',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show IP Interface Brief to JSON
+
+            try:
+                show_access_lists = device.parse("show access-lists")
+            except:
+                show_access_lists = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_access_lists != f"{ hostname } Can't Parse":
+            IOS_show_access_lists_template = env.get_template('IOS_learned_acl.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = IOS_show_access_lists_template.render(to_parse_access_list=show_access_lists,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show Access Lists.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show Access Lists Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show Access Lists.json", "w") as fh:
+                    json.dump(show_access_lists, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_access_lists)
+    except Exception as e:
+        logging.exception(e)
+
 def IOS_show_ip_interface_brief(hostname, username, password, ip):
     try:
     # Create Testbed
@@ -990,6 +1080,74 @@ def IOS_show_ip_interface_brief(hostname, username, password, ip):
                     json.dump(show_ip_interface_brief, fh, indent=4, sort_keys=True)
                     fh.close()                                 
         return(show_ip_interface_brief)
+    except Exception as e:
+        logging.exception(e)
+
+def IOS_show_license_summary(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'iosxe',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show IP Interface Brief to JSON
+
+            try:
+                show_ip_license_summary = device.parse("show license summary")
+            except:
+                show_ip_license_summary = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_ip_license_summary != f"{ hostname } Can't Parse":
+            IOS_show_license_summary_template = env.get_template('IOS_show_license_summary.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = IOS_show_license_summary_template.render(to_parse_license=show_ip_license_summary['license_usage'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show License Summary.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show License Summary Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show License Summary.json", "w") as fh:
+                    json.dump(show_ip_license_summary, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_ip_license_summary)
     except Exception as e:
         logging.exception(e)
 

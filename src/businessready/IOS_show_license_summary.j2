@@ -1,0 +1,48 @@
+{%- if filetype_loop == 0 %}Name,License,Entitlement,Count,Status
+{%-     for license in to_parse_license %}
+{{ license }},{{ to_parse_license[license].license }},{{ to_parse_license[license].entitlement }},{{ to_parse_license[license].count }},{{ to_parse_license[license].status }}
+{%-     endfor %}
+{%- else %}
+{%-     if filetype_loop == 1 %}
+# Show License Summary
+| Name | License | Entitlement | Count | Status | 
+| ---- | ------- | ----------- | ----- | ------ |
+{%-         for license in to_parse_license %}
+| {{ license }} | {{ to_parse_license[license].license }} | {{ to_parse_license[license].entitlement }} | {{ to_parse_license[license].count }} | {{ to_parse_license[license].status }} |
+{%-         endfor %}
+{%-     else %}
+{%-         if filetype_loop == 2 %}
+<html><body>
+<h1>Show License Summary</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>License</th>
+      <th>Entitlement</th>
+      <th>Count</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+{%-             for license in to_parse_license %}
+  <tr>
+    <td>{{ license }}</td>
+    <td>{{ to_parse_license[license].license }}</td>
+    <td>{{ to_parse_license[license].entitlement }}</td>
+    <td>{{ to_parse_license[license].count }}</td>
+    <td>{{ to_parse_license[license].status }}</td>
+  </tr>
+{%-             endfor %}
+  </tbody>
+</table>
+</body></html>
+{%-         else %}
+# Show License Summary
+{%-             for license in to_parse_license %}
+## {{ license }}
+### Entitlement: {{ to_parse_license[license].entitlement }}
+### Count: {{ to_parse_license[license].count }}
+### Status: {{ to_parse_license[license].status }}
+{%-             endfor %}
+{% endif %}{% endif %}{% endif %}

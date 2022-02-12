@@ -1,6 +1,6 @@
 [tool.poetry]
 name = 'businessready'
-version = "0.3.47"
+version = "0.3.53"
 description = "Transform Cisco CLIs and APIs into Business Ready Documents"
 authors = ["John Capobianco <ptcapo@gmail.com>"]
 packages = [{ include = "businessready", from = "src"}]
