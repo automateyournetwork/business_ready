@@ -32,6 +32,15 @@ log = logging.getLogger(__name__)
 filetype_loop = ["csv","md","html","md"]
 
 # ----------------
+# IOS ALL
+# ----------------
+
+def IOS_all(hostname, username, password, ip):
+    IOS_learned_all(hostname, username, password, ip)
+    IOS_show_all(hostname, username, password, ip)
+    return("All Functions Converted to Business Ready Documents")
+
+# ----------------
 # IOS LEARN SECTION
 # ----------------
 
@@ -947,6 +956,14 @@ def IOS_learned_vrf(hostname, username, password, ip):
 # IOS SHOW PARSE SECTION
 # ----------------
 
+def IOS_show_all(hostname, username, password, ip):
+    IOS_show_access_lists(hostname, username, password, ip)
+    IOS_show_cdp_neighbors(hostname, username, password, ip)
+    IOS_show_cdp_neighbors_detail(hostname, username, password, ip)
+    IOS_show_ip_interface_brief(hostname, username, password, ip)
+    IOS_show_license_summary(hostname, username, password, ip)
+    return("Learned All Functions")
+
 def IOS_show_access_lists(hostname, username, password, ip):
     try:
     # Create Testbed
@@ -980,7 +997,7 @@ def IOS_show_access_lists(hostname, username, password, ip):
         for device in new_testbed:
             device.connect()
 
-        # Show IP Interface Brief to JSON
+        # Show Access Lists to JSON
 
             try:
                 show_access_lists = device.parse("show access-lists")
@@ -1012,6 +1029,321 @@ def IOS_show_access_lists(hostname, username, password, ip):
                     json.dump(show_access_lists, fh, indent=4, sort_keys=True)
                     fh.close()                                 
         return(show_access_lists)
+    except Exception as e:
+        logging.exception(e)
+
+def IOS_show_cdp_neighbors(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'iosxe',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show CDP Neighbors to JSON
+
+            try:
+                show_cdp_neighbors = device.parse("show cdp neighbors")
+            except:
+                show_cdp_neighbors = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_cdp_neighbors != f"{ hostname } Can't Parse":
+            IOS_show_cdp_neighbors_template = env.get_template('IOS_show_cdp_neighbors.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = IOS_show_cdp_neighbors_template.render(to_parse_cdp_neighbors=show_cdp_neighbors['cdp'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show CDP Neighbors.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show CDP Neighbors Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show CDP Neighbors.json", "w") as fh:
+                    json.dump(show_cdp_neighbors, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_cdp_neighbors)
+    except Exception as e:
+        logging.exception(e)
+
+def IOS_show_cdp_neighbors_detail(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'iosxe',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show CDP Neighbors Detail to JSON
+
+            try:
+                show_cdp_neighbors_detail = device.parse("show cdp neighbors detail")
+            except:
+                show_cdp_neighbors_detail = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_cdp_neighbors_detail != f"{ hostname } Can't Parse":
+            IOS_show_cdp_neighbors_detail_template = env.get_template('IOS_show_cdp_neighbors_detail.j2')
+            IOS_show_cdp_neighbors_detail_totals_template = env.get_template('IOS_show_cdp_neighbors_detail_totals.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = IOS_show_cdp_neighbors_detail_template.render(to_parse_cdp_neighbors=show_cdp_neighbors_detail['index'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show CDP Neighbors Details.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show CDP Neighbors Details Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show CDP Neighbors Details.json", "w") as fh:
+                    json.dump(show_cdp_neighbors_detail, fh, indent=4, sort_keys=True)
+                    fh.close()
+
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = IOS_show_cdp_neighbors_detail_totals_template.render(to_parse_cdp_neighbors=show_cdp_neighbors_detail,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show CDP Neighbors Details Totals.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show CDP Neighbors Details Totals Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show CDP Neighbors Details Totals.json", "w") as fh:
+                    json.dump(show_cdp_neighbors_detail, fh, indent=4, sort_keys=True)
+                    fh.close() 
+
+        return(show_cdp_neighbors_detail)
+    except Exception as e:
+        logging.exception(e)
+
+def IOS_show_environment_all(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'iosxe',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show CDP Neighbors to JSON
+
+            try:
+                show_environment_all = device.parse("show environment all")
+            except:
+                show_environment_all = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_environment_all != f"{ hostname } Can't Parse":
+            IOS_show_environment_all_template = env.get_template('IOS_show_environment_all.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = IOS_show_environment_all_template.render(to_parse_environment=show_environment_all['switch'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show Environment All.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show Environment All Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show Environment All.json", "w") as fh:
+                    json.dump(show_environment_all, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_environment_all)
+    except Exception as e:
+        logging.exception(e)
+
+def IOS_show_etherchannel_summary(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'iosxe',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show CDP Neighbors to JSON
+
+            try:
+                show_etherchannel_summary = device.parse("show etherchannel summary")
+            except:
+                show_etherchannel_summary = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_etherchannel_summary != f"{ hostname } Can't Parse":
+            IOS_show_etherchannel_summary_template = env.get_template('IOS_show_etherchannel_summary.j2')
+            IOS_show_etherchannel_summary_totals_template = env.get_template('IOS_show_etherchannel_summary_totals.j2')
+            loop_counter = 0
+        # Render Templates
+            if "interfaces" in show_etherchannel_summary:
+                for filetype in filetype_loop:
+                    parsed_output = IOS_show_etherchannel_summary_template.render(to_parse_etherchannel_summary=show_etherchannel_summary['interfaces'],filetype_loop=loop_counter)
+                    loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                    if loop_counter <= 3:
+                        with open(f"{ filename }_Show Etherchannel Summary.{ filetype }", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()
+                    else:
+                        with open(f"{ filename }_Show Etherchannel Summary Mind Map.md", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()
+                    with open(f"{ filename }_Show Etherchannel Summary.json", "w") as fh:
+                        json.dump(show_etherchannel_summary, fh, indent=4, sort_keys=True)
+                        fh.close()
+
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = IOS_show_etherchannel_summary_totals_template.render(to_parse_etherchannel_summary=show_etherchannel_summary,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show Etherchannel Summary Totals.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show Etherchannel Summary Totals Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()                        
+        return(show_etherchannel_summary)
     except Exception as e:
         logging.exception(e)
 
