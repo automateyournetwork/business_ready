@@ -1,4 +1,4 @@
 # import sys
-# from .brd import IOS_show_interfaces
+# from .brd import IOS_show_interfaces_status
 # def run():
-#     print(IOS_show_interfaces(sys.argv[1]))
+#     print(IOS_show_interfaces_status(sys.argv[1]))
