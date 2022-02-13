@@ -47,6 +47,7 @@ def IOS_all(hostname, username, password, ip):
 def IOS_learned_all(hostname, username, password, ip):
     IOS_learned_acl(hostname, username, password, ip)
     IOS_learned_arp(hostname, username, password, ip)
+    IOS_learned_bgp(hostname, username, password, ip)
     IOS_learned_dot1x(hostname, username, password, ip)
     IOS_learned_interface(hostname, username, password, ip)
     IOS_learned_lldp(hostname, username, password, ip)
@@ -210,6 +211,73 @@ def IOS_learned_arp(hostname, username, password, ip):
                     json.dump(learned_arp, fh, indent=4, sort_keys=True)
                     fh.close()
         return(learned_arp)
+    except Exception as e:
+        logging.exception(e)
+
+def IOS_learned_bgp(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'iosxe',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Learn BGP to JSON
+
+            try:
+                learned_bgp = device.learn("bgp").info
+            except:
+                learned_bgp = f"{ hostname } has no BGP to Learn"
+
+        # Pass to template 
+
+        if learned_bgp != f"{ hostname } has no BGP to Learn":
+            IOS_learned_bgp_template = env.get_template('IOS_learned_bgp.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output_statistics = IOS_learned_bgp_template.render(to_parse_bgp=learned_bgp['instance'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+        # -------------------------
+        # Save the files
+        # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Learn BGP.{ filetype }", "w") as fh:
+                        fh.write(parsed_output_statistics)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Learn BGP Mind Map.md", "w") as fh:
+                        fh.write(parsed_output_statistics)               
+                        fh.close()
+                with open(f"{ filename }_Learn BGP.json", "w") as fh:
+                    json.dump(learned_bgp, fh, indent=4, sort_keys=True)
+                    fh.close()
+        return(learned_bgp)
     except Exception as e:
         logging.exception(e)
 
@@ -918,7 +986,7 @@ def IOS_learned_vrf(hostname, username, password, ip):
         for device in new_testbed:
             device.connect()
 
-        # Learn VLAN to JSON
+        # Learn VRF to JSON
             try:
                 learned_vrf = device.learn("vrf").info
             except:
@@ -969,8 +1037,10 @@ def IOS_show_all(hostname, username, password, ip):
     IOS_show_ip_arp(hostname, username, password, ip)
     IOS_show_ip_interface_brief(hostname, username, password, ip)
     IOS_show_ip_route(hostname, username, password, ip)
-    IOS_show_mac_address_table(hostname, username, password, ip)
     IOS_show_license_summary(hostname, username, password, ip)
+    IOS_show_mac_address_table(hostname, username, password, ip)
+    IOS_show_ntp_associations(hostname, username, password, ip)
+    IOS_show_version(hostname, username, password, ip)    
     return("Learned All Functions")
 
 def IOS_show_access_lists(hostname, username, password, ip):
@@ -1457,7 +1527,7 @@ def IOS_show_interfaces_status(hostname, username, password, ip):
         for device in new_testbed:
             device.connect()
 
-        # Show Interfaces to JSON
+        # Show Interfaces Status to JSON
 
             try:
                 show_interfaces_status = device.parse("show interfaces status")
@@ -1525,7 +1595,7 @@ def IOS_show_interfaces_trunk(hostname, username, password, ip):
         for device in new_testbed:
             device.connect()
 
-        # Show Interfaces to JSON
+        # Show Interfaces Trunk to JSON
 
             try:
                 show_interfaces_trunk = device.parse("show interfaces trunk")
@@ -1593,7 +1663,7 @@ def IOS_show_inventory_9000(hostname, username, password, ip):
         for device in new_testbed:
             device.connect()
 
-        # Show Interfaces to JSON
+        # Show Inventory 9000 to JSON
 
             try:
                 show_inventory = device.parse("show inventory")
@@ -1661,7 +1731,7 @@ def IOS_show_ip_arp(hostname, username, password, ip):
         for device in new_testbed:
             device.connect()
 
-        # Show IP Interface Brief to JSON
+        # Show IP ARP to JSON
 
             try:
                 show_ip_arp = device.parse("show ip arp")
@@ -1764,6 +1834,74 @@ def IOS_show_ip_interface_brief(hostname, username, password, ip):
     except Exception as e:
         logging.exception(e)
 
+def IOS_show_ip_ospf(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'iosxe',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show IP OSPF to JSON
+
+            try:
+                show_ip_ospf = device.parse("show ip ospf")
+            except:
+                show_ip_ospf = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_ip_ospf != f"{ hostname } Can't Parse":
+            IOS_show_ip_ospf_template = env.get_template('IOS_show_ip_ospf.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = IOS_show_ip_ospf_template.render(to_parse_ip_ospf=show_ip_ospf['vrf'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show IP OSPF.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show IP OSPF Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show IP OSPF.json", "w") as fh:
+                    json.dump(show_ip_ospf, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_ip_ospf)
+    except Exception as e:
+        logging.exception(e)
+
 def IOS_show_ip_route(hostname, username, password, ip):
     try:
     # Create Testbed
@@ -1797,7 +1935,7 @@ def IOS_show_ip_route(hostname, username, password, ip):
         for device in new_testbed:
             device.connect()
 
-        # Show IP Interface Brief to JSON
+        # Show IP Route to JSON
 
             try:
                 show_ip_route = device.parse("show ip route")
@@ -1822,10 +1960,10 @@ def IOS_show_ip_route(hostname, username, password, ip):
                         fh.write(parsed_output)               
                         fh.close()
                 else:
-                    with open(f"{ filename }_Show IP Route Brief Mind Map.md", "w") as fh:
+                    with open(f"{ filename }_Show IP Route Mind Map.md", "w") as fh:
                         fh.write(parsed_output)               
                         fh.close()
-                with open(f"{ filename }_Show IP Route Brief.json", "w") as fh:
+                with open(f"{ filename }_Show IP Route.json", "w") as fh:
                     json.dump(show_ip_route, fh, indent=4, sort_keys=True)
                     fh.close()                                 
         return(show_ip_route)
@@ -1865,7 +2003,7 @@ def IOS_show_license_summary(hostname, username, password, ip):
         for device in new_testbed:
             device.connect()
 
-        # Show IP Interface Brief to JSON
+        # Show License Summary to JSON
 
             try:
                 show_ip_license_summary = device.parse("show license summary")
@@ -1933,7 +2071,7 @@ def IOS_show_mac_address_table(hostname, username, password, ip):
         for device in new_testbed:
             device.connect()
 
-        # Show IP Interface Brief to JSON
+        # Show MAC Address Table to JSON
 
             try:
                 show_mac_address_table = device.parse("show mac address-table")
@@ -1965,6 +2103,345 @@ def IOS_show_mac_address_table(hostname, username, password, ip):
                     json.dump(show_mac_address_table, fh, indent=4, sort_keys=True)
                     fh.close()                                 
         return(show_mac_address_table)
+    except Exception as e:
+        logging.exception(e)
+
+def IOS_show_ntp_associations(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'iosxe',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show NTP Associations to JSON
+
+            try:
+                show_ntp_associations = device.parse("show ntp associations")
+            except:
+                show_ntp_associations = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_ntp_associations != f"{ hostname } Can't Parse":
+            IOS_show_ntp_associations_template = env.get_template('IOS_show_ntp_associations.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = IOS_show_ntp_associations_template.render(to_parse_ntp_associations=show_ntp_associations['mac_table'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show NTP Associations.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show NTP Associations Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show NTP Associations.json", "w") as fh:
+                    json.dump(show_ntp_associations, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_ntp_associations)
+    except Exception as e:
+        logging.exception(e)
+
+def IOS_show_version(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'iosxe',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show Version to JSON
+
+            try:
+                show_version = device.parse("show version")
+            except:
+                show_version = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_version != f"{ hostname } Can't Parse":
+            IOS_show_version_template = env.get_template('IOS_show_version.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = IOS_show_version_template.render(to_parse_version=show_version['version'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show Version.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show Version Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show Version.json", "w") as fh:
+                    json.dump(show_version, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_version)
+    except Exception as e:
+        logging.exception(e)
+
+def IOS_show_vlan(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'iosxe',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show VLAN to JSON
+
+            try:
+                show_vlan = device.parse("show vlan")
+            except:
+                show_vlan = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_vlan != f"{ hostname } Can't Parse":
+            IOS_show_vlan_template = env.get_template('IOS_show_vlan.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = IOS_show_vlan_template.render(to_parse_vlan=show_vlan['vlans'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show VLAN.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show VLAN Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show VLAN.json", "w") as fh:
+                    json.dump(show_vlan, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_vlan)
+    except Exception as e:
+        logging.exception(e)
+
+def IOS_show_vrf(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'iosxe',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show VRF to JSON
+
+            try:
+                show_vrf = device.parse("show vrf")
+            except:
+                show_vrf = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_vrf != f"{ hostname } Can't Parse":
+            IOS_show_vrf_template = env.get_template('IOS_show_vrf.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = IOS_show_vrf_template.render(to_parse_vrf=show_vrf['vrf'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show VRF.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show VRF Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show VRF.json", "w") as fh:
+                    json.dump(show_vrf, fh, indent=4, sort_keys=True)
+                    fh.close()
+            
+            for vrf in show_vrf['vrf']:
+
+            # Show IP ARP VRF <VRF>
+
+                try:
+                    show_ip_arp_vrf = device.parse(f"show ip arp vrf { vrf }")
+                except:
+                    show_ip_arp_vrf = f"{ hostname } Can't Parse"
+
+            # Pass to template 
+
+                if show_ip_arp_vrf != f"{ hostname } Can't Parse":
+                    IOS_show_ip_arp_vrf_template = env.get_template('IOS_show_ip_arp.j2')
+                    loop_counter = 0
+            # Render Templates
+                    for filetype in filetype_loop:
+                        parsed_output = IOS_show_ip_arp_vrf_template.render(to_parse_ip_arp=show_ip_arp_vrf['interfaces'],filetype_loop=loop_counter)
+                        loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                        if loop_counter <= 3:
+                            with open(f"{ filename }_Show IP ARP VRF { vrf }.{ filetype }", "w") as fh:
+                                fh.write(parsed_output)               
+                                fh.close()
+                        else:
+                            with open(f"{ filename }_Show IP ARP VRF { vrf } Mind Map.md", "w") as fh:
+                                fh.write(parsed_output)               
+                                fh.close()
+                        with open(f"{ filename }_Show IP ARP VRF { vrf }.json", "w") as fh:
+                            json.dump(show_ip_arp_vrf, fh, indent=4, sort_keys=True)
+                            fh.close()
+
+            # Show IP Route VRF <VRF>
+
+                try:
+                    show_ip_route_vrf = device.parse(f"show ip route vrf { vrf }")
+                except:
+                    show_ip_route_vrf = f"{ hostname } Can't Parse"
+
+            # Pass to template 
+
+                if show_ip_route_vrf != f"{ hostname } Can't Parse":
+                    IOS_show_ip_route_vrf_template = env.get_template('IOS_show_ip_route.j2')
+                    loop_counter = 0
+            # Render Templates
+                    for filetype in filetype_loop:
+                        parsed_output = IOS_show_ip_route_vrf_template.render(to_parse_ip_route=show_ip_route_vrf['vrf'],filetype_loop=loop_counter)
+                        loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                        if loop_counter <= 3:
+                            with open(f"{ filename }_Show IP Route VRF { vrf }.{ filetype }", "w") as fh:
+                                fh.write(parsed_output)               
+                                fh.close()
+                        else:
+                            with open(f"{ filename }_Show IP Route VRF { vrf } Mind Map.md", "w") as fh:
+                                fh.write(parsed_output)               
+                                fh.close()
+                        with open(f"{ filename }_Show IP Route VRF { vrf }.json", "w") as fh:
+                            json.dump(show_ip_route_vrf, fh, indent=4, sort_keys=True)
+                            fh.close()
+
+        return(show_vrf)
     except Exception as e:
         logging.exception(e)
 

@@ -1,0 +1,63 @@
+{%- if filetype_loop == 0 %}VLAN,Interface,Name,State,Shutdown,MTU
+{%-     for vlan in to_parse_vlan %}
+{%-         for interface in to_parse_vlan[vlan].interfaces %}
+{{ vlan }},{{ interface }},{{ to_parse_vlan[vlan].name }},{{ to_parse_vlan[vlan].state }},{{ to_parse_vlan[vlan].shutdown }},{{ to_parse_vlan[vlan].mtu }}
+{%-         endfor %}
+{%-     endfor %}
+{%- else %}
+{%-     if filetype_loop == 1 %}
+# Show VLAN
+| VLAN | Interface | Name | State | Shutdown | MTU |
+| ---- | --------- | ---- | ----- | -------- | --- |
+{%-     for vlan in to_parse_vlan %}
+{%-         for interface in to_parse_vlan[vlan].interfaces %}
+| {{ vlan }} | {{ interface }} | {{ to_parse_vlan[vlan].name }} | {{ to_parse_vlan[vlan].state }} | {{ to_parse_vlan[vlan].shutdown }} | {{ to_parse_vlan[vlan].mtu }} |
+{%-         endfor %}
+{%-     endfor %}
+{%- else %}
+{%-     if filetype_loop == 2 %}
+<html><body>
+<h1>Show VLAN</h1>
+<table>
+  <thead>
+  <tr>
+    <th>VLAN</th>
+    <th>Interface</th>
+    <th>Name</th>
+    <th>State</th>
+    <th>Shutdown</th>
+    <th>MTU</th>
+  </tr>
+  </thead>
+  <tbody>
+{%-         for vlan in to_parse_vlan %}
+{%-             for interface in to_parse_vlan[vlan].interfaces %}
+  <tr>
+    <td>{{ vlan }}</td>
+    <td>{{ interface }}</td>
+    <td>{{ to_parse_vlan[vlan].name }}</td>
+    <td>{{ to_parse_vlan[vlan].state }}</td>
+    <td>{{ to_parse_vlan[vlan].shutdown }}</td>
+    <td>{{ to_parse_vlan[vlan].mtu }}</td>
+  </tr>
+{%-             endfor %}
+{%-         endfor %}
+  </tbody>
+</table>
+</body></html>
+{%-        else %}
+# Show VLAN
+{%-            for vlan in to_parse_vlan %}
+## {{ vlan }}
+### Name: {{ to_parse_vlan[vlan].name }}
+### State: {{ to_parse_vlan[vlan].state }}
+### Shutdown: {{ to_parse_vlan[vlan].shutdown }}
+### MTU: {{ to_parse_vlan[vlan].mtu }}
+### Interface
+{%-                for interface in to_parse_vlan[vlan].interfaces %}
+#### {{ interface }}
+{%-                endfor %}
+{%-            endfor %}
+{%-        endif %}
+{%-    endif %}
+{%- endif %}
