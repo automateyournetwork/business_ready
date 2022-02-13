@@ -1036,6 +1036,11 @@ def IOS_show_all(hostname, username, password, ip):
     IOS_show_inventory_9000(hostname, username, password, ip)
     IOS_show_ip_arp(hostname, username, password, ip)
     IOS_show_ip_interface_brief(hostname, username, password, ip)
+    IOS_show_ip_ospf(hostname, username, password, ip)
+    IOS_show_ip_ospf_database(hostname, username, password, ip)
+    IOS_show_ip_ospf_interface(hostname, username, password, ip)
+    IOS_show_ip_ospf_neighbor(hostname, username, password, ip)
+    IOS_show_ip_ospf_neighbor_detail(hostname, username, password, ip)
     IOS_show_ip_route(hostname, username, password, ip)
     IOS_show_license_summary(hostname, username, password, ip)
     IOS_show_mac_address_table(hostname, username, password, ip)
@@ -1899,6 +1904,278 @@ def IOS_show_ip_ospf(hostname, username, password, ip):
                     json.dump(show_ip_ospf, fh, indent=4, sort_keys=True)
                     fh.close()                                 
         return(show_ip_ospf)
+    except Exception as e:
+        logging.exception(e)
+
+def IOS_show_ip_ospf_database(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'iosxe',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show IP OSPF Database to JSON
+
+            try:
+                show_ip_ospf_database = device.parse("show ip ospf database")
+            except:
+                show_ip_ospf_database = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_ip_ospf_database != f"{ hostname } Can't Parse":
+            IOS_show_ip_ospf_database_template = env.get_template('IOS_show_ip_ospf_database.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = IOS_show_ip_ospf_database_template.render(to_parse_ip_ospf_database=show_ip_ospf_database['vrf'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show IP OSPF Database.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show IP OSPF Database Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show IP OSPF Database.json", "w") as fh:
+                    json.dump(show_ip_ospf_database, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_ip_ospf_database)
+    except Exception as e:
+        logging.exception(e)
+
+def IOS_show_ip_ospf_interface(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'iosxe',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show IP OSPF Interface to JSON
+
+            try:
+                show_ip_ospf_interface = device.parse("show ip ospf interface")
+            except:
+                show_ip_ospf_interface = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_ip_ospf_interface != f"{ hostname } Can't Parse":
+            IOS_show_ip_ospf_interface_template = env.get_template('IOS_show_ip_ospf_interface.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = IOS_show_ip_ospf_interface_template.render(to_parse_ip_ospf_interface=show_ip_ospf_interface['vrf'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show IP OSPF Interface.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show IP OSPF Interface Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show IP OSPF Interface.json", "w") as fh:
+                    json.dump(show_ip_ospf_interface, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_ip_ospf_interface)
+    except Exception as e:
+        logging.exception(e)
+
+def IOS_show_ip_ospf_neighbor(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'iosxe',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show IP OSPF Neighbor to JSON
+
+            try:
+                show_ip_ospf_neighbor = device.parse("show ip ospf neighbor")
+            except:
+                show_ip_ospf_neighbor = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_ip_ospf_neighbor != f"{ hostname } Can't Parse":
+            IOS_show_ip_ospf_neighbor_template = env.get_template('IOS_show_ip_ospf_neighbor.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = IOS_show_ip_ospf_neighbor_template.render(to_parse_ip_ospf_neighbor=show_ip_ospf_neighbor['interfaces'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show IP OSPF Neighbor.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show IP OSPF Neighbor Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show IP OSPF Neighbor.json", "w") as fh:
+                    json.dump(show_ip_ospf_neighbor, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_ip_ospf_neighbor)
+    except Exception as e:
+        logging.exception(e)
+
+def IOS_show_ip_ospf_neighbor_detail(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'iosxe',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show IP OSPF Neighbor Detail to JSON
+
+            try:
+                show_ip_ospf_neighbor_detail = device.parse("show ip ospf neighbor detail")
+            except:
+                show_ip_ospf_neighbor_detail = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_ip_ospf_neighbor_detail != f"{ hostname } Can't Parse":
+            IOS_show_ip_ospf_neighbor_detail_template = env.get_template('IOS_show_ip_ospf_neighbor_detail.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = IOS_show_ip_ospf_neighbor_detail_template.render(to_parse_ip_ospf_neighbor_detail=show_ip_ospf_neighbor_detail['vrf'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show IP OSPF Neighbor Detail.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show IP OSPF Neighbor Detail Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show IP OSPF Neighbor Detail.json", "w") as fh:
+                    json.dump(show_ip_ospf_neighbor_detail, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_ip_ospf_neighbor_detail)
     except Exception as e:
         logging.exception(e)
 
