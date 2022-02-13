@@ -965,7 +965,11 @@ def IOS_show_all(hostname, username, password, ip):
     IOS_show_interfaces(hostname, username, password, ip)
     IOS_show_interfaces_status(hostname, username, password, ip)
     IOS_show_interfaces_trunk(hostname, username, password, ip)
+    IOS_show_inventory_9000(hostname, username, password, ip)
+    IOS_show_ip_arp(hostname, username, password, ip)
     IOS_show_ip_interface_brief(hostname, username, password, ip)
+    IOS_show_ip_route(hostname, username, password, ip)
+    IOS_show_mac_address_table(hostname, username, password, ip)
     IOS_show_license_summary(hostname, username, password, ip)
     return("Learned All Functions")
 
@@ -1556,6 +1560,142 @@ def IOS_show_interfaces_trunk(hostname, username, password, ip):
     except Exception as e:
         logging.exception(e)
 
+def IOS_show_inventory_9000(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'iosxe',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show Interfaces to JSON
+
+            try:
+                show_inventory = device.parse("show inventory")
+            except:
+                show_inventory = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_inventory != f"{ hostname } Can't Parse":
+            IOS_show_inventory_template = env.get_template('IOS_show_inventory_9000.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = IOS_show_inventory_template.render(to_parse_inventory=show_inventory['slot'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show Inventory.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show Inventory Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show Inventory.json", "w") as fh:
+                    json.dump(show_inventory_trunk, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_inventory_trunk)
+    except Exception as e:
+        logging.exception(e)
+
+def IOS_show_ip_arp(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'iosxe',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show IP Interface Brief to JSON
+
+            try:
+                show_ip_arp = device.parse("show ip arp")
+            except:
+                show_ip_arp = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_ip_arp != f"{ hostname } Can't Parse":
+            IOS_show_ip_arp_template = env.get_template('IOS_show_ip_arp.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = IOS_show_ip_arp_template.render(to_parse_ip_arp=show_ip_arp['interfaces'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show IP ARP.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show IP ARP Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show IP ARP.json", "w") as fh:
+                    json.dump(show_ip_arp, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_ip_arp)
+    except Exception as e:
+        logging.exception(e)
+
 def IOS_show_ip_interface_brief(hostname, username, password, ip):
     try:
     # Create Testbed
@@ -1621,6 +1761,74 @@ def IOS_show_ip_interface_brief(hostname, username, password, ip):
                     json.dump(show_ip_interface_brief, fh, indent=4, sort_keys=True)
                     fh.close()                                 
         return(show_ip_interface_brief)
+    except Exception as e:
+        logging.exception(e)
+
+def IOS_show_ip_route(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'iosxe',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show IP Interface Brief to JSON
+
+            try:
+                show_ip_route = device.parse("show ip route")
+            except:
+                show_ip_route = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_ip_route != f"{ hostname } Can't Parse":
+            IOS_show_ip_route_template = env.get_template('IOS_show_ip_route.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = IOS_show_ip_route_template.render(to_parse_ip_route=show_ip_route['vrf'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show IP Route.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show IP Route Brief Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show IP Route Brief.json", "w") as fh:
+                    json.dump(show_ip_route, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_ip_route)
     except Exception as e:
         logging.exception(e)
 
@@ -1691,6 +1899,78 @@ def IOS_show_license_summary(hostname, username, password, ip):
         return(show_ip_license_summary)
     except Exception as e:
         logging.exception(e)
+
+def IOS_show_mac_address_table(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'iosxe',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show IP Interface Brief to JSON
+
+            try:
+                show_mac_address_table = device.parse("show mac address-table")
+            except:
+                show_mac_address_table = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_mac_address_table != f"{ hostname } Can't Parse":
+            IOS_show_mac_address_table_template = env.get_template('IOS_show_mac_address_table.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = IOS_show_mac_address_table_template.render(to_parse_mac_address_table=show_mac_address_table['mac_table'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show MAC Address Table.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show MAC Address Table Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show MAC Address Table.json", "w") as fh:
+                    json.dump(show_mac_address_table, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_mac_address_table)
+    except Exception as e:
+        logging.exception(e)
+
+# -------------------------
+# DNA-C REST APIs
+# -------------------------
 
 def DNAC_Sites(url, token):
     try:
