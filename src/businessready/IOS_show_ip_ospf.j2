@@ -128,7 +128,7 @@
 #### NSR Enabled: {{ to_parse_ip_ospf[vrf].address_family[address_family].instance[instance].nsr.enable }}
 #### External LSA: {{ to_parse_ip_ospf[vrf].address_family[address_family].instance[instance].numbers.external_lsa }}
 {%-                     if to_parse_ip_ospf[vrf].address_family[address_family].instance[instance].event_log is defined %}
-#### Event Log: {{ to_parse_ip_ospf[vrf].address_family[address_family].instance[instance].event_log }}
+#### Event Log: Enabled
 {%-                     endif %}
 #### Areas
 ##### Normal: {{ to_parse_ip_ospf[vrf].address_family[address_family].instance[instance].total_normal_areas }}
