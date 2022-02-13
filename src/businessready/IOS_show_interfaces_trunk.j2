@@ -1,0 +1,45 @@
+{% if filetype_loop == 0 %}Interface,Encapsulation,Mode,Native Vlan,Status,Allowed on Trunk,STP Forwarding{% for interface in to_parse_interfaces_trunk %}
+{{ interface }},{{ to_parse_interfaces_trunk[interface].encapsulation }},{{ to_parse_interfaces_trunk[interface].mode }},{{ to_parse_interfaces_trunk[interface].native_vlan }},{{ to_parse_interfaces_trunk[interface].status }},{{ to_parse_interfaces_trunk[interface].vlans_allowed_on_trunk | replace(","," ") }},{{ to_parse_interfaces_trunk[interface].vlans_in_stp_forwarding_not_pruned | replace(","," ") }}{% endfor %}{% else %}{% if filetype_loop == 1 %}
+# Show Interface Trunk
+| Interface | Encapsulation | Mode | Native Vlan | Status | Allowed on Trunk | STP Forwarding |
+| --------- | ------------- | ---- | ----------- | ------ | ---------------- | -------------- |{% for interface in to_parse_interfaces_trunk %}
+| {{ interface }} | {{ to_parse_interfaces_trunk[interface].encapsulation }} | {{ to_parse_interfaces_trunk[interface].mode }} | {{ to_parse_interfaces_trunk[interface].native_vlan }} | {{ to_parse_interfaces_trunk[interface].status }} | {{ to_parse_interfaces_trunk[interface].vlans_allowed_on_trunk | replace(","," ") }} | {{ to_parse_interfaces_trunk[interface].vlans_in_stp_forwarding_not_pruned | replace(","," ") }} |{% endfor %}{% else %}{% if filetype_loop == 2 %}
+<html><body>
+<h1>Show Interfaces Trunk</h1>
+<table>
+  <thead>
+  <tr>
+    <th>Interface</th>
+    <th>Encapsulation</th>
+    <th>Mode</th>
+    <th>Native Vlan</th>
+    <th>Status</th>   
+    <th>Allowed on Trunk</th>
+    <th>STP Forwarding</th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for interface in to_parse_interfaces_trunk %}
+  <tr>
+    <td>{{ interface }}</td>
+    <td>{{ to_parse_interfaces_trunk[interface].encapsulation }}</td>
+    <td>{{ to_parse_interfaces_trunk[interface].mode }}</td>
+    <td>{{ to_parse_interfaces_trunk[interface].native_vlan }}</td>
+    <td>{{ to_parse_interfaces_trunk[interface].status }}</td>
+    <td>{{ to_parse_interfaces_trunk[interface].vlans_allowed_on_trunk | replace(","," ") }}</td>
+    <td>{{ to_parse_interfaces_trunk[interface].vlans_in_stp_forwarding_not_pruned | replace(","," ") }}</td>
+  </tr>{% endfor %}
+  </tbody>
+</table>
+</body></html>{% else %}
+# Show Interfaces Trunk
+{%- for interface in to_parse_interfaces_trunk %}
+## {{ interface }}
+### Encapsulation: {{ to_parse_interfaces_trunk[interface].encapsulation }}
+### Mode: {{ to_parse_interfaces_trunk[interface].mode }}
+### Native VLAN: {{ to_parse_interfaces_trunk[interface].native_vlan }}
+### Status: {{ to_parse_interfaces_trunk[interface].status }}
+### VLANs Allowed on Trunk: {{ to_parse_interfaces_trunk[interface].vlans_allowed_on_trunk | replace(","," ") }}
+### VLANs in STP Forwarding Not Pruned: {{ to_parse_interfaces_trunk[interface].vlans_in_stp_forwarding_not_pruned | replace(","," ") }}
+{%- endfor %}
+{% endif %}{% endif %}{% endif %}

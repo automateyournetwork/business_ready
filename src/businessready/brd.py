@@ -960,6 +960,11 @@ def IOS_show_all(hostname, username, password, ip):
     IOS_show_access_lists(hostname, username, password, ip)
     IOS_show_cdp_neighbors(hostname, username, password, ip)
     IOS_show_cdp_neighbors_detail(hostname, username, password, ip)
+    IOS_show_environment_all(hostname, username, password, ip)
+    IOS_show_etherchannel_summary(hostname, username, password, ip)
+    IOS_show_interfaces(hostname, username, password, ip)
+    IOS_show_interfaces_status(hostname, username, password, ip)
+    IOS_show_interfaces_trunk(hostname, username, password, ip)
     IOS_show_ip_interface_brief(hostname, username, password, ip)
     IOS_show_license_summary(hostname, username, password, ip)
     return("Learned All Functions")
@@ -1224,7 +1229,7 @@ def IOS_show_environment_all(hostname, username, password, ip):
         for device in new_testbed:
             device.connect()
 
-        # Show CDP Neighbors to JSON
+        # Show Environment All to JSON
 
             try:
                 show_environment_all = device.parse("show environment all")
@@ -1292,7 +1297,7 @@ def IOS_show_etherchannel_summary(hostname, username, password, ip):
         for device in new_testbed:
             device.connect()
 
-        # Show CDP Neighbors to JSON
+        # Show Etherchannel Summary to JSON
 
             try:
                 show_etherchannel_summary = device.parse("show etherchannel summary")
@@ -1344,6 +1349,210 @@ def IOS_show_etherchannel_summary(hostname, username, password, ip):
                         fh.write(parsed_output)               
                         fh.close()                        
         return(show_etherchannel_summary)
+    except Exception as e:
+        logging.exception(e)
+
+def IOS_show_interfaces(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'iosxe',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show Interfaces to JSON
+
+            try:
+                show_interfaces = device.parse("show interfaces")
+            except:
+                show_interfaces = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_interfaces != f"{ hostname } Can't Parse":
+            IOS_show_interfaces_template = env.get_template('IOS_show_interfaces.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = IOS_show_interfaces_template.render(to_parse_interfaces=show_interfaces,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show Interfaces.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show Interfaces Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show Interfaces.json", "w") as fh:
+                    json.dump(show_interfaces, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_interfaces)
+    except Exception as e:
+        logging.exception(e)
+
+def IOS_show_interfaces_status(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'iosxe',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show Interfaces to JSON
+
+            try:
+                show_interfaces_status = device.parse("show interfaces status")
+            except:
+                show_interfaces_status = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_interfaces_status != f"{ hostname } Can't Parse":
+            IOS_show_interfaces_status_template = env.get_template('IOS_show_interfaces_status.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = IOS_show_interfaces_status_template.render(to_parse_interfaces=show_interfaces_status['interfaces'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show Interfaces Status.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show Interfaces Status Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show Interfaces Status.json", "w") as fh:
+                    json.dump(show_interfaces_status, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_interfaces_status)
+    except Exception as e:
+        logging.exception(e)
+
+def IOS_show_interfaces_trunk(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'iosxe',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show Interfaces to JSON
+
+            try:
+                show_interfaces_trunk = device.parse("show interfaces trunk")
+            except:
+                show_interfaces_trunk = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_interfaces_trunk != f"{ hostname } Can't Parse":
+            IOS_show_interfaces_trunk_template = env.get_template('IOS_show_interfaces_trunk.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = IOS_show_interfaces_trunk_template.render(to_parse_interfaces_trunk=show_interfaces_trunk['interface'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show Interfaces Trunk.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show Interfaces Trunk Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show Interfaces Trunk.json", "w") as fh:
+                    json.dump(show_interfaces_trunk, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_interfaces_trunk)
     except Exception as e:
         logging.exception(e)
 
