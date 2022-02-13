@@ -1,0 +1,40 @@
+{% if filetype_loop == 0 %}Interface,Name,Status,Speed,Duplex,VLAN{% for interface in to_parse_interfaces %}
+{{ interface }},{{ to_parse_interfaces[interface].name | default("Not Named") }},{{ to_parse_interfaces[interface].status }},{{ to_parse_interfaces[interface].port_speed }},{{ to_parse_interfaces[interface].duplex_code }},{{ to_parse_interfaces[interface].vlan }}{% endfor %}{% else %}{% if filetype_loop == 1 %}
+# Show Interface Status
+| Interface | Name | Status | Speed | Duplex | VLAN |
+| --------- | ---- | ------ | ----- | ------ | ---- |{% for interface in to_parse_interfaces %}
+| {{ interface }} | {{ to_parse_interfaces[interface].name | default("Not Named") }} | {{ to_parse_interfaces[interface].status }} | {{ to_parse_interfaces[interface].port_speed }} | {{ to_parse_interfaces[interface].duplex_code }} | {{ to_parse_interfaces[interface].vlan }} |{% endfor %}{% else %}{% if filetype_loop == 2 %}
+<html><body>
+<h1>Show Interfaces Status</h1>
+<table>
+  <thead>
+  <tr>
+    <th>Interface</th>
+    <th>Name</th>
+    <th>Status</th>
+    <th>Duplex</th>
+    <th>VLAN</th>   
+  </tr>
+  </thead>
+  <tbody>{% for interface in to_parse_interfaces %}  
+  <tr>
+    <td>{{ interface }}</td>
+    <td>{{ to_parse_interfaces[interface].name | default("Not Named") }}</td>
+    <td>{{ to_parse_interfaces[interface].status }}</td>
+    <td>{{ to_parse_interfaces[interface].port_speed }}</td>
+    <td>{{ to_parse_interfaces[interface].duplex_code }}</td>
+    <td>{{ to_parse_interfaces[interface].vlan }}</td>
+  </tr>{% endfor %}
+  </tbody>
+</table>
+</body></html>{% else %}
+# Show Interfaces Status
+{%- for interface in to_parse_interfaces %}  
+## {{ interface }}
+### Name: {{ to_parse_interfaces[interface].name | default("Not Named") }}
+### Status: {{ to_parse_interfaces[interface].status }}
+### Port Speed: {{ to_parse_interfaces[interface].port_speed }}
+### Duplex Code: {{ to_parse_interfaces[interface].duplex_code }}
+### VLAN: {{ to_parse_interfaces[interface].vlan }}
+{%- endfor %}
+{% endif %}{% endif %}{% endif %}
