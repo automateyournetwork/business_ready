@@ -31,6 +31,58 @@ log = logging.getLogger(__name__)
 
 filetype_loop = ["csv","md","html","md"]
 
+# -------------------------
+# DNA-C REST APIs
+# -------------------------
+
+# ----------------
+# DNAC ALL
+# ----------------
+
+def DNAC_all(url, token):
+    DNAC_Sites(url, token)
+    return("All DNA-C APIs Converted to Business Ready Documents")
+
+def DNAC_Sites(url, token):
+    try:
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'X-Auth-Token': token,
+        }
+    
+        sitesRAW = requests.request("GET", f"{ url }/dna/intent/api/v1/site/", headers=headers)
+        print(sitesRAW)
+        sitesJSON = sitesRAW.json()
+
+        # Pass to template 
+
+        if sitesJSON is not None:
+            sites_template = env.get_template('DNAC_sites.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = sites_template.render(sites = sitesJSON['response'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"DNAC Sites.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("DNAC Sites Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"DNAC Sites.json", "w") as fh:
+                    json.dump(sitesJSON, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(sitesJSON)
+    except Exception as e:
+        logging.exception(e)
+
 # ----------------
 # IOS ALL
 # ----------------
@@ -49,10 +101,11 @@ def IOS_learned_all(hostname, username, password, ip):
     IOS_learned_arp(hostname, username, password, ip)
     IOS_learned_bgp(hostname, username, password, ip)
     IOS_learned_dot1x(hostname, username, password, ip)
+    IOS_learned_hsrp(hostname, username, password, ip)
     IOS_learned_interface(hostname, username, password, ip)
     IOS_learned_lldp(hostname, username, password, ip)
     IOS_learned_ntp(hostname, username, password, ip)
-    IOS_learned_ospf(hostname, username, password, ip)
+    IOS_learned_ospf(hostname, username, password, ip)  
     IOS_learned_routing(hostname, username, password, ip)
     IOS_learned_stp(hostname, username, password, ip)
     IOS_learned_vlan(hostname, username, password, ip)
@@ -362,6 +415,74 @@ def IOS_learned_dot1x(hostname, username, password, ip):
                     json.dump(learned_dot1x, fh, indent=4, sort_keys=True)
                     fh.close()
         return(learned_dot1x)
+    except Exception as e:
+        logging.exception(e)
+
+def IOS_learned_hsrp(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'iosxe',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Learn HSRP to JSON
+
+            try:
+                learned_hsrp = device.learn("hsrp").info
+            except:
+                learned_hsrp = f"{ hostname } has no HSRP to Learn"
+
+        # Pass to template 
+
+        if learned_hsrp != f"{ hostname } has no Interface to Learn":
+            IOS_learned_hsrp_template = env.get_template('IOS_learned_hsrp.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = IOS_learned_hsrp_template.render(to_parse_hsrp=learned_hsrp,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Learn Interface.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Learn Interface Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Learn Interface.json", "w") as fh:
+                    json.dump(learned_hsrp, fh, indent=4, sort_keys=True)
+                    fh.close()
+        return(learned_hsrp)
     except Exception as e:
         logging.exception(e)
 
@@ -1045,8 +1166,10 @@ def IOS_show_all(hostname, username, password, ip):
     IOS_show_license_summary(hostname, username, password, ip)
     IOS_show_mac_address_table(hostname, username, password, ip)
     IOS_show_ntp_associations(hostname, username, password, ip)
-    IOS_show_version(hostname, username, password, ip)    
-    return("Learned All Functions")
+    IOS_show_version(hostname, username, password, ip)
+    IOS_show_vlan(hostname, username, password, ip)
+    IOS_show_vrf(hostname, username, password, ip)
+    return("Parsed All Show Commands")
 
 def IOS_show_access_lists(hostname, username, password, ip):
     try:
@@ -2722,46 +2845,186 @@ def IOS_show_vrf(hostname, username, password, ip):
     except Exception as e:
         logging.exception(e)
 
-# -------------------------
-# DNA-C REST APIs
-# -------------------------
+# ----------------
+# IOS ALL
+# ----------------
 
-def DNAC_Sites(url, token):
+def IOS_all(hostname, username, password, ip):
+    IOS_learned_all(hostname, username, password, ip)
+    IOS_show_all(hostname, username, password, ip)
+    return("All Functions Converted to Business Ready Documents")
+
+# ----------------
+# IOS LEARN SECTION
+# ----------------
+
+def IOS_learned_all(hostname, username, password, ip):
+    IOS_learned_acl(hostname, username, password, ip)
+    IOS_learned_arp(hostname, username, password, ip)
+    IOS_learned_bgp(hostname, username, password, ip)
+    IOS_learned_dot1x(hostname, username, password, ip)
+    IOS_learned_hsrp(hostname, username, password, ip)
+    IOS_learned_interface(hostname, username, password, ip)
+    IOS_learned_lldp(hostname, username, password, ip)
+    IOS_learned_ntp(hostname, username, password, ip)
+    IOS_learned_ospf(hostname, username, password, ip)  
+    IOS_learned_routing(hostname, username, password, ip)
+    IOS_learned_stp(hostname, username, password, ip)
+    IOS_learned_vlan(hostname, username, password, ip)
+    IOS_learned_vrf(hostname, username, password, ip)
+    return("Learned All Functions")
+
+def NXOS_learned_acl(hostname, username, password, ip):
     try:
-        headers = {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'X-Auth-Token': token,
-        }
-    
-        sitesRAW = requests.request("GET", f"{ url }/dna/intent/api/v1/site/", headers=headers)
-        print(sitesRAW)
-        sitesJSON = sitesRAW.json()
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'nxos',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Learn ACL to JSON
+            try:
+                learned_acl = device.learn("acl").info
+            except:
+                learned_acl = f"{ hostname } Has NO ACLs to Learn"
 
         # Pass to template 
 
-        if sitesJSON is not None:
-            sites_template = env.get_template('DNAC_sites.j2')
+        if learned_acl != f"{ hostname } Has NO ACLs to Learn":
+            NXOS_learned_acl_template = env.get_template('NXOS_learned_acl.j2')
             loop_counter = 0
         # Render Templates
             for filetype in filetype_loop:
-                parsed_output = sites_template.render(sites = sitesJSON['response'],filetype_loop=loop_counter)
+                parsed_output = NXOS_learned_acl_template.render(to_parse_access_list=learned_acl['acls'],filetype_loop=loop_counter)
                 loop_counter = loop_counter + 1
 
     # -------------------------
     # Save the files
     # -------------------------
                 if loop_counter <= 3:
-                    with open(f"DNAC Sites.{ filetype }", "w") as fh:
+                    with open(f"{ filename }_Learn ACL.{ filetype }", "w") as fh:
                         fh.write(parsed_output)               
                         fh.close()
                 else:
-                    with open("DNAC Sites Mind Map.md", "w") as fh:
+                    with open(f"{ filename }_Learn ACL Mind Map.md", "w") as fh:
                         fh.write(parsed_output)               
                         fh.close()
-                with open(f"DNAC Sites.json", "w") as fh:
-                    json.dump(sitesJSON, fh, indent=4, sort_keys=True)
-                    fh.close()                            
-        return(sitesJSON)
+                with open(f"{ filename }_Learn ACL.json", "w") as fh:
+                    json.dump(learned_acl, fh, indent=4, sort_keys=True)
+                    fh.close()
+        return(learned_acl)
+    except Exception as e:
+        logging.exception(e)
+
+def NXOS_learned_arp(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'nxos',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Learn ARP to JSON
+
+            try:
+                learned_arp = device.learn("arp").info
+            except:
+                learned_arp = f"{ hostname } has no ARP to Learn"
+
+        # Pass to template 
+
+        if learned_arp != f"{ hostname } has no ARP to Learn":
+            NXOS_learned_arp_template = env.get_template('NXOS_learned_arp.j2')
+            NXOS_learned_arp_statistics_template = env.get_template('NXOS_learned_arp_statistics.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output_statistics = NXOS_learned_arp_statistics_template.render(to_parse_arp=learned_arp['statistics'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+        # -------------------------
+        # Save the files
+        # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Learn ARP Statistics.{ filetype }", "w") as fh:
+                        fh.write(parsed_output_statistics)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Learn ARP Statistics Mind Map.md", "w") as fh:
+                        fh.write(parsed_output_statistics)               
+                        fh.close()
+                with open(f"{ filename }_Learn ARP Statistics.json", "w") as fh:
+                    json.dump(learned_arp['statistics'], fh, indent=4, sort_keys=True)
+                    fh.close()
+
+        # Render Templates
+            loop_counter = 0
+            for filetype in filetype_loop:
+                parsed_output = NXOS_learned_arp_template.render(to_parse_arp=learned_arp['interfaces'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+        # -------------------------
+        # Save the files
+        # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Learn ARP.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Learn ARP Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Learn ARP.json", "w") as fh:
+                    json.dump(learned_arp, fh, indent=4, sort_keys=True)
+                    fh.close()
+        return(learned_arp)
     except Exception as e:
         logging.exception(e)
