@@ -1,0 +1,192 @@
+{% if filetype_loop == 0 %}Device Type,Chassis,Serial Number,Uptime,Directory,Total Disk,Used Disk,Free Disk,Image,Main Memory,OS,Version,Slot Name,Slot Serial Number,Slot State,Redundancy State,RP Boot Image,RP Uptime,Virtual Device Name,Virtual Device Status,Virtual Interface,Virtual Interface Type,Virtual Interface Status
+{{ to_parse_platform.rtr_type | default("N/A") }},{{ to_parse_platform.chassis | default("N/A") }},{{ to_parse_platform.chassis_sn | default("N/A") }},{{ to_parse_platform.rp_uptime | default("N/A") }},{{ to_parse_platform.dir | default("N/A") }},{{ to_parse_platform.disk_total_space | default("N/A") }},{{ to_parse_platform.disk_used_space | default("N/A") }},{{ to_parse_platform.disk_free_space | default("N/A") }},{{ to_parse_platform.image | default("N/A") }},{{ to_parse_platform.main_mem | default("N/A") }},{{ to_parse_platform.os | default("N/A") }},{{ to_parse_platform.version | default("N/A") }},N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A
+{%-     for slot in to_parse_platform.slot %}
+{%-         for sub_slot in to_parse_platform.slot[slot] %}
+N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,{{ to_parse_platform.slot[slot][sub_slot].name | default("N/A") }},{{ to_parse_platform.slot[slot][sub_slot].sn | default("N/A") }},{{ to_parse_platform.slot[slot][sub_slot].state | default("N/A") }},{% if slot == "rp" %}{{ to_parse_platform.slot[slot][sub_slot].redundancy_state | default("N/A") }},{{ to_parse_platform.slot[slot][sub_slot].rp_boot_image | default("N/A") }},{{ to_parse_platform.slot[slot][sub_slot].rp_uptime | default("N/A") }},{% else %}N/A,N/A,N/A,{% endif %}N/A,N/A,N/A,N/A,N/A
+{%          endfor %}
+{%-     endfor %}
+{%-     for virtual_device in to_parse_platform.virtual_device %}
+{%-         for interface in to_parse_platform.virtual_device[virtual_device].membership %}
+N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,{{ to_parse_platform.virtual_device[virtual_device].vd_name | default("N/A") }},{{ to_parse_platform.virtual_device[virtual_device].vd_status | default("N/A") }},{{ interface }},{{ to_parse_platform.virtual_device[virtual_device].membership[interface].type | default("N/A") }},{{ to_parse_platform.virtual_device[virtual_device].membership[interface].status | default("N/A") }}
+{%-         endfor %}
+{%-     endfor %}
+{%- else %}
+{%     if filetype_loop == 1 %}
+# Learn Platform
+| Device Type | Chassis | Serial Number | Uptime | Directory | Total Disk | Used Disk | Free Disk | Image | Main Memory | OS | Version | Slot Name | Slot Serial Number | Slot State | Redundancy State | RP Boot Image | RP Uptime | Virtual Device Name | Virtual Device Status | Virtual Interface | Virtual Interface Type | Virtual Interface Status |
+| ----------- | ------- | ------------- | ------ | --------- | ---------- | --------- | --------- | ----- | ----------- | -- | ------- | --------- | ------------------ | ---------- | ---------------- | ------------- | --------- | ------------------- | --------------------- | ----------------- | ---------------------- | ------------------------ |
+| {{ to_parse_platform.rtr_type | default("N/A") }} | {{ to_parse_platform.chassis | default("N/A") }} | {{ to_parse_platform.chassis_sn | default("N/A") }} | {{ to_parse_platform.rp_uptime | default("N/A") }} | {{ to_parse_platform.dir | default("N/A") }} | {{ to_parse_platform.disk_total_space | default("N/A") }} | {{ to_parse_platform.disk_used_space | default("N/A") }} | {{ to_parse_platform.disk_free_space | default("N/A") }} | {{ to_parse_platform.image | default("N/A") }} | {{ to_parse_platform.main_mem | default("N/A") }} | {{ to_parse_platform.os | default("N/A") }} | {{ to_parse_platform.version | default("N/A") }} | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A |
+{%-        for slot in to_parse_platform.slot %}
+{%-            for sub_slot in to_parse_platform.slot[slot] %}
+| N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | {{ to_parse_platform.slot[slot][sub_slot].name | default("N/A") }} | {{ to_parse_platform.slot[slot][sub_slot].sn | default("N/A") }} | {{ to_parse_platform.slot[slot][sub_slot].state | default("N/A") }} | {% if slot == "rp" %}{{ to_parse_platform.slot[slot][sub_slot].redundancy_state | default("N/A") }} | {{ to_parse_platform.slot[slot][sub_slot].rp_boot_image | default("N/A") }} | {{ to_parse_platform.slot[slot][sub_slot].rp_uptime | default("N/A") }} | {% else %}N/A | N/A | N/A | {% endif %}N/A | N/A | N/A | N/A | N/A |
+{%-            endfor %}
+{%-        endfor %}
+{%-        for virtual_device in to_parse_platform.virtual_device %}
+{%-            for interface in to_parse_platform.virtual_device[virtual_device].membership %}
+| N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | {{ to_parse_platform.virtual_device[virtual_device].vd_name | default("N/A") }} | {{ to_parse_platform.virtual_device[virtual_device].vd_status | default("N/A") }} | {{ interface }} | {{ to_parse_platform.virtual_device[virtual_device].membership[interface].type | default("N/A") }} | {{ to_parse_platform.virtual_device[virtual_device].membership[interface].status | default("N/A") }} |
+{%-            endfor %}
+{%-        endfor %}
+{%-     else %}
+{%-         if filetype_loop == 2 %}
+<html><body>
+<h1>Learn Platform</h1>
+<table>
+  <thead>
+  <tr>
+    <th>Device Type</th>
+    <th>Chassis</th>
+    <th>Serial Number</th>
+    <th>Uptime</th>
+    <th>Directory</th>
+    <th>Total Disk</th>
+    <th>Used Disk</th>
+    <th>Free Disk</th>
+    <th>Image</th>
+    <th>Main Memory</th>
+    <th>OS</th>
+    <th>Version</th>
+    <th>Slot Name</th>
+    <th>Slot Serial Number</th>
+    <th>Slot State</th>
+    <th>Redundancy State</th>
+    <th>RP Boot Image</th>
+    <th>RP Uptime</th>
+    <th>Virtual Device Name</th>
+    <th>Virtual Device Status</th>
+    <th>Virtual Interface</th>
+    <th>Virtual Interface Type</th>
+    <th>Virtual Interface Status</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td>{{ to_parse_platform.rtr_type | default("N/A") }}</td>
+    <td>{{ to_parse_platform.chassis | default("N/A") }}</td>
+    <td>{{ to_parse_platform.chassis_sn | default("N/A") }}</td>
+    <td>{{ to_parse_platform.rp_uptime | default("N/A") }}</td>
+    <td>{{ to_parse_platform.dir | default("N/A") }}</td>
+    <td>{{ to_parse_platform.disk_total_space | default("N/A") }}</td>
+    <td>{{ to_parse_platform.disk_used_space | default("N/A") }}</td>
+    <td>{{ to_parse_platform.disk_free_space | default("N/A") }}</td>
+    <td>{{ to_parse_platform.image | default("N/A") }}</td>
+    <td>{{ to_parse_platform.main_mem | default("N/A") }}</td>
+    <td>{{ to_parse_platform.os | default("N/A") }}</td>
+    <td>{{ to_parse_platform.version | default("N/A") }}</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+  </tr>
+{%-         for slot in to_parse_platform.slot %}
+{%-             for sub_slot in to_parse_platform.slot[slot] %}
+  <tr>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>{{ to_parse_platform.slot[slot][sub_slot].name | default("N/A") }}</td>
+    <td>{{ to_parse_platform.slot[slot][sub_slot].sn | default("N/A") }}</td>
+    <td>{{ to_parse_platform.slot[slot][sub_slot].state | default("N/A") }}</td>{% if slot == "rp" %}
+    <td>{{ to_parse_platform.slot[slot][sub_slot].redundancy_state | default("N/A") }}</td>
+    <td>{{ to_parse_platform.slot[slot][sub_slot].rp_boot_image | default("N/A") }}</td>
+    <td>{{ to_parse_platform.slot[slot][sub_slot].rp_uptime | default("N/A") }}</td>{% else %}
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>{% endif %}
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+  </tr>
+{%-             endfor %}
+{%-         endfor %}
+{%-         for virtual_device in to_parse_platform.virtual_device %}
+{%-             for interface in to_parse_platform.virtual_device[virtual_device].membership %}
+  <tr>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>{{ to_parse_platform.virtual_device[virtual_device].vd_name | default("N/A") }}</td>
+    <td>{{ to_parse_platform.virtual_device[virtual_device].vd_status | default("N/A") }}</td>
+    <td>{{ interface }}</td>
+    <td>{{ to_parse_platform.virtual_device[virtual_device].membership[interface].type | default("N/A") }}</td>
+    <td>{{ to_parse_platform.virtual_device[virtual_device].membership[interface].status | default("N/A") }}</td>
+  </tr>
+{%-             endfor %}
+{%-         endfor %}
+  </tbody>  
+</table>
+</body></html>
+{%-        else %}
+# Learn Platform
+## Router Type: {{ to_parse_platform.rtr_type | default("N/A") }}
+## Chassis
+### {{ to_parse_platform.chassis | default("N/A") }}
+### Serial Number: {{ to_parse_platform.chassis_sn | default("N/A") }}
+## RP Uptime: {{ to_parse_platform.rp_uptime | default("N/A") }}
+## Directory: {{ to_parse_platform.dir | default("N/A") }}
+## Disk Space
+### Total: {{ to_parse_platform.disk_total_space | default("N/A") }}
+### Used: {{ to_parse_platform.disk_used_space | default("N/A") }}
+### Free: {{ to_parse_platform.disk_free_space | default("N/A") }}
+## Image: {{ to_parse_platform.image | default("N/A") }}
+## Main Memory: {{ to_parse_platform.main_mem | default("N/A") }}
+## Operating System: {{ to_parse_platform.os | default("N/A") }}
+## Version: {{ to_parse_platform.version | default("N/A") }}
+## Slots
+{%-         for slot in to_parse_platform.slot %}
+{%-             for sub_slot in to_parse_platform.slot[slot] %}
+### {{ to_parse_platform.slot[slot][sub_slot].name | default("N/A") }}
+#### Serial Number: {{ to_parse_platform.slot[slot][sub_slot].sn | default("N/A") }}
+#### State: {{ to_parse_platform.slot[slot][sub_slot].state | default("N/A") }}{% if slot == "rp" %}
+#### Redundancy State: {{ to_parse_platform.slot[slot][sub_slot].redundancy_state | default("N/A") }}
+#### RP
+##### Boot Image: {{ to_parse_platform.slot[slot][sub_slot].rp_boot_image | default("N/A") }}
+##### Uptime: {{ to_parse_platform.slot[slot][sub_slot].rp_uptime | default("N/A") }}{% endif %}
+{%-             endfor %}
+{%-         endfor %}
+## Virtual Devices
+{%-         for virtual_device in to_parse_platform.virtual_device %}
+### {{ to_parse_platform.virtual_device[virtual_device].vd_name | default("N/A") }}
+#### Status: {{ to_parse_platform.virtual_device[virtual_device].vd_status | default("N/A") }}
+#### Interfaces
+{%-             for interface in to_parse_platform.virtual_device[virtual_device].membership %}
+##### {{ interface }}
+###### Type: {{ to_parse_platform.virtual_device[virtual_device].membership[interface].type | default("N/A") }}
+###### Status: {{ to_parse_platform.virtual_device[virtual_device].membership[interface].status | default("N/A") }}
+{%-             endfor %}
+{%-         endfor %}
+{%-        endif %}
+{%-    endif %}
+{%- endif %}

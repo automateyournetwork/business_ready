@@ -1,0 +1,53 @@
+{%- if filetype_loop == 0 %}VRF,Address Family,Route Distinguisher
+{%-     for vrf in to_parse_vrf %}
+{%-         for address_family in to_parse_vrf[vrf].address_family %}
+{{ vrf }},{{ address_family }},{{ to_parse_vrf[vrf].route_distinguisher }}
+{%-         endfor %}
+{%-     endfor %}
+{%- else %}
+{%-     if filetype_loop == 1 %}
+# Learn VRF
+| VRF | Address Family | Route Distinguisher |
+| --- | -------------- | ------------------- |
+{%-         for vrf in to_parse_vrf %}
+{%-             for address_family in to_parse_vrf[vrf].address_family %}
+| {{ vrf }} | {{ address_family }} | {{ to_parse_vrf[vrf].route_distinguisher }} |
+{%-             endfor %}
+{%-         endfor %}
+{%-     else %}
+{%-         if filetype_loop == 2 %}
+<html><body>
+<h1>Learn VRF</h1>
+<table>
+  <thead>
+  <tr>
+    <th>VRF</th>
+    <th>Address Family</th>
+    <th>Route Distinguisher</th>
+  </tr>
+  </thead>
+  <tbody>
+{%-             for vrf in to_parse_vrf %}
+{%-                 for address_family in to_parse_vrf[vrf].address_family %}
+  <tr>
+    <td>{{ vrf }}</td>
+    <td>{{ address_family }}</td>
+    <td>{{ to_parse_vrf[vrf].route_distinguisher }}</td>
+  </tr>
+{%-                 endfor %}
+{%-             endfor %}
+  </tbody>  
+</table>
+</body></html>
+{%-         else %}
+# Learn VRF
+{%-             for vrf in to_parse_vrf %}
+## {{ vrf }}
+{%-                 for address_family in to_parse_vrf[vrf].address_family %}  
+### {{ address_family }}
+{%-                 endfor %}
+### Route Distinguisher: {{ to_parse_vrf[vrf].route_distinguisher }}
+{%-             endfor %}
+{%-         endif %}
+{%-    endif %}
+{%- endif %}

@@ -1,0 +1,78 @@
+{%- if filetype_loop == 0 %}VLAN,Name,State,Shutdown,Interface
+{%-    for vlan in to_parse_vlan %}
+{%-       if to_parse_vlan[vlan].interfaces is defined %}
+{%-           for interface in to_parse_vlan[vlan].interfaces %}
+{{ vlan }},{{ to_parse_vlan[vlan].name }},{{ to_parse_vlan[vlan].state }},{{ to_parse_vlan[vlan].shutdown }},{{ interface }}
+{%-           endfor %}
+{%-       else %}
+{{ vlan }},{{ to_parse_vlan[vlan].name }},{{ to_parse_vlan[vlan].state }},{{ to_parse_vlan[vlan].shutdown }},N/A
+{%-       endif %}
+{%-    endfor %}
+{%- else %}{% if filetype_loop == 1 %}
+# Learn VLAN
+| VLAN | Name | State | Shutdown | Interface |
+| ---- | ---- | ----- | -------- | --------- |
+{%-     for vlan in to_parse_vlan %}
+{%-         if to_parse_vlan[vlan].interfaces is defined %}
+{%-             for interface in to_parse_vlan[vlan].interfaces %}
+| {{ vlan }} | {{ to_parse_vlan[vlan].name }} | {{ to_parse_vlan[vlan].state }} | {{ to_parse_vlan[vlan].shutdown }} | {{ interface }} |
+{%-             endfor %}
+{%-         else %}
+| {{ vlan }} | {{ to_parse_vlan[vlan].name }} | {{ to_parse_vlan[vlan].state }} | {{ to_parse_vlan[vlan].shutdown }} | N/A |
+{%-         endif %}
+{%-     endfor %}
+{%- else %}
+{%-     if filetype_loop == 2 %}
+<html><body>
+<h1>Learn VLAN</h1>
+<table>
+  <thead>
+  <tr>
+  <th>VLAN</th>
+  <th>Name</th>
+  <th>State</th>
+  <th>ShutdownInterface</th>
+  </tr>
+  </thead>
+  <tbody>
+{%-        for vlan in to_parse_vlan %}
+{%-            if to_parse_vlan[vlan].interfaces is defined %}
+{%-                for interface in to_parse_vlan[vlan].interfaces %}
+  <tr>
+    <td>{{ vlan }}</td>
+    <td>{{ to_parse_vlan[vlan].name }}</td>
+    <td>{{ to_parse_vlan[vlan].state }}</td>
+    <td>{{ to_parse_vlan[vlan].shutdown }}</td>
+    <td>{{ interface }}</td>
+  </tr>
+{%-                endfor %}
+{%-            else %}
+  <tr>
+    <td>{{ vlan }}</td>
+    <td>{{ to_parse_vlan[vlan].name }}</td>
+    <td>{{ to_parse_vlan[vlan].state }}</td>
+    <td>{{ to_parse_vlan[vlan].shutdown }}</td>
+    <td>N/A</td>
+  </tr>
+{%-            endif %}
+{%-        endfor %}
+  </tbody>  
+</table>
+</body></html>
+{%-     else %}
+# Learn VLAN
+{%-        for vlan in to_parse_vlan %}
+## {{ vlan }}
+### Name: {{ to_parse_vlan[vlan].name }}
+### State: {{ to_parse_vlan[vlan].state }}
+### Shutdown: {{ to_parse_vlan[vlan].shutdown }}
+{%-            if to_parse_vlan[vlan].interfaces is defined %}
+### Interfaces
+{%-                for interface in to_parse_vlan[vlan].interfaces %}
+#### {{ interface }}
+{%-                endfor %}
+{%-            endif %}
+{%-        endfor %}
+{%-     endif %}
+{%-     endif %}
+{%- endif %}
