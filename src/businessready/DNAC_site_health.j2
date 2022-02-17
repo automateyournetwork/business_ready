@@ -1,0 +1,211 @@
+{%- if filetype_loop == 0 %}Name,ID,Parent Site Name,Site Type,Latitude,Longitude,Healthy Network Device Percentage,Healthy Client Device Percentage,Wired Client Health,Wireless Client Health,Network Average Health,Network Health - Core,Network Health - Distribution,Network Health - Access,Network Health - Router,Network Health - Switch,Network Health - Wireless LAN Controller,Network Health - Access Point,Network Health - Wireless,Network Health - Other,Application Health,Application Health - Business Relevant Poor,Application Health - Business Relevant Fair,Application Health - Business Relevant Good,Application Health - Business Irrelevant Poor,Application Health - Business Irrelevant Fair,Application Health - Business Irrelevant Good,Application Health - Default Poor,Application Health - Default Irrelevant Fair,Application Health - Default Irrelevant Good,Total - Clients,Total - Wired Clients,Total - Connected Wired Clients,Total - Wired - Good Clients,Total - Wireless Clients,Total - Wireless Good Clients,Total - Active Wireless Clients,Total - Network Devices,Total - Core,Total - Core Good,Total - Distribution,Total - Distribution Good,Total - Access,Total - Access Good,Total - Router,Total - Router Good,Total - Switch,Total - Switch Good,Total - Wireless LAN Controller,Total - Wireless LAN Controller Good,Total - Access Point,Total - Access Point Good,Total - Wireless,Total - Wireless Good,Total - Overall Good,Total - Applications,Total - Applications Good
+{%-     for site in siteHealth %}
+{{ site.siteName }},{{ site.siteId }},{{ site.parentSiteName }},{{ site.siteType }},{{ site.latitude }},{{ site.longitude }},{{ site.healthyNetworkDevicePercentage }},{{ site.healthyClientsPercentage }},{{ site.clientHealthWired }},{{ site.clientHealthWireless }},{{ site.networkHealthAverage }},{{ site.networkHealthCore }},{{ site.networkHealthDistribution }},{{ site.networkHealthAccess }},{{ site.networkHealthRouter }},{{ site.networkHealthSwitch }},{{ site.networkHealthWLC }},{{ site.networkHealthAP }},{{ site.networkHealthWireless }},{{ site.networkHealthOthers }},{{ site.applicationHealth }},{{ site.applicationHealthStats.businessRelevantAppCount.poor }},{{ site.applicationHealthStats.businessRelevantAppCount.fair }},{{ site.applicationHealthStats.businessRelevantAppCount.good }},{{ site.applicationHealthStats.businessIrrelevantAppCount.poor }},{{ site.applicationHealthStats.businessIrrelevantAppCount.fair }},{{ site.applicationHealthStats.businessIrrelevantAppCount.good }},{{ site.applicationHealthStats.defaultHealthAppCount.poor }},{{ site.applicationHealthStats.defaultHealthAppCount.fair }},{{ site.applicationHealthStats.defaultHealthAppCount.good }},{{ site.numberOfClients }},{{ site.numberOfWiredClients }},{{ site.totalNumberOfConnectedWiredClients }},{{ site.wiredGoodClients }},{{ site.numberOfWirelessClients }},{{ site.wirelessGoodClients }},{{ site.totalNumberOfActiveWirelessClients }},{{ site.numberOfNetworkDevice }},{{ site.coreTotalCount }},{{ site.coreGoodCount }},{{ site.distributionTotalCount }},{{ site.distributionGoodCount }},{{ site.accessTotalCount }},{{ site.accessGoodCount }},{{ site.routerTotalCount }},{{ site.routerGoodCount }},{{ site.switchDeviceTotalCount }},{{ site.switchDeviceGoodCount }},{{ site.wlcDeviceTotalCount }},{{ site.wlcDeviceGoodCount }},{{ site.apDeviceTotalCount }},{{ site.apDeviceGoodCount }},{{ site.wirelessDeviceTotalCount }},{{ site.wirelessDeviceGoodCount }},{{ site.overallGoodDevices }},{{ site.applicationTotalCount }},{{ site.applicationGoodCount }}
+{%-     endfor %}
+{%- else %}
+{%-     if filetype_loop == 1 %}
+# Site Health
+| Name | ID | Parent Site Name | Site Type | Latitude | Longitude | Healthy Network Device Percentage | Healthy Client Device Percentage | Wired Client Health | Wireless Client Health | Network Average Health | Network Health - Core | Network Health - Distribution | Network Health - Access | Network Health - Router | Network Health - Switch | Network Health - Wireless LAN Controller | Network Health - Access Point | Network Health - Wireless | Network Health - Other | Application Health | Application Health - Business Relevant Poor | Application Health - Business Relevant Fair | Application Health - Business Relevant Good | Application Health - Business Irrelevant Poor | Application Health - Business Irrelevant Fair | Application Health - Business Irrelevant Good | Application Health - Default Poor | Application Health - Default Irrelevant Fair | Application Health - Default Irrelevant Good | Total - Clients | Total - Wired Clients | Total - Connected Wired Clients | Total - Wired - Good Clients | Total - Wireless Clients | Total - Wireless Good Clients | Total - Active Wireless Clients | Total - Network Devices | Total - Core | Total - Core Good | Total - Distribution | Total - Distribution Good | Total - Access | Total - Access Good | Total - Router | Total - Router Good | Total - Switch | Total - Switch Good | Total - Wireless LAN Controller | Total - Wireless LAN Controller Good | Total - Access Point | Total - Access Point Good | Total - Wireless | Total - Wireless Good | Total - Overall Good | Total - Applications | Total - Applications Good |
+| ---- | -- | ---------------- | --------- | -------- | --------- | --------------------------------- | -------------------------------- | ------------------- | ---------------------- | ---------------------- | --------------------- | ----------------------------- | ----------------------- | ----------------------- | ----------------------- | ---------------------------------------- | ----------------------------- | ------------------------- | ---------------------- | ------------------ | ------------------------------------------- | ------------------------------------------- | ------------------------------------------- | --------------------------------------------- | --------------------------------------------- | --------------------------------------------- | --------------------------------- | -------------------------------------------- | -------------------------------------------- | --------------- | --------------------- | ------------------------------- | ---------------------------- | ------------------------ | ----------------------------- | ------------------------------- | ----------------------- | ------------ | ----------------- | -------------------- | ------------------------- | -------------- | ------------------- | -------------- | ------------------- | -------------- | ------------------- | ------------------------------- | ------------------------------------ | -------------------- | ------------------------- | ---------------- | --------------------- | -------------------- | -------------------- | ------------------------- |
+{%-         for site in siteHealth %}
+| {{ site.siteName }} | {{ site.siteId }} | {{ site.parentSiteName }} | {{ site.siteType }} | {{ site.latitude }} | {{ site.longitude }} | {{ site.healthyNetworkDevicePercentage }} | {{ site.healthyClientsPercentage }} | {{ site.clientHealthWired }} | {{ site.clientHealthWireless }} | {{ site.networkHealthAverage }} | {{ site.networkHealthCore }} | {{ site.networkHealthDistribution }} | {{ site.networkHealthAccess }} | {{ site.networkHealthRouter }} | {{ site.networkHealthSwitch }} | {{ site.networkHealthWLC }} | {{ site.networkHealthAP }} | {{ site.networkHealthWireless }} | {{ site.networkHealthOthers }} | {{ site.applicationHealth }} | {{ site.applicationHealthStats.businessRelevantAppCount.poor }} | {{ site.applicationHealthStats.businessRelevantAppCount.fair }} | {{ site.applicationHealthStats.businessRelevantAppCount.good }} | {{ site.applicationHealthStats.businessIrrelevantAppCount.poor }} | {{ site.applicationHealthStats.businessIrrelevantAppCount.fair }} | {{ site.applicationHealthStats.businessIrrelevantAppCount.good }} | {{ site.applicationHealthStats.defaultHealthAppCount.poor }} | {{ site.applicationHealthStats.defaultHealthAppCount.fair }} | {{ site.applicationHealthStats.defaultHealthAppCount.good }} | {{ site.numberOfClients }} | {{ site.numberOfWiredClients }} | {{ site.totalNumberOfConnectedWiredClients }} | {{ site.wiredGoodClients }} | {{ site.numberOfWirelessClients }} | {{ site.wirelessGoodClients }} | {{ site.totalNumberOfActiveWirelessClients }} | {{ site.numberOfNetworkDevice }} | {{ site.coreTotalCount }} | {{ site.coreGoodCount }} | {{ site.distributionTotalCount }} | {{ site.distributionGoodCount }} | {{ site.accessTotalCount }} | {{ site.accessGoodCount }} | {{ site.routerTotalCount }} | {{ site.routerGoodCount }} | {{ site.switchDeviceTotalCount }} | {{ site.switchDeviceGoodCount }} | {{ site.wlcDeviceTotalCount }} | {{ site.wlcDeviceGoodCount }} | {{ site.apDeviceTotalCount }} | {{ site.apDeviceGoodCount }} | {{ site.wirelessDeviceTotalCount }} | {{ site.wirelessDeviceGoodCount }} | {{ site.overallGoodDevices }} | {{ site.applicationTotalCount }} | {{ site.applicationGoodCount }} |
+{%-         endfor %}
+{%-     else %}
+{%-         if filetype_loop == 2 %}
+<html><body>
+<h1>DNAC Site Health</h1>
+<table>
+  <thead>
+    <tr>
+     <th>Name</th>
+     <th>ID</th>
+     <th>Parent Site Name</th>
+     <th>Site Type</th>
+     <th>Latitude</th>
+     <th>Longitude</th>
+     <th>Healthy Network Device Percentage</th>
+     <th>Healthy Client Device Percentage</th>
+     <th>Wired Client Health</th>
+     <th>Wireless Client Health</th>
+     <th>Network Average Health</th>
+     <th>Network Health - Core</th>
+     <th>Network Health - Distribution</th>
+     <th>Network Health - Access</th>
+     <th>Network Health - Router</th>
+     <th>Network Health - Switch</th>
+     <th>Network Health - Wireless LAN Controller</th>
+     <th>Network Health - Access Point</th>
+     <th>Network Health - Wireless</th>
+     <th>Network Health - Other</th>
+     <th>Application Health</th>
+     <th>Application Health - Business Relevant Poor</th>
+     <th>Application Health - Business Relevant Fair</th>
+     <th>Application Health - Business Relevant Good</th>
+     <th>Application Health - Business Irrelevant Poor</th>
+     <th>Application Health - Business Irrelevant Fair</th>
+     <th>Application Health - Business Irrelevant Good</th>
+     <th>Application Health - Default Poor</th>
+     <th>Application Health - Default Irrelevant Fair</th>
+     <th>Application Health - Default Irrelevant Good</th>
+     <th>Total - Clients</th>
+     <th>Total - Wired Clients</th>
+     <th>Total - Connected Wired Clients</th>
+     <th>Total - Wired - Good Clients</th>
+     <th>Total - Wireless Clients</th>
+     <th>Total - Wireless Good Clients</th>
+     <th>Total - Active Wireless Clients</th>
+     <th>Total - Network Devices</th>
+     <th>Total - Core</th>
+     <th>Total - Core Good</th>
+     <th>Total - Distribution</th>
+     <th>Total - Distribution Good</th>
+     <th>Total - Access</th>
+     <th>Total - Access Good</th>
+     <th>Total - Router</th>
+     <th>Total - Router Good</th>
+     <th>Total - Switch</th>
+     <th>Total - Switch Good</th>
+     <th>Total - Wireless LAN Controller</th>
+     <th>Total - Wireless LAN Controller Good</th>
+     <th>Total - Access Point</th>
+     <th>Total - Access Point Good</th>
+     <th>Total - Wireless</th>
+     <th>Total - Wireless Good</th>
+     <th>Total - Overall Good</th>
+     <th>Total - Applications</th>
+     <th>Total - Applications Good</th>
+    </tr>
+  </thead>
+  <tbody>
+{%-             for site in siteHealth %}
+     <td>{{ site.siteName }}</td>
+     <td>{{ site.siteId }}</td>
+     <td>{{ site.parentSiteName }}</td>
+     <td>{{ site.siteType }}</td>
+     <td>{{ site.latitude }}</td>
+     <td>{{ site.longitude }}</td>
+     <td>{{ site.healthyNetworkDevicePercentage }}</td>
+     <td>{{ site.healthyClientsPercentage }}</td>
+     <td>{{ site.clientHealthWired }}</td>
+     <td>{{ site.clientHealthWireless }}</td>
+     <td>{{ site.networkHealthAverage }}</td>
+     <td>{{ site.networkHealthCore }}</td>
+     <td>{{ site.networkHealthDistribution }}</td>
+     <td>{{ site.networkHealthAccess }}</td>
+     <td>{{ site.networkHealthRouter }}</td>
+     <td>{{ site.networkHealthSwitch }}</td>
+     <td>{{ site.networkHealthWLC }}</td>
+     <td>{{ site.networkHealthAP }}</td>
+     <td>{{ site.networkHealthWireless }}</td>
+     <td>{{ site.networkHealthOthers }}</td>
+     <td>{{ site.applicationHealth }}</td>
+     <td>{{ site.applicationHealthStats.businessRelevantAppCount.poor }}</td>
+     <td>{{ site.applicationHealthStats.businessRelevantAppCount.fair }}</td>
+     <td>{{ site.applicationHealthStats.businessRelevantAppCount.good }}</td>
+     <td>{{ site.applicationHealthStats.businessIrrelevantAppCount.poor }}</td>
+     <td>{{ site.applicationHealthStats.businessIrrelevantAppCount.fair }}</td>
+     <td>{{ site.applicationHealthStats.businessIrrelevantAppCount.good }}/td>
+     <td>{{ site.applicationHealthStats.defaultHealthAppCount.poor }}</td>
+     <td>{{ site.applicationHealthStats.defaultHealthAppCount.fair }}</td>
+     <td>{{ site.applicationHealthStats.defaultHealthAppCount.good }}</td>
+     <td>{{ site.numberOfClients }}</td>
+     <td>{{ site.numberOfWiredClients }}</td>
+     <td>{{ site.totalNumberOfConnectedWiredClients }}</td>
+     <td>{{ site.wiredGoodClients }}</td>
+     <td>{{ site.numberOfWirelessClients }}</td>
+     <td>{{ site.wirelessGoodClients }}</td>
+     <td>{{ site.totalNumberOfActiveWirelessClients }}</td>
+     <td>{{ site.numberOfNetworkDevice }}</td>
+     <td>{{ site.coreTotalCount }}</td>
+     <td>{{ site.coreGoodCount }}</td>
+     <td>{{ site.distributionTotalCount }}</td>
+     <td>{{ site.distributionGoodCount }}</td>
+     <td>{{ site.accessTotalCount }}</td>
+     <td>{{ site.accessGoodCount }}</td>
+     <td>{{ site.routerTotalCount }}</td>
+     <td>{{ site.routerGoodCount }}</td>
+     <td>{{ site.switchDeviceTotalCount }}</td>
+     <td>{{ site.switchDeviceGoodCount }}</td>
+     <td>{{ site.wlcDeviceTotalCount }}</td>
+     <td>{{ site.wlcDeviceGoodCount }}</td>
+     <td>{{ site.apDeviceTotalCount }}</td>
+     <td>{{ site.apDeviceGoodCount }}</td>
+     <td>{{ site.wirelessDeviceTotalCount }}</td>
+     <td>{{ site.wirelessDeviceGoodCount }}</td>
+     <td>{{ site.overallGoodDevices }}</td>
+     <td>{{ site.applicationTotalCount }}</td>
+     <td>{{ site.applicationGoodCount }}</td>
+  </tr>
+{%-             endfor %}
+  </tbody>
+</table>
+</body></html>
+{%-         else %}
+# Site Health
+{%-             for site in siteHealth %}
+## {{ site.siteName }}
+### ID: {{ site.siteId }}
+### Parent Site
+#### {{ site.parentSiteName }}
+### Site Type: {{ site.siteType }}
+### Latitude: {{ site.latitude }}
+### Longitude: {{ site.longitude }}
+### Health
+#### Network Device Percentage: {{ site.healthyNetworkDevicePercentage }}
+#### Client Device Percentage: {{ site.healthyClientsPercentage }}
+#### Wired Client: {{ site.clientHealthWired }}
+#### Wireless Client: {{ site.clientHealthWireless }}
+#### Network
+##### Average: {{ site.networkHealthAverage }}
+##### Core: {{ site.networkHealthCore }}
+##### Distribution: {{ site.networkHealthDistribution }}
+##### Access: {{ site.networkHealthAccess }}
+##### Router: {{ site.networkHealthRouter }}
+##### Switch: {{ site.networkHealthSwitch }}
+##### Wireless LAN Controller: {{ site.networkHealthWLC }}
+##### Access Point: {{ site.networkHealthAP }}
+##### Wireless: {{ site.networkHealthWireless }}
+##### Other: {{ site.networkHealthOthers }}
+#### Applications
+##### Application Health: {{ site.applicationHealth }}
+##### Business Relevant Poor: {{ site.applicationHealthStats.businessRelevantAppCount.poor }}
+##### Business Relevant Fair: {{ site.applicationHealthStats.businessRelevantAppCount.fair }}
+##### Business Relevant Good: {{ site.applicationHealthStats.businessRelevantAppCount.good }}
+##### Business Irrelevant Poor: {{ site.applicationHealthStats.businessIrrelevantAppCount.poor }}
+##### Business Irrelevant Fair: {{ site.applicationHealthStats.businessIrrelevantAppCount.fair }}
+##### Business Irrelevant Good: {{ site.applicationHealthStats.businessIrrelevantAppCount.good }}
+##### Default Poor: {{ site.applicationHealthStats.defaultHealthAppCount.poor }}
+##### Default Irrelevant Fair: {{ site.applicationHealthStats.defaultHealthAppCount.fair }}
+##### Default Irrelevant Good: {{ site.applicationHealthStats.defaultHealthAppCount.good }}
+### Totals
+#### Clients: {{ site.numberOfClients }}
+##### Wired: {{ site.numberOfWiredClients }}
+##### Connected Wired: {{ site.totalNumberOfConnectedWiredClients }}
+##### Wired Good: {{ site.wiredGoodClients }}
+##### Wireless: {{ site.numberOfWirelessClients }}
+##### Wireless Good: {{ site.wirelessGoodClients }}
+##### Connected Wireless: {{ site.totalNumberOfActiveWirelessClients }}
+#### Network Devices: {{ site.numberOfNetworkDevice }}
+##### Core: {{ site.coreTotalCount }}
+##### Core Good: {{ site.coreGoodCount }}
+##### Distribution: {{ site.distributionTotalCount }}
+##### Distribution Good: {{ site.distributionGoodCount }}
+##### Access: {{ site.accessTotalCount }}
+##### Access Good: {{ site.accessGoodCount }}
+##### Router: {{ site.routerTotalCount }}
+##### Router Good: {{ site.routerGoodCount }}
+##### Switch: {{ site.switchDeviceTotalCount }}
+##### Switch Good: {{ site.switchDeviceGoodCount }}
+##### Wireless LAN Controller: {{ site.wlcDeviceTotalCount }}
+##### Wireless LAN Controller Good: {{ site.wlcDeviceGoodCount }}
+##### Access Point: {{ site.apDeviceTotalCount }}
+##### Access Point Good: {{ site.apDeviceGoodCount }}
+##### Wireless: {{ site.wirelessDeviceTotalCount }}
+##### Wireless Good: {{ site.wirelessDeviceGoodCount }}
+##### Overall Good: {{ site.overallGoodDevices }}
+#### Applications: {{ site.applicationTotalCount }}
+##### Good: {{ site.applicationGoodCount }}
+{%-             endfor %}
+{%-         endif %}
+{%-     endif %}
+{%- endif %}

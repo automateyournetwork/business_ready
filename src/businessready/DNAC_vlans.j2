@@ -1,0 +1,39 @@
+{%- if filetype_loop == 0 %}VLAN
+{%-     for vlan in vlans %}
+{{ vlan }}
+{%-     endfor %}
+{%- else %}
+{%-     if filetype_loop == 1 %}
+# DNAC VLAN
+| VLAN |
+| ---- |
+{%-     for vlan in vlans %}
+| {{ vlan }} |
+{%-     endfor %}
+{%-     else %}
+{%-         if filetype_loop == 2 %}
+<html><body>
+<h1>DNAC VLANs</h1>
+<table>
+  <thead>
+    <tr>
+      <th>VLAN</th>
+    </tr>
+  </thead>
+  <tbody>
+{%-     for vlan in vlans %}
+  <tr>
+    <td>{{ vlan }}</td>
+  </tr>
+{%-     endfor %}
+  </tbody>
+</table>
+</body></html>
+{%-         else %}
+# {{ DNAC }}
+{%- for vlan in vlans %}
+## {{ vlan }}
+{%- endfor %}
+{%-         endif %}
+{%-     endif %}
+{%- endif %}

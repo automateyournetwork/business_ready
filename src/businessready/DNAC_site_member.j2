@@ -1,0 +1,172 @@
+{%- if filetype_loop == 0 %}Site,Hostname,Instance UUID,Instance Tenant ID,Deployment Pending,Instance Version,Access Point Manager Interface IP,Associated WLC IP,Boot Date Time,Collection Interval,Collection Interval Value,Collection Interval Status,Description,Support Level,Family,Interface Count,Inventory Status,Last Update,Last Update Time,Line Card Count,Line Card ID,MAC Address,Managed At Least Once,IP Address,State,Memory Size,Platform ID,Reachability Status,Reachability Failure Reason,Role,Role Source,Serial Number,Series,SNMP Contact,SNMP Location,Software Type,Software Version,Tag Count,Tunnel UDP Port,Type,Uptime
+{%-     for item in siteMembers if item.response %}
+{%-         for member in item.response %}
+{{ site }},{{ member.hostname }},{{ member.instanceUuid }},{{ member.instanceTenantId }},{{ member.deployPending }},{{ member.instanceVersion }},{{ member.apManagerInterfaceIp }},{{ member.associatedWlcIp }},{{ member.bootDateTime }},{{ member.collectionInterval }},{{ member.collectionIntervalValue }},{{ member.collectionStatus }},{{ member.description | replace(","," ")}},{{ member.deviceSupportLevel }},{{ member.family }},{{ member.interfaceCount }},{{ member.inventoryStatusDetail }},{{ member.lastUpdated }},{{ member.lastUpdateTime }},{{ member.lineCardCount }},{{ member.lineCardId }},{{ member.macAddress }},{{ member.managedAtleastOnce }},{{ member.managementIpAddress }},{{ member.managementState }},{{ member.memorySize }},{{ member.platformId }},{{ member.reachabilityStatus }},{{ member.reachabilityFailureReason }},{{ member.role }},{{ member.roleSource }},{{ member.serialNumber }},{{ member.series }},{{ member.snmpContact }},{{ member.snmpLocation }},{{ member.softwareType }},{{ member.softwareVersion }},{{ member.tagCount }},{{ member.tunnelUdpPort }},{{ member.type }},{{ member.upTime }} {{ member.uptimeSeconds }}
+{%-         endfor %}
+{%-    endfor %}
+{%- else %}
+{%-     if filetype_loop == 1 %}
+# Site Member
+| Site | Hostname | Instance UUID | Instance Tenant ID | Deployment Pending | Instance Version | Access Point Manager Interface IP | Associated WLC IP | Boot Date Time | Collection Interval | Collection Interval Value | Collection Interval Status | Description | Support Level | Family | Interface Count | Inventory Status | Last Update | Last Update Time | Line Card Count | Line Card ID | MAC Address | Managed At Least Once | IP Address | State | Memory Size | Platform ID | Reachability Status | Reachability Failure Reason | Role | Role Source | Serial Number | Series | SNMP Contact | SNMP Location | Software Type | Software Version | Tag Count | Tunnel UDP Port | Type | Uptime |
+| ---- | -------- | ------------- | ------------------ | ------------------ | ---------------- | --------------------------------- | ----------------- | -------------- | ------------------- | ------------------------- | -------------------------- | ----------- | ------------- | ------ | --------------- | ---------------- | ----------- | ---------------- | --------------- | ------------ | ----------- | --------------------- | ---------- | ----- | ----------- | ----------- | ------------------- | --------------------------- | ---- | ----------- | ------------- | ------ | ------------ | ------------- | ------------- | ---------------- | --------- | --------------- | ---- | ------ |
+{%-         for item in siteMembers if item.response %}
+{%-             for member in item.response %}
+| {{ site }} | {{ member.hostname }} | {{ member.instanceUuid }} | {{ member.instanceTenantId }} | {{ member.deployPending }} | {{ member.instanceVersion }} | {{ member.apManagerInterfaceIp }} | {{ member.associatedWlcIp }} | {{ member.bootDateTime }} | {{ member.collectionInterval }} | {{ member.collectionIntervalValue }} | {{ member.collectionStatus }} | {{ member.description }} | {{ member.deviceSupportLevel }} | {{ member.family }} | {{ member.interfaceCount }} | {{ member.inventoryStatusDetail }} | {{ member.lastUpdated }} | {{ member.lastUpdateTime }} | {{ member.lineCardCount }} | {{ member.lineCardId }} | {{ member.macAddress }} | {{ member.managedAtleastOnce }} | {{ member.managementIpAddress }} | {{ member.managementState }} | {{ member.memorySize }} | {{ member.platformId }} | {{ member.reachabilityStatus }} | {{ member.reachabilityFailureReason }} | {{ member.role }} | {{ member.roleSource }} | {{ member.serialNumber }} | {{ member.series }} | {{ member.snmpContact }} | {{ member.snmpLocation }} | {{ member.softwareType }} | {{ member.softwareVersion }} | {{ member.tagCount }} | {{ member.tunnelUdpPort }} | {{ member.type }} | {{ member.upTime }} {{ member.uptimeSeconds }} |
+{%-             endfor %}
+{%-         endfor %}
+{%-     else %}
+{%-         if filetype_loop == 2 %}
+<html><body>
+<h1>DNAC Site Member</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Site</th>
+      <th>Hostname</th>
+      <th>Instance UUID</th>
+      <th>Instance Tenant ID</th>
+      <th>Deployment Pending</th>
+      <th>Instance Version</th>
+      <th>Access Point Manager Interface IP</th>
+      <th>Associated WLC IP</th>
+      <th>Boot Date Time</th>
+      <th>Collection Interval</th>
+      <th>Collection Interval Value</th>
+      <th>Collection Interval Status</th>
+      <th>Description</th>
+      <th>Support Level</th>
+      <th>Family</th>
+      <th>Interface Count</th>
+      <th>Inventory Status</th>
+      <th>Last Update</th>
+      <th>Last Update Time</th>
+      <th>Line Card Count</th>
+      <th>Line Card ID</th>
+      <th>MAC Address</th>
+      <th>Managed At Least Once</th>
+      <th>IP Address</th>
+      <th>State</th>
+      <th>Memory Size</th>
+      <th>Platform ID</th>
+      <th>Reachability Status</th>
+      <th>Reachability Failure Reason</th>
+      <th>Role</th>
+      <th>Role Source</th>
+      <th>Serial Number</th>
+      <th>Series</th>
+      <th>SNMP Contact</th>
+      <th>SNMP Location</th>
+      <th>Software Type</th>
+      <th>Software Version</th>
+      <th>Tag Count</th>
+      <th>Tunnel UDP Port</th>
+      <th>Type</th>
+      <th>Uptime</th>
+    </tr>
+  </thead>
+  <tbody>
+{%-             for item in siteMembers if item.response %}
+{%-                 for member in item.response %}
+  <tr>
+    <td>{{ site }}</td>
+    <td>{{ member.hostname }}</td>
+    <td>{{ member.instanceUuid }}</td>
+    <td>{{ member.instanceTenantId }}</td>
+    <td>{{ member.deployPending }}</td>
+    <td>{{ member.instanceVersion }}</td>
+    <td>{{ member.apManagerInterfaceIp }}</td>
+    <td>{{ member.associatedWlcIp }}</td>
+    <td>{{ member.bootDateTime }}</td>
+    <td>{{ member.collectionInterval }}</td>
+    <td>{{ member.collectionIntervalValue }}</td>
+    <td>{{ member.collectionStatus }}</td>
+    <td>{{ member.description }}</td>
+    <td>{{ member.deviceSupportLevel }}</td>
+    <td>{{ member.family }}</td>
+    <td>{{ member.interfaceCount }}</td>
+    <td>{{ member.inventoryStatusDetail }}</td>
+    <td>{{ member.lastUpdated }}</td>
+    <td>{{ member.lastUpdateTime }}</td>
+    <td>{{ member.lineCardCount }}</td>
+    <td>{{ member.lineCardId }}</td>
+    <td>{{ member.macAddress }}</td>
+    <td>{{ member.managedAtleastOnce }}</td>
+    <td>{{ member.managementIpAddress }}</td>
+    <td>{{ member.managementState }}</td>
+    <td>{{ member.memorySize }}</td>
+    <td>{{ member.platformId }}</td>
+    <td>{{ member.reachabilityStatus }}</td>
+    <td>{{ member.reachabilityFailureReason }}</td>
+    <td>{{ member.role }}</td>
+    <td>{{ member.roleSource }}</td>
+    <td>{{ member.serialNumber }}</td>
+    <td>{{ member.series }}</td>
+    <td>{{ member.snmpContact }}</td>
+    <td>{{ member.snmpLocation }}</td>
+    <td>{{ member.softwareType }}</td>
+    <td>{{ member.softwareVersion }}</td>
+    <td>{{ member.tagCount }}</td>
+    <td>{{ member.tunnelUdpPort }}</td>
+    <td>{{ member.type }}</td>
+    <td>{{ member.upTime }} {{ member.uptimeSeconds }}</td>
+  </tr>
+{%-                 endfor %}
+{%-             endfor %}
+  </tbody>
+</table>
+</body></html>
+{%-         else %}
+# {{ site }}
+## Site Members
+{%-             for item in siteMembers if item.response %}
+{%-                 for member in item.response %}
+### {{ member.hostname }}
+#### UUID: {{ member.instanceUuid }}
+#### Tenant ID: {{ member.instanceTenantId }}
+#### Deployment Pending: {{ member.deployPending }}
+#### Instance Version: {{ member.instanceVersion }}
+#### Access Point Manager Interface IP: {{ member.apManagerInterfaceIp }}
+#### Associated WLC IP: {{ member.associatedWlcIp }}
+#### Boot Date Time: {{ member.bootDateTime }}
+#### Collection
+##### {{ member.collectionInterval }}
+##### {{ member.collectionIntervalValue }}
+##### {{ member.collectionStatus }}
+#### Description: {{ member.description }}
+#### Support Level: {{ member.deviceSupportLevel }}
+#### Family: {{ member.family }}
+#### Interface Count: {{ member.interfaceCount }}
+#### Inventory Status: {{ member.inventoryStatusDetail }}
+#### Last Update: {{ member.lastUpdated }}
+#### Last Update Time: {{ member.lastUpdateTime }}
+#### Line Card Count: {{ member.lineCardCount }}
+#### Line Card ID: {{ member.lineCardId }}
+#### MAC Address: {{ member.macAddress }}
+#### Mamagement
+##### Managed At Least Once: {{ member.managedAtleastOnce }}
+##### IP Address: {{ member.managementIpAddress }}
+##### State: {{ member.managementState }}
+#### Memory Size: {{ member.memorySize }}
+#### Platform ID: {{ member.platformId }}
+#### Reachability
+##### {{ member.reachabilityStatus }}
+##### Failure Reason: {{ member.reachabilityFailureReason }}
+#### Role: {{ member.role }}
+#### Role Source: {{ member.roleSource }}
+#### Serial Number: {{ member.serialNumber }}
+#### Series: {{ member.series }}
+#### SNMP
+##### Contact: {{ member.snmpContact }}
+##### Location: {{ member.snmpLocation }}
+#### Software
+##### Type: {{ member.softwareType }}
+##### Version: {{ member.softwareVersion }}
+#### Tag Count: {{ member.tagCount }}
+#### Tunnel UDP Port: {{ member.tunnelUdpPort }}
+#### Type: {{ member.type }}
+#### Uptime: {{ member.upTime }} {{ member.uptimeSeconds }}
+{%-                  endfor %}
+{%-             endfor %}
+{%-         endif %}
+{%-     endif %}
+{%- endif %}
