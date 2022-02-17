@@ -1,0 +1,156 @@
+{%- if filetype_loop == 0 %}Node Label,Node ID,Device Type,Device Series,Device Family,Platform ID,Node IP,MAC Address,Software Version,Role,Role Source,Fabric Role,Parent Node ID,Greyout,Link ID,Link Source,Link Target,Link Status,Link Greyout,Start Port Name,Start Port ID,Start Port Speed,End Port Name,End Port ID,End Port Speed
+{%-     for node in routingTopology.nodes %}
+{{ node.label }},{{ node.id }},{{ node.deviceType }},{{ node.deviceSeries }},{{ node.family }},{{ node.platformId }},{{ node.ip }},{{ node.additionalInfo.macAddress }},{{ node.softwareVersion }},{{ node.role }},{{ node.roleSource }},{%- for role in node.additionalInfo.fabricRoles %}{{ role }} {% endfor %},{{ node.customParam.parentNodeId }},{{ node.greyOut }},N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A
+{%-     endfor %}
+{%-     for link in routingTopology.links %}
+N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,{{ link.id }},{{ link.source }},{{ link.target }},{{ link.linkStatus }},{{ link.greyOut }},{{ link.startPortName }},{{ link.startPortID }},{{ link.startPortSpeed }},{{ link.endPortName }},{{ link.endPortID }},{{ link.endPortSpeed }}
+{%-     endfor %}
+{%- else %}
+{%-     if filetype_loop == 1 %}
+# DNAC {{ protocol }} Topology
+| Node Label | Node ID | Device Type | Device Series | Device Family | Platform ID | Node IP | MAC Address | Software Version | Role | Role Source | Fabric Role | Parent Node ID | Greyout | Link ID | Link Source | Link Target | Link Status | Link Greyout | Start Port Name | Start Port ID | Start Port Speed | End Port Name | End Port ID | End Port Speed  |
+| ---------- | ------- | ----------- | ------------- | ------------- | ----------- | ------- | ----------- | ---------------- | ---- | ----------- | ----------- | -------------- | ------- | ------- | ----------- | ----------- | ----------- | ------------ | --------------- | ------------- | ---------------- | ------------- | ----------- | --------------- |
+{%-     for node in routingTopology.nodes %}
+| {{ node.label }} | {{ node.id }} | {{ node.deviceType }} | {{ node.deviceSeries }} | {{ node.family }} | {{ node.platformId }} | {{ node.ip }} | {{ node.additionalInfo.macAddress }} | {{ node.softwareVersion }} | {{ node.role }} | {{ node.roleSource }} | {%- for role in node.additionalInfo.fabricRoles %}{{ role }} {% endfor %} | {{ node.customParam.parentNodeId }} | {{ node.greyOut }} | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A |
+{%-     endfor %}
+{%-     for link in routingTopology.links %}
+| N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | {{ link.id }} | {{ link.source }} | {{ link.target }} | {{ link.linkStatus }} | {{ link.greyOut }} | {{ link.startPortName }} | {{ link.startPortID }} | {{ link.startPortSpeed }} | {{ link.endPortName }} | {{ link.endPortID }} | {{ link.endPortSpeed }} |
+{%-     endfor %}
+{%-     else %}
+{%-         if filetype_loop == 2 %}
+<html><body>
+<h1>DNAC {{ protocol }} Topology</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Node Label</th>
+      <th>Node ID</th>
+      <th>Device Type</th>
+      <th>Device Series</th>
+      <th>Device Family</th>
+      <th>Platform ID</th>
+      <th>Node IP</th>
+      <th>MAC Address</th>
+      <th>Software Version</th>
+      <th>Role</th>
+      <th>Role Source</th>
+      <th>Fabric Role</th>
+      <th>Parent Node ID</th>
+      <th>Greyout</th>
+      <th>Link ID</th>
+      <th>Link Source</th>
+      <th>Link Target</th>
+      <th>Link Status</th>
+      <th>Link Greyout</th>
+      <th>Start Port Name</th>
+      <th>Start Port ID</th>
+      <th>Start Port Speed</th>
+      <th>End Port Name</th>
+      <th>End Port ID</th>
+      <th>End Port Speed</th>
+    </tr>
+  </thead>
+  <tbody>
+{%-     for node in routingTopology.nodes %}
+  <tr>
+    <td>{{ node.label }}</td>
+    <td>{{ node.id }}</td>
+    <td>{{ node.deviceType }}</td>
+    <td>{{ node.deviceSeries }}</td>
+    <td>{{ node.family }}</td>
+    <td>{{ node.platformId }}</td>
+    <td>{{ node.ip }}</td>
+    <td>{{ node.additionalInfo.macAddress }}</td>
+    <td>{{ node.softwareVersion }}</td>
+    <td>{{ node.role }}</td>
+    <td>{{ node.roleSource }}</td>
+    <td>{%- for role in node.additionalInfo.fabricRoles %}{{ role }} {% endfor %}</td>
+    <td>{{ node.customParam.parentNodeId }}</td>
+    <td>{{ node.greyOut }}</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+  </tr>
+{%-         endfor %}
+{%-         for link in routingTopology.links %}
+  <tr>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>{{ link.id }}</td>
+    <td>{{ link.source }}</td>
+    <td>{{ link.target }}</td>
+    <td>{{ link.linkStatus }}</td>
+    <td>{{ link.greyOut }}</td>
+    <td>{{ link.startPortName }}</td>
+    <td>{{ link.startPortID }}</td>
+    <td>{{ link.startPortSpeed }}</td>
+    <td>{{ link.endPortName }}</td>
+    <td>{{ link.endPortID }}</td>
+    <td>{{ link.endPortSpeed }}</td>
+  </tr>
+{%-         endfor %}
+  </tbody>
+</table>
+</body></html>
+{%-         else %}
+# {{ protocol }}
+## Nodes
+{%- for node in routingTopology.nodes %}
+### {{ node.label }}
+#### ID: {{ node.id }}
+#### Platform
+##### Type: {{ node.deviceType }}
+##### Series: {{ node.deviceSeries }}
+##### Family: {{ node.family }}
+##### ID: {{ node.platformId }}
+#### Identity 
+##### IP: {{ node.ip }}
+##### MAC: {{ node.additionalInfo.macAddress }}
+##### Software Version: {{ node.softwareVersion }}
+##### Role: {{ node.role }}
+##### Role Source: {{ node.roleSource }}
+{%-     for role in node.additionalInfo.fabricRoles %}
+##### Fabric Role: {{ role }}
+{%-     endfor %}
+##### Parent Node ID: {{ node.customParam.parentNodeId }}
+#### Greyout: {{ node.greyOut }}
+{%- endfor %}
+## Links
+{%- for link in routingTopology.links %}
+### ID: {{ link.id }}
+#### Source: {{ link.source }}
+#### Target: {{ link.target }}
+#### Status: {{ link.linkStatus }}
+#### Greyout: {{ link.greyOut }}
+#### Start Port
+##### {{ link.startPortName }}
+###### ID: {{ link.startPortID }}
+###### Speed: {{ link.startPortSpeed }}
+#### End Port
+##### {{ link.endPortName }}
+###### ID: {{ link.endPortID }}
+###### Speed: {{ link.endPortSpeed }}
+{%- endfor %}
+{%-         endif %}
+{%-     endif %}
+{%- endif %}
