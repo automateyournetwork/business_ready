@@ -1,0 +1,56 @@
+{%- if filetype_loop == 0 %}Interface Name,Operational Status,Admin Status,Allocated Power,Maximum Power,Drawn Power
+{%-     for interface in poe %}
+{{ interface.interfaceName }},{{ interface.operStatus }},{{ interface.adminStatus }},{{ interface.allocatedPower }},{{ interface.maxPortPower }},{{ interface.portPowerDrawn }}
+{%-     endfor %}
+{%- else %}
+{%-     if filetype_loop == 1 %}
+# 
+| Interface Name | Operational Status | Admin Status | Allocated Power | Maximum Power | Drawn Power |
+| -------------- | ------------------ | ------------ | --------------- | ------------- | ----------- |
+{%-     for interface in poe %}
+| {{ interface.interfaceName }} | {{ interface.operStatus }} | {{ interface.adminStatus }} | {{ interface.allocatedPower }} | {{ interface.maxPortPower }} | {{ interface.portPowerDrawn }} |
+{%-     endfor %}
+{%-     else %}
+{%-         if filetype_loop == 2 %}
+<html><body>
+<h1>Device Power over Ethernet</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Interface Name</th>
+      <th>Operational Status</th>
+      <th>Admin Status</th>
+      <th>Allocated Power</th>
+      <th>Maximum Power</th>
+      <th>Drawn Power</th>
+    </tr>
+  </thead>
+  <tbody>
+{%-     for interface in poe %}
+  <tr>
+    <td>{{ interface.interfaceName }}</td>
+    <td>{{ interface.operStatus }}</td>
+    <td>{{ interface.adminStatus }}</td>
+    <td>{{ interface.allocatedPower }}</td>
+    <td>{{ interface.maxPortPower }}</td>
+    <td>{{ interface.portPowerDrawn }}</td>
+  </tr>
+{%-     endfor %}
+  </tbody>
+</table>
+</body></html>
+{%-         else %}
+# Power Over Ethernet
+{%-     for interface in poe %}
+## {{ interface.interfaceName }}
+### Status
+#### Operational: {{ interface.operStatus }}
+#### Admin: {{ interface.adminStatus }}
+### Power
+#### Allocated: {{ interface.allocatedPower }}
+#### Maximum: {{ interface.maxPortPower }}
+#### Drawn: {{ interface.portPowerDrawn }}
+{%-     endfor %}
+{%-         endif %}
+{%-     endif %}
+{%- endif %}

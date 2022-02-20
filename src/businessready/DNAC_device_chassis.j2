@@ -1,0 +1,54 @@
+{%- if filetype_loop == 0 %}Name,Description,Part Number,Hardware Version,Serial Number,Is Reporting Alarms Allowed
+{%- for item in chassis %}
+{{ item.name }},{{ item.description }},{{ item.partNumber }},{{ item.hardwareVersion }},{{ item.serialNumber }},{{ item.isReportingAlarmsAllowed }}
+{%- endfor %}
+{%- else %}
+{%-     if filetype_loop == 1 %}
+# Device Chassis
+| Name | Description | Part Number | Hardware Version | Serial Number | Is Reporting Alarms Allowed |
+| ---- | ----------- | ----------- | ---------------- | ------------- | --------------------------- |
+{%- for item in chassis %}
+| {{ item.name }} | {{ item.description }} | {{ item.partNumber }} | {{ item.hardwareVersion }} | {{ item.serialNumber }} | {{ item.isReportingAlarmsAllowed }} |
+{%- endfor %}
+{%-     else %}
+{%-         if filetype_loop == 2 %}
+<html><body>
+<h1>Device Chassis</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Part Number</th>
+      <th>Hardware Version</th>
+      <th>Serial Number</th>
+      <th>Is Reporting Alarms Allowed</th>
+    </tr>
+  </thead>
+  <tbody>
+{%- for item in chassis %}
+  <tr>
+    <td>{{ item.name }}</td>
+    <td>{{ item.description }}</td>
+    <td>{{ item.partNumber }}</td>
+    <td>{{ item.hardwareVersion }}</td>
+    <td>{{ item.serialNumber }}</td>
+    <td>{{ item.isReportingAlarmsAllowed }}</td>
+  </tr>
+{%- endfor %}
+  </tbody>
+</table>
+</body></html>
+{%-         else %}
+# Chassis
+{%- for item in chassis %}
+## {{ item.name }}
+### Description: {{ item.description }}
+### Part Number: {{ item.partNumber }}
+### Hardware Version: {{ item.hardwareVersion }}
+### Serial Number: {{ item.serialNumber }}
+### Is Reporting Alarms Allowed: {{ item.isReportingAlarmsAllowed }}
+{%- endfor %}
+{%-         endif %}
+{%-     endif %}
+{%- endif %}

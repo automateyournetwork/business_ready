@@ -1,0 +1,143 @@
+{%- if filetype_loop == 0 %}Stack Member Number,Hardware Priority,Switch Priority,Platform ID,Role,State,MAC Address,Next Reload,Software Image,Serial Number,Port Name,Is Synch Ok,Switchport,Neighbor Port,Link OK Changes,Stack Cable Length,Stack Port Status,Link Active,Link OK
+{%-   if stack.stackSwitchInfo is not none %}
+{%-     for info in stack.stackSwitchInfo %}
+{{ info.stackMemberNumber }},{{ info.hwPriority }},{{ info.switchPriority }},{{ info.platformId }},{{ info.role }},{{ info.state }},{{ info.macAddress }},{{ info.numNextReload }},{{ info.softwareImage }},{{ info.serialNumber }},N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A
+{%-     endfor %}
+{%    endif %}
+{%-   if stack.stackPortInfo is not none %}
+{%-     for item in stack.stackPortInfo %}
+N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,{{ item.name }},{{ item.isSynchOk }},{{ item.switchPort }},{{ item.neighborPort }},{{ item.nrLinkOkChanges }},{{ item.stackCableLengthInfo }},{{ item.stackPortOperStatusInfo }},{{ item.linkActive }},{{ item.linkOk }}
+{%-     endfor %}
+{%    endif %}
+{%- else %}
+{%-     if filetype_loop == 1 %}
+# Stack Info
+| Stack Member Number | Hardware Priority | Switch Priority | Platform ID | Role | State | MAC Address | Next Reload | Software Image | Serial Number | Port Name | Is Synch Ok | Switchport | Neighbor Port | Link OK Changes | Stack Cable Length | Stack Port Status | Link Active | Link OK |
+| ------------------- | ----------------- | --------------- | ----------- | ---- | ----- | ----------- | ----------- | -------------- | ------------- | --------- | ----------- | ---------- | ------------- | --------------- | ------------------ | ----------------- | ----------- | ------- |
+{%-   if stack.stackSwitchInfo is not none %}
+{%-     for info in stack.stackSwitchInfo %}
+| {{ info.stackMemberNumber }} | {{ info.hwPriority }} | {{ info.switchPriority }} | {{ info.platformId }} | {{ info.role }} | {{ info.state }} | {{ info.macAddress }} | {{ info.numNextReload }} | {{ info.softwareImage }} | {{ info.serialNumber }} | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A |
+{%-     endfor %}
+{%    endif %}
+{%-   if stack.stackPortInfo is not none %}
+{%-     for item in stack.stackPortInfo %}
+| N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | {{ item.name }} | {{ item.isSynchOk }} | {{ item.switchPort }} | {{ item.neighborPort }} | {{ item.nrLinkOkChanges }} | {{ item.stackCableLengthInfo }} | {{ item.stackPortOperStatusInfo }} | {{ item.linkActive }} | {{ item.linkOk }} |
+{%-     endfor %}
+{%    endif %}
+{%-     else %}
+{%-         if filetype_loop == 2 %}
+<html><body>
+<h1>Device Stack Info </h1>
+<table>
+  <thead>
+    <tr>
+      <th>Stack Member Number</th>
+      <th>Hardware Priority</th>
+      <th>Switch Priority</th>
+      <th>Platform ID</th>
+      <th>Role</th>
+      <th>State</th>
+      <th>MAC Address</th>
+      <th>Next Reload</th>
+      <th>Software Image</th>
+      <th>Serial Number</th>
+      <th>Port Name</th>
+      <th>Is Synch Ok</th>
+      <th>Switchport</th>
+      <th>Neighbor Port</th>
+      <th>Link OK Changes</th>
+      <th>Stack Cable Length</th>
+      <th>Stack Port Status</th>
+      <th>Link Active</th>
+      <th>Link OK</th>
+    </tr>
+  </thead>
+  <tbody>
+{%-   if stack.stackSwitchInfo is not none %}
+{%-     for info in stack.stackSwitchInfo %}
+  <tr>
+    <td>{{ info.stackMemberNumber }}</td>
+    <td>{{ info.hwPriority }}</td>
+    <td>{{ info.switchPriority }}</td>
+    <td>{{ info.platformId }}</td>
+    <td>{{ info.role }}</td>
+    <td>{{ info.state }}</td>
+    <td>{{ info.macAddress }}</td>
+    <td>{{ info.numNextReload }}</td>
+    <td>{{ info.softwareImage }}</td>
+    <td>{{ info.serialNumber }}</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+  </tr>
+{%-     endfor %}
+{%    endif %}
+{%-   if stack.stackPortInfo is not none %}
+{%-     for item in stack.stackPortInfo %}
+  <tr>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>{{ item.name }}</td>
+    <td>{{ item.isSynchOk }}</td>
+    <td>{{ item.switchPort }}</td>
+    <td>{{ item.neighborPort }}</td>
+    <td>{{ item.nrLinkOkChanges }}</td>
+    <td>{{ item.stackCableLengthInfo }}</td>
+    <td>{{ item.stackPortOperStatusInfo }}</td>
+    <td>{{ item.linkActive }}</td>
+    <td>{{ item.linkOk }}</td>
+{%-     endfor %}
+  </tr>
+{%    endif %}
+  </tbody>
+</table>
+</body></html>
+{%-         else %}
+# Stack
+{%- if stack.stackSwitchInfo is not none %}
+## Switch Info
+{%-     for item in stack.stackSwitchInfo %}
+### {{ item.stackMemberNumber }}
+#### Priority 
+##### Hardware: {{ item.hwPriority }}
+##### Switch: {{ item.switchPriority }}
+#### Platform: {{ item.platformId }}
+#### Role: {{ item.role }}
+#### State: {{ item.state }}
+#### MAC Address: {{ item.macAddress }}
+#### Next Reload: {{ item.numNextReload }}
+#### Software Image: {{ item.softwareImage }}
+#### Serial Number: {{ item.serialNumber }}
+{%-     endfor %}
+{%- endif %}
+{%-   if stack.stackPortInfo is not none %}
+## Port Info
+{%-     for item in stack.stackPortInfo %}
+### {{ item.name }}
+#### Is Synch Ok: {{ item.isSynchOk }}
+#### Switchport: {{ item.switchPort }}
+#### Neighbor Port: {{ item.neighborPort }}
+#### Link OK Changes: {{ item.nrLinkOkChanges }}
+#### Stack Cable Length: {{ item.stackCableLengthInfo }}
+#### Stack Port Status: {{ item.stackPortOperStatusInfo }}
+#### Link Active: {{ item.linkActive }}
+#### Link OK: {{ item.linkOk }}
+{%-     endfor %}
+{%- endif %}
+{%-         endif %}
+{%-     endif %}
+{%- endif %}

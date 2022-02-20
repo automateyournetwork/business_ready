@@ -1,0 +1,54 @@
+{%- if filetype_loop == 0 %}Name,Description,Part Number,Vendor Equipment Type,Serial Number,Operational State Code
+{%-     for item in other %}
+{{ item.name }},{{ item.description }},{{ item.productId }},{{ item.vendorEquipmentType }},{{ item.serialNumber }},{{ item.operationalStateCode }}
+{%-     endfor %}
+{%- else %}
+{%-     if filetype_loop == 1 %}
+# Device Other Parts
+| Name | Description | Part Number | Vendor Equipment Type | Serial Number | Operational State Code |
+| ---- | ----------- | ----------- | --------------------- | ------------- | ---------------------- |
+{%-     for item in other %}
+| {{ item.name }} | {{ item.description }} | {{ item.productId }} | {{ item.vendorEquipmentType }} | {{ item.serialNumber }} | {{ item.operationalStateCode }} |
+{%-     endfor %}
+{%-     else %}
+{%-         if filetype_loop == 2 %}
+<html><body>
+<h1>Device Other Parts</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Part Number</th>
+      <th>Vendor Equipment Type</th>
+      <th>Serial Number</th>
+      <th>Operational State Code</th>
+    </tr>
+  </thead>
+  <tbody>
+{%-     for item in other %}
+  <tr>
+    <td>{{ item.name }}</td>
+    <td>{{ item.description }}</td>
+    <td>{{ item.productId }}</td>
+    <td>{{ item.vendorEquipmentType }}</td>
+    <td>{{ item.serialNumber }}</td>
+    <td>{{ item.operationalStateCode }}</td>
+  </tr>
+{%-     endfor %}
+  </tbody>
+</table>
+</body></html>
+{%-         else %}
+# Other Parts
+{%-     for item in other %}
+## {{ item.name }}
+### Description: {{ item.description }}
+### Part Number: {{ item.productId }}
+### Vendor Equipment Type: {{ item.vendorEquipmentType }}
+### Serial Number: {{ item.serialNumber }}
+### Operational State Code: {{ item.operationalStateCode }}
+{%-     endfor %}
+{%-         endif %}
+{%-     endif %}
+{%- endif %}

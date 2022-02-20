@@ -1,0 +1,138 @@
+{%- if filetype_loop == 0 %}Insight ID,Insight Type,Average Update Frequency,Last Updated,Number of Updates,Link Status,Start Device Hostname,ID,IP Address,End Device Hostname,End Device ID,IP Address,Start Port Name,ID,Address,Mask,Speed,Duplex,PEP ID,Allowed VLAN IDs,Native VLAN,End Port Name,ID,Address,Mask,Speed,Duplex,PEP ID,Allowed VLAN IDs,Native VLAN,Instance ID,Instance Tenant ID
+{%-   for insight in insightVLAN if device.hostname == insight.startDeviceHostName or insight.endDeviceHostName %}
+{{ insight.id }},{{ insight.type }},{{ insight.avgUpdateFrequency }},{{ insight.lastUpdated }},{{ insight.numUpdates }},{{ insight.linkStatus }},{{ insight.startDeviceHostName }},{{ insight.startDeviceId }},{{ insight.startDeviceIpAddress }},{{ insight.endDeviceHostName }},{{ insight.endDeviceId }},{{ insight.endDeviceIpAddress }},{{ insight.startPortName }},{{ insight.startPortId }},{{ insight.startPortAddress }},{{ insight.startPortMask }},{{ insight.startPortSpeed }},{{ insight.startPortDuplex }},{{ insight.startPortPepId }},{{ insight.startPortAllowedVlanIds }},{{ insight.startPortNativeVlanId }},{{ insight.endPortName }},{{ insight.endPortId }},{{ insight.endPortAddress }},{{ insight.endPortMask }},{{ insight.endPortSpeed }},{{ insight.endPortDuplex }},{{ insight.endPortPepId }},{{ insight.endPortAllowedVlanIds }},{{ insight.endPortNativeVlanId }},{{ insight.instanceUuid }},{{ insight.instanceTenantId }}
+{%-   endfor %}
+{%- else %}
+{%-     if filetype_loop == 1 %}
+# Insights - VLAN Mismatch
+| Insight ID | Insight Type | Average Update Frequency | Last Updated | Number of Updates | Link Status | Start Device Hostname | ID | IP Address | End Device Hostname | End Device ID | IP Address | Start Port Name | ID | Address | Mask | Speed | Duplex | PEP ID | Allowed VLAN IDs | Native VLAN | End Port Name | ID | Address | Mask | Speed | Duplex | PEP ID | Allowed VLAN IDs | Native VLAN | Instance ID | Instance Tenant ID |
+| ---------- | ------------ | ------------------------ | ------------ | ----------------- | ----------- | --------------------- | -- | ---------- | ------------------- | ------------- | ---------- | --------------- | -- | ------- | ---- | ----- | ------ | ------ | ---------------- | ----------- | ------------- | -- | ------- | ---- | ----- | ------ | ------ | ---------------- | ----------- | ----------- | ------------------ |
+{%-   for insight in insightVLAN if device.hostname == insight.startDeviceHostName or insight.endDeviceHostName %}
+| {{ insight.id }} | {{ insight.type }} | {{ insight.avgUpdateFrequency }} | {{ insight.lastUpdated }} | {{ insight.numUpdates }} | {{ insight.linkStatus }} | {{ insight.startDeviceHostName }} | {{ insight.startDeviceId }} | {{ insight.startDeviceIpAddress }} | {{ insight.endDeviceHostName }} | {{ insight.endDeviceId }} | {{ insight.endDeviceIpAddress }} | {{ insight.startPortName }} | {{ insight.startPortId }} | {{ insight.startPortAddress }} | {{ insight.startPortMask }} | {{ insight.startPortSpeed }} | {{ insight.startPortDuplex }} | {{ insight.startPortPepId }} | {{ insight.startPortAllowedVlanIds }} | {{ insight.startPortNativeVlanId }} | {{ insight.endPortName }} | {{ insight.endPortId }} | {{ insight.endPortAddress }} | {{ insight.endPortMask }} | {{ insight.endPortSpeed }} | {{ insight.endPortDuplex }} | {{ insight.endPortPepId }} | {{ insight.endPortAllowedVlanIds }} | {{ insight.endPortNativeVlanId }} | {{ insight.instanceUuid }} | {{ insight.instanceTenantId }} |
+{%-   endfor %}
+{%-     else %}
+{%-         if filetype_loop == 2 %}
+<html><body>
+<h1>Insights - VLAN Mismatch </h1>
+<table>
+  <thead>
+    <tr>
+      <th>Insight ID</th>
+      <th>Insight Type</th>
+      <th>Average Update Frequency</th>
+      <th>Last Updated</th>
+      <th>Number of Updates</th>
+      <th>Link Status</th>
+      <th>Start Device Hostname</th>
+      <th>ID</th>
+      <th>IP Address</th>
+      <th>End Device Hostname</th>
+      <th>End Device ID</th>
+      <th>IP Address</th>
+      <th>Start Port Name</th>
+      <th>ID</th>
+      <th>Address</th>
+      <th>Mask</th>
+      <th>Speed</th>
+      <th>Duplex</th>
+      <th>PEP ID</th>
+      <th>Allowed VLAN IDs</th>
+      <th>Native VLAN</th>
+      <th>End Port Name</th>
+      <th>ID</th>
+      <th>Address</th>
+      <th>Mask</th>
+      <th>Speed</th>
+      <th>Duplex</th>
+      <th>PEP ID</th>
+      <th>Allowed VLAN IDs</th>
+      <th>Native VLAN</th>
+      <th>Instance ID</th>
+      <th>Instance Tenant ID</th>
+    </tr>
+  </thead>
+  <tbody>
+{%-   for insight in insightVLAN if device.hostname == insight.startDeviceHostName or insight.endDeviceHostName %}
+  <tr>
+    <td>{{ insight.id }}</td>
+    <td>{{ insight.type }}</td>
+    <td>{{ insight.avgUpdateFrequency }}</td>
+    <td>{{ insight.lastUpdated }}</td>
+    <td>{{ insight.numUpdates }}</td>
+    <td>{{ insight.linkStatus }}</td>
+    <td>{{ insight.startDeviceHostName }}</td>
+    <td>{{ insight.startDeviceId }}</td>
+    <td>{{ insight.startDeviceIpAddress }}</td>
+    <td>{{ insight.endDeviceHostName }}</td>
+    <td>{{ insight.endDeviceId }}</td>
+    <td>{{ insight.endDeviceIpAddress }}</td>
+    <td>{{ insight.startPortName }}</td>
+    <td>{{ insight.startPortId }}</td>
+    <td>{{ insight.startPortAddress }}</td>
+    <td>{{ insight.startPortMask }}</td>
+    <td>{{ insight.startPortSpeed }}</td>
+    <td>{{ insight.startPortDuplex }}</td>
+    <td>{{ insight.startPortPepId }}</td>
+    <td>{{ insight.startPortAllowedVlanIds }}</td>
+    <td>{{ insight.startPortNativeVlanId }}</td>
+    <td>{{ insight.endPortName }}</td>
+    <td>{{ insight.endPortId }}</td>
+    <td>{{ insight.endPortAddress }}</td>
+    <td>{{ insight.endPortMask }}</td>
+    <td>{{ insight.endPortSpeed }}</td>
+    <td>{{ insight.endPortDuplex }}</td>
+    <td>{{ insight.endPortPepId }}</td>
+    <td>{{ insight.endPortAllowedVlanIds }}</td>
+    <td>{{ insight.endPortNativeVlanId }}</td>
+    <td>{{ insight.instanceUuid }}</td>
+    <td>{{ insight.instanceTenantId }}</td>
+  </tr>
+{%-   endfor %}
+  </tbody>
+</table>
+</body></html>
+{%-         else %}
+# Insights
+## Link Mismatch - VLANs
+{%-         for insight in insightVLAN if device.hostname == insight.startDeviceHostName or insight.endDeviceHostName %}
+### ID: {{ insight.id }}
+#### Type: {{ insight.type }}
+#### Average Update Frequency: {{ insight.avgUpdateFrequency }}
+#### Last Updated: {{ insight.lastUpdated }}
+#### Number of Updates: {{ insight.numUpdates }}
+#### Link Status: {{ insight.linkStatus }}
+#### Start Device
+##### {{ insight.startDeviceHostName }}
+##### ID: {{ insight.startDeviceId }}
+##### IP Address: {{ insight.startDeviceIpAddress }}
+#### End Device
+##### {{ insight.endDeviceHostName }}
+##### End Device ID: {{ insight.endDeviceId }}
+##### IP Address: {{ insight.endDeviceIpAddress }}
+#### Start Port
+##### {{ insight.startPortName }}
+##### ID: {{ insight.startPortId }}
+##### Address: {{ insight.startPortAddress }}
+##### Mask: {{ insight.startPortMask }}
+##### Speed: {{ insight.startPortSpeed }}
+##### Duplex: {{ insight.startPortDuplex }}
+##### PEP ID: {{ insight.startPortPepId }}
+##### Allowed VLAN IDs: {{ insight.startPortAllowedVlanIds }}
+##### Native VLAN: {{ insight.startPortNativeVlanId }}
+#### End Port
+##### {{ insight.endPortName }}
+##### ID: {{ insight.endPortId }}
+##### Address: {{ insight.endPortAddress }}
+##### Mask: {{ insight.endPortMask }}
+##### Speed: {{ insight.endPortSpeed }}
+##### Duplex: {{ insight.endPortDuplex }}
+##### PEP ID: {{ insight.endPortPepId }}
+##### Allowed VLAN IDs: {{ insight.endPortAllowedVlanIds }}
+##### Native VLAN: {{ insight.endPortNativeVlanId }}
+#### Instance Info
+##### ID: {{ insight.instanceUuid }}
+##### Tenant ID: {{ insight.instanceTenantId }}
+{%-         endfor %}
+{%-         endif %}
+{%-     endif %}
+{%- endif %}
