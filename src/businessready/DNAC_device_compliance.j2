@@ -1,0 +1,62 @@
+{%- if filetype_loop == 0 %}Compliance Type,Status,State,Last Sync Time,Last Update Time,Message,Additional Data URL
+{%- for item in compliance %}
+{{ item.complianceType }},{{ item.status }},{{ item.state }},{{ item.lastSyncTime }},{{ item.lastUpdateTime }},{%-     if item.message %}{{ item.message }},{%-     else %}N/A,{%-     endif %}{%-     if item.additionalDataURL %}{{ item.additionalDataURL }}{%-     else %}N/A{%-     endif %}
+{%- endfor %}
+{%- else %}
+{%-     if filetype_loop == 1 %}
+# Compliance
+| Compliance Type | Status | State | Last Sync Time | Last Update Time | Message | Additional Data URL |
+| --------------- | ------ | ----- | -------------- | ---------------- | ------- | -------------------
+{%- for item in compliance %}
+| {{ item.complianceType }} | {{ item.status }} | {{ item.state }} | {{ item.lastSyncTime }} | {{ item.lastUpdateTime }} | {%-     if item.message %}{{ item.message }} | {%-     else %}N/A | {%-     endif %}{%-     if item.additionalDataURL %}{{ item.additionalDataURL }}{%-     else %}N/A{%-     endif %} |
+{%- endfor %}
+{%-     else %}
+{%-         if filetype_loop == 2 %}
+<html><body>
+<h1>DNAC </h1>
+<table>
+  <thead>
+    <tr>
+      <th>Compliance Type</th>
+      <th>Status</th>
+      <th>State</th>
+      <th>Last Sync Time</th>
+      <th>Last Update Time</th>
+      <th>Message</th>
+      <th>Additional Data URL</th>
+    </tr>
+  </thead>
+  <tbody>
+{%- for item in compliance %}
+  <tr>
+    <td>{{ item.complianceType }}</td>
+    <td>{{ item.status }}</td>
+    <td>{{ item.state }}</td>
+    <td>{{ item.lastSyncTime }}</td>
+    <td>{{ item.lastUpdateTime }}</td>
+    <td>{%-     if item.message %}{{ item.message }}{%-     else %}N/A{%-     endif %}</td>
+    <td>{%-     if item.additionalDataURL %}{{ item.additionalDataURL }}{%-     else %}N/A{%-     endif %}</td>
+  </tr>
+{%- endfor %}
+  </tbody>
+</table>
+</body></html>
+{%-         else %}
+# Compliance
+{%- for item in compliance %}
+## {{ item.complianceType }}
+### Status: {{ item.status }}
+### State: {{ item.state }}
+### Last Contact
+#### Sync: {{ item.lastSyncTime }}
+#### Update: {{ item.lastUpdateTime }}
+{%-     if item.message %}
+### Message: {{ item.message }}
+{%-     endif %}
+{%-     if item.additionalDataURL %}
+### [Additional Info]({{ item.additionalDataURL }})
+{%-     endif %}
+{%- endfor %}
+{%-         endif %}
+{%-     endif %}
+{%- endif %}

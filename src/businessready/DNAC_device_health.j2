@@ -1,0 +1,84 @@
+{%- if filetype_loop == 0 %}Overall,Reachability,Issue Count,Interface Link Error,Inter Device Link Available,Inter Device Link Available Fabric,CPU,Memory,Client Count,Free Timer,Packet Pool,WQE Pools,WAN Link Utilization,Interference,Noise,Air Quality
+{%-     for item in health if item.name == device.hostname %}
+{{ item.overallHealth }},{{ item.reachabilityHealth }},{{ item.issueCount }},{{ item.interfaceLinkErrHealth }},{{ item.interDeviceLinkAvailHealth }},{{ item.interDeviceLinkAvailFabric }},{{ item.cpuHealth }},{{ item.memoryUtilizationHealth }},{{ item.clientCount }},{{ item.freeTimerScore }},{{ item.packetPoolHealth }},{{ item.wqePoolsHealth }},{{ item.wanLinkUtilization }},{{ item.interferenceHealth }},{{ item.noiseHealth }},{{ item.airQualityHealth }}
+{%-     endfor %}
+{%- else %}
+{%-     if filetype_loop == 1 %}
+# Device Health
+| Overall | Reachability | Issue Count | Interface Link Error | Inter Device Link Available | Inter Device Link Available Fabric | CPU | Memory | Client Count | Free Timer | Packet Pool | WQE Pools | WAN Link Utilization | Interference | Noise | Air Quality |
+| ------- | ------------ | ----------- | -------------------- | --------------------------- | ---------------------------------- | --- | ------ | ------------ | ---------- | ----------- | --------- | -------------------- | ------------ | ----- | ----------- |
+{%-     for item in health if item.name == device.hostname %}
+| {{ item.overallHealth }} | {{ item.reachabilityHealth }} | {{ item.issueCount }} | {{ item.interfaceLinkErrHealth }} | {{ item.interDeviceLinkAvailHealth }} | {{ item.interDeviceLinkAvailFabric }} | {{ item.cpuHealth }} | {{ item.memoryUtilizationHealth }} | {{ item.clientCount }} | {{ item.freeTimerScore }} | {{ item.packetPoolHealth }} | {{ item.wqePoolsHealth }} | {{ item.wanLinkUtilization }} | {{ item.interferenceHealth }} | {{ item.noiseHealth }} | {{ item.airQualityHealth }} |
+{%-     endfor %}
+{%-     else %}
+{%-         if filetype_loop == 2 %}
+<html><body>
+<h1>DNAC </h1>
+<table>
+  <thead>
+    <tr>
+      <th>Overall</th>
+      <th>Reachability</th>
+      <th>Issue Count</th>
+      <th>Interface Link Error</th>
+      <th>Inter Device Link Available</th>
+      <th>Inter Device Link Available Fabric</th>
+      <th>CPU</th>
+      <th>Memory</th>
+      <th>Client Count</th>
+      <th>Free Timer</th>
+      <th>Packet Pool</th>
+      <th>WQE Pools</th>
+      <th>WAN Link Utilization</th>
+      <th>Interference</th>
+      <th>Noise</th>
+      <th>Air Quality</th>
+    </tr>
+  </thead>
+  <tbody>
+{%-     for item in health if item.name == device.hostname %}
+  <tr>
+    <td>{{ item.overallHealth }}</td>
+    <td>{{ item.reachabilityHealth }}</td>
+    <td>{{ item.issueCount }}</td>
+    <td>{{ item.interfaceLinkErrHealth }}</td>
+    <td>{{ item.interDeviceLinkAvailHealth }}</td>
+    <td>{{ item.interDeviceLinkAvailFabric }}</td>
+    <td>{{ item.cpuHealth }}</td>
+    <td>{{ item.memoryUtilizationHealth }}</td>
+    <td>{{ item.clientCount }}</td>
+    <td>{{ item.freeTimerScore }}</td>
+    <td>{{ item.packetPoolHealth }}</td>
+    <td>{{ item.wqePoolsHealth }}</td>
+    <td>{{ item.wanLinkUtilization }}</td>
+    <td>{{ item.interferenceHealth }}</td>
+    <td>{{ item.noiseHealth }}</td>
+    <td>{{ item.airQualityHealth }}</td>
+  </tr>
+{%-     endfor %}
+  </tbody>
+</table>
+</body></html>
+{%-         else %}
+# Health
+{%-     for item in health if item.name == device.hostname %}
+## Overall: {{ item.overallHealth }}
+### Reachability: {{ item.reachabilityHealth }}
+### Issue Count: {{ item.issueCount }}
+### Interface Link Error: {{ item.interfaceLinkErrHealth }}
+### Inter Device Link Available: {{ item.interDeviceLinkAvailHealth }}
+### Inter Device Link Available Fabric: {{ item.interDeviceLinkAvailFabric }}
+### CPU: {{ item.cpuHealth }}
+### Memory: {{ item.memoryUtilizationHealth }}
+### Client Count: {{ item.clientCount }}
+### Free Timer: {{ item.freeTimerScore }}
+### Packet Pool: {{ item.packetPoolHealth }}
+### WQE Pools: {{ item.wqePoolsHealth }}
+### WAN Link Utilization: {{ item.wanLinkUtilization }}
+### Interference: {{ item.interferenceHealth }}
+### Noise: {{ item.noiseHealth }}
+### Air Quality: {{ item.airQualityHealth }}
+{%-     endfor %}
+{%-         endif %}
+{%-     endif %}
+{%- endif %}

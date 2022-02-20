@@ -1,0 +1,402 @@
+{%- if filetype_loop == 0 %}Port Name,Description,Admin Status,Operational Status,MAC Address,IP Address,Network Mask,Speed,Duplex,MTU,Type,Media,Class Name,Index,Power over Ethernet,Port Type,Port Mode,VLAN ID,Native VLAN,Voice VLAN,OSPF Support,ISIS Support,Mapped Physical Interface Name,Mapped Physical Interface ID,Interface ID,Instance ID,Tenant ID,Last Updated
+{%- for interface in interfaces %}
+{{ interface.portName }},{{ interface.description }},{{ interface.adminStatus }},{{ interface.status }},{{ interface.macAddress }},{{ interface.ipv4Address }},{{ interface.ipv4Mask }},{{ interface.speed }},{{ interface.duplex }},{{ interface.mtu }},{{ interface.interfaceType }},{{ interface.mediaType }},{{ interface.className }},{{ interface.ifIndex }},{{ interface.poweroverethernet }},{{ interface.portType }},{{ interface.portMode }},{{ interface.vlanId }},{{ interface.nativeVlanId }},{{ interface.voiceVlan }},{{ interface.ospfSupport }},{{ interface.isisSupport }},{{ interface.mappedPhysicalInterfaceName }},{{ interface.mappedPhysicalInterfaceId }},{{ interface.id }},{{ interface.instanceUuid }},{{ interface.instanceTenantId }},{{ interface.lastUpdated }}
+{%- endfor %}
+{%- else %}
+{%-     if filetype_loop == 1 %}
+# Device Interfaces 
+| Port Name | Description | Admin Status | Operational Status | MAC Address | IP Address | Network Mask | Speed | Duplex | MTU | Type | Media | Class Name | Index | Power over Ethernet | Port Type | Port Mode | VLAN ID | Native VLAN | Voice VLAN | OSPF Support | ISIS Support | Mapped Physical Interface Name | Mapped Physical Interface ID | Interface ID | Instance ID | Tenant ID | Last Updated |
+| --------- | ----------- | ------------ | ------------------ | ----------- | ---------- | ------------ | ----- | ------ | --- | ---- | ----- | ---------- | ----- | ------------------- | --------- | --------- | ------- | ----------- | ---------- | ------------ | ------------ | ------------------------------ | ---------------------------- | ------------ | ----------- | --------- | ------------ |
+{%- for interface in interfaces %}
+| {{ interface.portName }} | {{ interface.description }} | {{ interface.adminStatus }} | {{ interface.status }} | {{ interface.macAddress }} | {{ interface.ipv4Address }} | {{ interface.ipv4Mask }} | {{ interface.speed }} | {{ interface.duplex }} | {{ interface.mtu }} | {{ interface.interfaceType }} | {{ interface.mediaType }} | {{ interface.className }} | {{ interface.ifIndex }} | {{ interface.poweroverethernet }} | {{ interface.portType }} | {{ interface.portMode }} | {{ interface.vlanId }} | {{ interface.nativeVlanId }} | {{ interface.voiceVlan }} | {{ interface.ospfSupport }} | {{ interface.isisSupport }} | {{ interface.mappedPhysicalInterfaceName }} | {{ interface.mappedPhysicalInterfaceId }} | {{ interface.id }} | {{ interface.instanceUuid }} | {{ interface.instanceTenantId }} | {{ interface.lastUpdated }} |
+{%- endfor %}
+{%-     else %}
+{%-         if filetype_loop == 2 %}
+<html><body>
+<h1>Device Interfaces </h1>
+<table>
+  <thead>
+    <tr>
+      <th>Port Name</th>
+      <th>Description</th>
+      <th>Admin Status</th>
+      <th>Operational Status</th>
+      <th>MAC Address</th>
+      <th>IP Address</th>
+      <th>Network Mask</th>
+      <th>Speed</th>
+      <th>Duplex</th>
+      <th>MTU</th>
+      <th>Type</th>
+      <th>Media</th>
+      <th>Class Name</th>
+      <th>Index</th>
+      <th>Power over Ethernet</th>
+      <th>Port Type</th>
+      <th>Port Mode</th>
+      <th>VLAN ID</th>
+      <th>Native VLAN</th>
+      <th>Voice VLAN</th>
+      <th>OSPF Support</th>
+      <th>ISIS Support</th>
+      <th>Mapped Physical Interface Name</th>
+      <th>Mapped Physical Interface ID</th>
+      <th>Interface ID</th>
+      <th>Instance ID</th>
+      <th>Tenant ID</th>
+      <th>Last Updated</th>
+    </tr>
+  </thead>
+  <tbody>
+{%- for interface in interfaces %}
+  <tr>
+    <td>{{ interface.portName }}</td>
+    <td>{{ interface.description }}</td>
+    <td>{{ interface.adminStatus }}</td>
+    <td>{{ interface.status }}</td>
+    <td>{{ interface.macAddress }}</td>
+    <td>{{ interface.ipv4Address }}</td>
+    <td>{{ interface.ipv4Mask }}</td>
+    <td>{{ interface.speed }}</td>
+    <td>{{ interface.duplex }}</td>
+    <td>{{ interface.mtu }}</td>
+    <td>{{ interface.interfaceType }}</td>
+    <td>{{ interface.mediaType }}</td>
+    <td>{{ interface.className }}</td>
+    <td>{{ interface.ifIndex }}</td>
+    <td>{{ interface.poweroverethernet }}</td>
+    <td>{{ interface.portType }}</td>
+    <td>{{ interface.portMode }}</td>
+    <td>{{ interface.vlanId }}</td>
+    <td>{{ interface.nativeVlanId }}</td>
+    <td>{{ interface.voiceVlan }}</td>
+    <td>{{ interface.ospfSupport }}</td>
+    <td>{{ interface.isisSupport }}</td>
+    <td>{{ interface.mappedPhysicalInterfaceName }}</td>
+    <td>{{ interface.mappedPhysicalInterfaceId }}</td>
+    <td>{{ interface.id }}</td>
+    <td>{{ interface.instanceUuid }}</td>
+    <td>{{ interface.instanceTenantId }}</td>
+    <td>{{ interface.lastUpdated }}</td>
+  </tr>
+{%- endfor %}
+  </tbody>
+</table>
+</body></html>
+{%-         else %}
+# Interfaces
+## Application
+{%- for interface in interfaces if interface['portName'].startswith("App") %}
+### {{ interface.portName }}
+#### Description: {{ interface.description }}
+#### Status
+##### Admin: {{ interface.adminStatus }}
+##### Operational: {{ interface.status }}
+#### Addresses
+##### MAC: {{ interface.macAddress }}
+##### IP: {{ interface.ipv4Address }}
+##### Mask: {{ interface.ipv4Mask }}
+#### Physical
+##### Speed: {{ interface.speed }}
+##### Duplex: {{ interface.duplex }}
+##### MTU: {{ interface.mtu }}
+##### Type: {{ interface.interfaceType }}
+##### Media: {{ interface.mediaType }}
+##### Class Name: {{ interface.className }}
+##### Index: {{ interface.ifIndex }}
+##### Power over Ethernet: {{ interface.poweroverethernet }}
+#### Port
+##### Type: {{ interface.portType }}
+##### Mode: {{ interface.portMode }}
+#### VLANs
+##### ID: {{ interface.vlanId }}
+##### Native: {{ interface.nativeVlanId }}
+##### Voice: {{ interface.voiceVlan }}
+#### Routing
+##### OSPF: {{ interface.ospfSupport }}
+##### ISIS: {{ interface.isisSupport }}
+#### Physical Mappings
+##### Name: {{ interface.mappedPhysicalInterfaceName }}
+##### ID: {{ interface.mappedPhysicalInterfaceId }}
+#### ID
+##### {{ interface.id }}
+##### Instance: {{ interface.instanceUuid }}
+##### Tenant: {{ interface.instanceTenantId }}
+#### Last Updated {{ interface.lastUpdated }}
+{%- endfor %}
+## Bluetooth
+{%- for interface in interfaces if interface['portName'].startswith("Blue") %}
+### {{ interface.portName }}
+#### Description: {{ interface.description }}
+#### Status
+##### Admin: {{ interface.adminStatus }}
+##### Operational: {{ interface.status }}
+#### Addresses
+##### MAC: {{ interface.macAddress }}
+##### IP: {{ interface.ipv4Address }}
+##### Mask: {{ interface.ipv4Mask }}
+#### Physical
+##### Speed: {{ interface.speed }}
+##### Duplex: {{ interface.duplex }}
+##### MTU: {{ interface.mtu }}
+##### Type: {{ interface.interfaceType }}
+##### Media: {{ interface.mediaType }}
+##### Class Name: {{ interface.className }}
+##### Index: {{ interface.ifIndex }}
+##### Power over Ethernet: {{ interface.poweroverethernet }}
+#### Port
+##### Type: {{ interface.portType }}
+##### Mode: {{ interface.portMode }}
+#### VLANs
+##### ID: {{ interface.vlanId }}
+##### Native: {{ interface.nativeVlanId }}
+##### Voice: {{ interface.voiceVlan }}
+#### Routing
+##### OSPF: {{ interface.ospfSupport }}
+##### ISIS: {{ interface.isisSupport }}
+#### Physical Mappings
+##### Name: {{ interface.mappedPhysicalInterfaceName }}
+##### ID: {{ interface.mappedPhysicalInterfaceId }}
+#### ID
+##### {{ interface.id }}
+##### Instance: {{ interface.instanceUuid }}
+##### Tenant: {{ interface.instanceTenantId }}
+#### Last Updated {{ interface.lastUpdated }}
+{%- endfor %}
+## Looback
+{%- for interface in interfaces if interface['portName'].startswith("Loop") %}
+### {{ interface.portName }}
+#### Description: {{ interface.description }}
+#### Status
+##### Admin: {{ interface.adminStatus }}
+##### Operational: {{ interface.status }}
+#### Addresses
+##### MAC: {{ interface.macAddress }}
+##### IP: {{ interface.ipv4Address }}
+##### Mask: {{ interface.ipv4Mask }}
+#### Physical
+##### Speed: {{ interface.speed }}
+##### Duplex: {{ interface.duplex }}
+##### MTU: {{ interface.mtu }}
+##### Type: {{ interface.interfaceType }}
+##### Media: {{ interface.mediaType }}
+##### Class Name: {{ interface.className }}
+##### Index: {{ interface.ifIndex }}
+##### Power over Ethernet: {{ interface.poweroverethernet }}
+#### Port
+##### Type: {{ interface.portType }}
+##### Mode: {{ interface.portMode }}
+#### VLANs
+##### ID: {{ interface.vlanId }}
+##### Native: {{ interface.nativeVlanId }}
+##### Voice: {{ interface.voiceVlan }}
+#### Routing
+##### OSPF: {{ interface.ospfSupport }}
+##### ISIS: {{ interface.isisSupport }}
+#### Physical Mappings
+##### Name: {{ interface.mappedPhysicalInterfaceName }}
+##### ID: {{ interface.mappedPhysicalInterfaceId }}
+#### ID
+##### {{ interface.id }}
+##### Instance: {{ interface.instanceUuid }}
+##### Tenant: {{ interface.instanceTenantId }}
+#### Last Updated {{ interface.lastUpdated }}
+{%- endfor %}
+## SVI
+{%- for interface in interfaces if interface['portName'].startswith("Vlan") %}
+### {{ interface.portName }}
+#### Description: {{ interface.description }}
+#### Status
+##### Admin: {{ interface.adminStatus }}
+##### Operational: {{ interface.status }}
+#### Addresses
+##### MAC: {{ interface.macAddress }}
+##### IP: {{ interface.ipv4Address }}
+##### Mask: {{ interface.ipv4Mask }}
+#### Physical
+##### Speed: {{ interface.speed }}
+##### Duplex: {{ interface.duplex }}
+##### MTU: {{ interface.mtu }}
+##### Type: {{ interface.interfaceType }}
+##### Media: {{ interface.mediaType }}
+##### Class Name: {{ interface.className }}
+##### Index: {{ interface.ifIndex }}
+##### Power over Ethernet: {{ interface.poweroverethernet }}
+#### Port
+##### Type: {{ interface.portType }}
+##### Mode: {{ interface.portMode }}
+#### VLANs
+##### ID: {{ interface.vlanId }}
+##### Native: {{ interface.nativeVlanId }}
+##### Voice: {{ interface.voiceVlan }}
+#### Routing
+##### OSPF: {{ interface.ospfSupport }}
+##### ISIS: {{ interface.isisSupport }}
+#### Physical Mappings
+##### Name: {{ interface.mappedPhysicalInterfaceName }}
+##### ID: {{ interface.mappedPhysicalInterfaceId }}
+#### ID
+##### {{ interface.id }}
+##### Instance: {{ interface.instanceUuid }}
+##### Tenant: {{ interface.instanceTenantId }}
+#### Last Updated {{ interface.lastUpdated }}
+{%- endfor %}
+## Fourty Gigabit
+{%- for interface in interfaces if interface['portName'].startswith("Fourty") %}
+### {{ interface.portName }}
+#### Description: {{ interface.description }}
+#### Status
+##### Admin: {{ interface.adminStatus }}
+##### Operational: {{ interface.status }}
+#### Addresses
+##### MAC: {{ interface.macAddress }}
+##### IP: {{ interface.ipv4Address }}
+##### Mask: {{ interface.ipv4Mask }}
+#### Physical
+##### Speed: {{ interface.speed }}
+##### Duplex: {{ interface.duplex }}
+##### MTU: {{ interface.mtu }}
+##### Type: {{ interface.interfaceType }}
+##### Media: {{ interface.mediaType }}
+##### Class Name: {{ interface.className }}
+##### Index: {{ interface.ifIndex }}
+##### Power over Ethernet: {{ interface.poweroverethernet }}
+#### Port
+##### Type: {{ interface.portType }}
+##### Mode: {{ interface.portMode }}
+#### VLANs
+##### ID: {{ interface.vlanId }}
+##### Native: {{ interface.nativeVlanId }}
+##### Voice: {{ interface.voiceVlan }}
+#### Routing
+##### OSPF: {{ interface.ospfSupport }}
+##### ISIS: {{ interface.isisSupport }}
+#### Physical Mappings
+##### Name: {{ interface.mappedPhysicalInterfaceName }}
+##### ID: {{ interface.mappedPhysicalInterfaceId }}
+#### ID
+##### {{ interface.id }}
+##### Instance: {{ interface.instanceUuid }}
+##### Tenant: {{ interface.instanceTenantId }}
+#### Last Updated {{ interface.lastUpdated }}
+{%- endfor %}
+## Twenty Five Gigabit
+{%- for interface in interfaces if interface['portName'].startswith("Twenty") %}
+### {{ interface.portName }}
+#### Description: {{ interface.description }}
+#### Status
+##### Admin: {{ interface.adminStatus }}
+##### Operational: {{ interface.status }}
+#### Addresses
+##### MAC: {{ interface.macAddress }}
+##### IP: {{ interface.ipv4Address }}
+##### Mask: {{ interface.ipv4Mask }}
+#### Physical
+##### Speed: {{ interface.speed }}
+##### Duplex: {{ interface.duplex }}
+##### MTU: {{ interface.mtu }}
+##### Type: {{ interface.interfaceType }}
+##### Media: {{ interface.mediaType }}
+##### Class Name: {{ interface.className }}
+##### Index: {{ interface.ifIndex }}
+##### Power over Ethernet: {{ interface.poweroverethernet }}
+#### Port
+##### Type: {{ interface.portType }}
+##### Mode: {{ interface.portMode }}
+#### VLANs
+##### ID: {{ interface.vlanId }}
+##### Native: {{ interface.nativeVlanId }}
+##### Voice: {{ interface.voiceVlan }}
+#### Routing
+##### OSPF: {{ interface.ospfSupport }}
+##### ISIS: {{ interface.isisSupport }}
+#### Physical Mappings
+##### Name: {{ interface.mappedPhysicalInterfaceName }}
+##### ID: {{ interface.mappedPhysicalInterfaceId }}
+#### ID
+##### {{ interface.id }}
+##### Instance: {{ interface.instanceUuid }}
+##### Tenant: {{ interface.instanceTenantId }}
+#### Last Updated {{ interface.lastUpdated }}
+{%- endfor %}
+## Ten Gigabit
+{%- for interface in interfaces if interface['portName'].startswith("Ten") %}
+### {{ interface.portName }}
+#### Description: {{ interface.description }}
+#### Status
+##### Admin: {{ interface.adminStatus }}
+##### Operational: {{ interface.status }}
+#### Addresses
+##### MAC: {{ interface.macAddress }}
+##### IP: {{ interface.ipv4Address }}
+##### Mask: {{ interface.ipv4Mask }}
+#### Physical
+##### Speed: {{ interface.speed }}
+##### Duplex: {{ interface.duplex }}
+##### MTU: {{ interface.mtu }}
+##### Type: {{ interface.interfaceType }}
+##### Media: {{ interface.mediaType }}
+##### Class Name: {{ interface.className }}
+##### Index: {{ interface.ifIndex }}
+##### Power over Ethernet: {{ interface.poweroverethernet }}
+#### Port
+##### Type: {{ interface.portType }}
+##### Mode: {{ interface.portMode }}
+#### VLANs
+##### ID: {{ interface.vlanId }}
+##### Native: {{ interface.nativeVlanId }}
+##### Voice: {{ interface.voiceVlan }}
+#### Routing
+##### OSPF: {{ interface.ospfSupport }}
+##### ISIS: {{ interface.isisSupport }}
+#### Physical Mappings
+##### Name: {{ interface.mappedPhysicalInterfaceName }}
+##### ID: {{ interface.mappedPhysicalInterfaceId }}
+#### ID
+##### {{ interface.id }}
+##### Instance: {{ interface.instanceUuid }}
+##### Tenant: {{ interface.instanceTenantId }}
+#### Last Updated {{ interface.lastUpdated }}
+{%- endfor %}
+## Gigabit
+{%- for interface in interfaces if interface['portName'].startswith("Giga") %}
+### {{ interface.portName }}
+#### Description: {{ interface.description }}
+#### Status
+##### Admin: {{ interface.adminStatus }}
+##### Operational: {{ interface.status }}
+#### Addresses
+##### MAC: {{ interface.macAddress }}
+##### IP: {{ interface.ipv4Address }}
+##### Mask: {{ interface.ipv4Mask }}
+#### Physical
+##### Speed: {{ interface.speed }}
+##### Duplex: {{ interface.duplex }}
+##### MTU: {{ interface.mtu }}
+##### Type: {{ interface.interfaceType }}
+##### Media: {{ interface.mediaType }}
+##### Class Name: {{ interface.className }}
+##### Index: {{ interface.ifIndex }}
+##### Power over Ethernet: {{ interface.poweroverethernet }}
+#### Port
+##### Type: {{ interface.portType }}
+##### Mode: {{ interface.portMode }}
+#### VLANs
+##### ID: {{ interface.vlanId }}
+##### Native: {{ interface.nativeVlanId }}
+##### Voice: {{ interface.voiceVlan }}
+#### Routing
+##### OSPF: {{ interface.ospfSupport }}
+##### ISIS: {{ interface.isisSupport }}
+#### Physical Mappings
+##### Name: {{ interface.mappedPhysicalInterfaceName }}
+##### ID: {{ interface.mappedPhysicalInterfaceId }}
+#### ID
+##### {{ interface.id }}
+##### Instance: {{ interface.instanceUuid }}
+##### Tenant: {{ interface.instanceTenantId }}
+#### Last Updated {{ interface.lastUpdated }}
+{%- endfor %}
+{%-         endif %}
+{%-     endif %}
+{%- endif %}

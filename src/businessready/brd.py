@@ -5,6 +5,7 @@
 # Copyright (c) 2022 John Capobianco
 
 from pathlib import Path
+import os
 import logging
 import requests
 import json
@@ -49,6 +50,7 @@ def DNAC_all(url, username, password):
     DNAC_physical_topology(url, username, password)
     DNAC_routing_topology(url, username, password)
     DNAC_network_health(url, username, password)
+    DNAC_devices(url, username, password)
     return("All DNA-C APIs Converted to Business Ready Documents")
 
 def DNAC_sites(url, username, password):
@@ -538,6 +540,583 @@ def DNAC_network_health(url, username, password):
         return(networkHealthJSON)
     except Exception as e:
         logging.exception(e)
+
+def DNAC_device(url, username, password):
+    try:
+        # -------------------------
+        # Headers
+        # -------------------------
+        encodedCredentials=base64.b64encode(bytes(f'{ username}:{ password}', 'utf-8')).decode()
+        
+        auth_headers = {
+            'Content-Type': 'application/json',
+            'Authorization': f'Basic { encodedCredentials }'
+            }
+
+        dnac = "https://sandboxdnac.cisco.com"
+
+        # -------------------------
+        # Get OAuth Token
+        # -------------------------
+
+        oAuthTokenRAW = requests.request("POST", f"{ dnac }/dna/system/api/v1/auth/token", headers=auth_headers)
+        oAuthTokenJSON = oAuthTokenRAW.json()
+        token = oAuthTokenJSON['Token']
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'X-Auth-Token': token,
+        }
+    
+        # -------------------------
+        # Get Sites to find global site ID
+        # -------------------------    
+
+        sitesRAW = requests.request("GET", f"{ url }/dna/intent/api/v1/site/", headers=headers)
+        sitesJSON = sitesRAW.json()
+
+        # Pass to template 
+
+        if sitesJSON is not None:
+            loop_counter = 0
+            for site in sitesJSON['response']:
+                sitesMembersRAW = requests.request("GET", f"{ dnac }/dna/intent/api/v1/membership/{ site['id'] }", headers=headers)
+                sitesMembersJSON = sitesMembersRAW.json()
+                if site['name'] == "Global":
+                    globalSiteID = site['id']                
+
+        # -------------------------
+        # Get All Devices
+        # -------------------------
+
+        devicesRAW = requests.request("GET", f"{ dnac }/dna/intent/api/v1/network-device/", headers=headers)
+        devicesJSON = devicesRAW.json()
+
+        # -------------------------
+        # Device Health
+        # -------------------------
+
+        healthRAW = requests.request("GET", f"{ dnac }/dna/intent/api/v1/device-health/", headers=headers)
+        healthJSON = healthRAW.json()
+
+        for device in devicesJSON['response']:           
+        
+        # -------------------------
+        # create folders to hold files
+        # -------------------------
+            if not os.path.exists(f"{ device['hostname'] }"):
+                os.mkdir(f"{ device['hostname'] }")
+            else:
+                print("Directory already exists")
+
+        # -------------------------
+        # Base Details per Device
+        # -------------------------
+
+            deviceRAW = requests.request("GET", f"{ dnac }/dna/intent/api/v1/network-device/{ device['id'] }", headers=headers)
+            deviceJSON = deviceRAW.json()
+
+        # -------------------------
+        # Chassis per Device
+        # -------------------------
+
+            deviceChassisRAW = requests.request("GET", f"{ dnac }/dna/intent/api/v1/network-device/{ device['id'] }/chassis", headers=headers)
+            deviceChassisJSON = deviceChassisRAW.json()
+
+            if deviceChassisJSON['response'] != []:
+                device_chassis_template = env.get_template('DNAC_device_chassis.j2')
+                loop_counter = 0
+                # Render Templates
+                for filetype in filetype_loop:
+                    parsed_output = device_chassis_template.render(chassis = deviceChassisJSON['response'],filetype_loop=loop_counter)
+                    loop_counter = loop_counter + 1
+
+            # -------------------------
+            # Save the files
+            # -------------------------
+                    if loop_counter <= 3:
+                        with open(f"{ device['hostname']}/ { device['hostname'] } Chassis.{ filetype }", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()                       
+                    else:
+                        with open(f"{ device['hostname'] }/DNAC { device['hostname'] } Chassis Mind Map.md", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()
+                    with open(f"{ device['hostname'] }/DNAC { device['hostname'] } Chassis.json", "w") as fh:
+                        json.dump(deviceChassisJSON, fh, indent=4, sort_keys=True)
+                        fh.close()
+                print(f"{ device['hostname'] } Chassis transformed")
+
+        # -------------------------
+        # PowerSupply
+        # -------------------------
+
+            powerSupplyRAW = requests.request("GET", f"{ dnac }/dna/intent/api/v1/network-device/{ device['id'] }/equipment?type=PowerSupply", headers=headers)
+            powerSupplyJSON = powerSupplyRAW.json()
+
+            if powerSupplyJSON['response'] != []:
+                device_power_template = env.get_template('DNAC_device_power.j2')
+                loop_counter = 0
+            # Render Templates
+                for filetype in filetype_loop:
+                    parsed_output = device_power_template.render(powersupply = powerSupplyJSON['response'],filetype_loop=loop_counter)
+                    loop_counter = loop_counter + 1
+
+            # -------------------------
+            # Save the files
+            # -------------------------
+                    if loop_counter <= 3:
+                        with open(f"{ device['hostname'] }/DNAC { device['hostname'] } Power Supplies.{ filetype }", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()                       
+                    else:
+                        with open(f"{ device['hostname'] }/DNAC { device['hostname'] } Power Supplies Mind Map.md", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()
+                    with open(f"{ device['hostname'] }/DNAC { device['hostname'] } Power Supplies.json", "w") as fh:
+                        json.dump(powerSupplyJSON, fh, indent=4, sort_keys=True)
+                        fh.close()
+                print(f"{ device['hostname'] } Power Supply transformed")
+        # -------------------------
+        # Fan
+        # -------------------------
+
+            fanRAW = requests.request("GET", f"{ dnac }/dna/intent/api/v1/network-device/{ device['id'] }/equipment?type=Fan", headers=headers)
+            fanJSON = fanRAW.json()
+
+            if fanJSON['response'] != []:
+                device_fan_template = env.get_template('DNAC_device_fan.j2')
+                loop_counter = 0
+            # Render Templates
+                for filetype in filetype_loop:
+                    parsed_output = device_fan_template.render(fan = fanJSON['response'],filetype_loop=loop_counter)
+                    loop_counter = loop_counter + 1
+
+                # -------------------------
+                # Save the files
+                # -------------------------
+                    if loop_counter <= 3:
+                        with open(f"{ device['hostname'] }/DNAC { device['hostname'] } Fans.{ filetype }", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()                       
+                    else:
+                        with open(f"{ device['hostname'] }/DNAC { device['hostname'] } Fans Mind Map.md", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()
+                    with open(f"{ device['hostname'] }/DNAC { device['hostname'] } Fans.json", "w") as fh:
+                        json.dump(fanJSON, fh, indent=4, sort_keys=True)
+                        fh.close()
+                print(f"{ device['hostname'] } Fan transformed")
+        # -------------------------
+        # Backplane
+        # -------------------------
+
+            backplaneRAW = requests.request("GET", f"{ dnac }/dna/intent/api/v1/network-device/{ device['id'] }/equipment?type=Backplane", headers=headers)
+            backplaneJSON = backplaneRAW.json()
+
+            if backplaneJSON['response'] != []:
+                device_backplane_template = env.get_template('DNAC_device_backplane.j2')
+                loop_counter = 0
+            # Render Templates
+                for filetype in filetype_loop:
+                    parsed_output = device_backplane_template.render(backplane = backplaneJSON['response'],filetype_loop=loop_counter)
+                    loop_counter = loop_counter + 1
+
+                # -------------------------
+                # Save the files
+                # -------------------------
+                    if loop_counter <= 3:
+                        with open(f"{ device['hostname'] }/DNAC { device['hostname'] } Backplane.{ filetype }", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()                       
+                    else:
+                        with open(f"{ device['hostname'] }/DNAC { device['hostname'] } Backplane Mind Map.md", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()
+                    with open(f"{ device['hostname'] }/DNAC { device['hostname'] } Backplane.json", "w") as fh:
+                        json.dump(backplaneJSON, fh, indent=4, sort_keys=True)
+                        fh.close()
+                print(f"{ device['hostname'] } Backplane transformed")
+        # -------------------------
+        # Module
+        # -------------------------
+
+            moduleRAW = requests.request("GET", f"{ dnac }/dna/intent/api/v1/network-device/{ device['id'] }/equipment?type=Module", headers=headers)
+            moduleSON = moduleRAW.json()
+
+            if moduleSON['response'] != []:
+                device_module_template = env.get_template('DNAC_device_module.j2')
+                loop_counter = 0
+                # Render Templates
+                for filetype in filetype_loop:
+                    parsed_output = device_module_template.render(module = moduleSON['response'],filetype_loop=loop_counter)
+                    loop_counter = loop_counter + 1
+
+                # -------------------------
+                # Save the files
+                # -------------------------
+                    if loop_counter <= 3:
+                        with open(f"{ device['hostname'] }/DNAC { device['hostname'] } Modules.{ filetype }", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()                       
+                    else:
+                        with open(f"{ device['hostname'] }/DNAC { device['hostname'] } Modules Mind Map.md", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()
+                    with open(f"{ device['hostname'] }/DNAC { device['hostname'] } Modules.json", "w") as fh:
+                        json.dump(moduleSON, fh, indent=4, sort_keys=True)
+                        fh.close()
+                print(f"{ device['hostname'] } Modules transformed")
+        # -------------------------
+        # PROCESSOR
+        # -------------------------
+
+            processorRAW = requests.request("GET", f"{ dnac }/dna/intent/api/v1/network-device/{ device['id'] }/equipment?type=PROCESSOR", headers=headers)
+            processorJSON = processorRAW.json()
+
+            if processorJSON['response'] != []:
+                device_processor_template = env.get_template('DNAC_device_processor.j2')
+                loop_counter = 0
+                # Render Templates
+                for filetype in filetype_loop:
+                    parsed_output = device_processor_template.render(processor = processorJSON['response'],filetype_loop=loop_counter)
+                    loop_counter = loop_counter + 1
+
+                # -------------------------
+                # Save the files
+                # -------------------------
+                    if loop_counter <= 3:
+                        with open(f"{ device['hostname'] }/DNAC { device['hostname'] } Processors.{ filetype }", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()                       
+                    else:
+                        with open(f"{ device['hostname'] }/DNAC { device['hostname'] } Processors Mind Map.md", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()
+                    with open(f"{ device['hostname'] }/DNAC { device['hostname'] } Processors.json", "w") as fh:
+                        json.dump(processorJSON, fh, indent=4, sort_keys=True)
+                        fh.close()
+                print(f"{ device['hostname'] } Processors transformed")
+        # -------------------------
+        # Other
+        # -------------------------
+
+            otherRAW = requests.request("GET", f"{ dnac }/dna/intent/api/v1/network-device/{ device['id'] }/equipment?type=Other", headers=headers)
+            otherJSON = otherRAW.json()
+
+            if otherJSON['response'] != []:
+                device_other_template = env.get_template('DNAC_device_other.j2')
+                loop_counter = 0
+                # Render Templates
+                for filetype in filetype_loop:
+                    parsed_output = device_other_template.render(other = otherJSON['response'],filetype_loop=loop_counter)
+                    loop_counter = loop_counter + 1
+
+                # -------------------------
+                # Save the files
+                # -------------------------
+                    if loop_counter <= 3:
+                        with open(f"{ device['hostname'] }/DNAC { device['hostname'] } Other Parts.{ filetype }", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()                       
+                    else:
+                        with open(f"{ device['hostname'] }/DNAC { device['hostname'] } Other Parts Mind Map.md", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()
+                    with open(f"{ device['hostname'] }/DNAC { device['hostname'] } Other Parts.json", "w") as fh:
+                        json.dump(otherJSON, fh, indent=4, sort_keys=True)
+                        fh.close()
+                print(f"{ device['hostname'] } Other Parts transformed")
+        # -------------------------
+        # PoE
+        # -------------------------
+
+            poeRAW = requests.request("GET", f"{ dnac }/dna/intent/api/v1/network-device/{ device['id'] }/interface/poe-detail", headers=headers)
+            poeJSON = poeRAW.json()
+
+            if poeJSON['response'] != []:
+                device_poe_template = env.get_template('DNAC_device_poe.j2')
+                loop_counter = 0
+                # Render Templates
+                for filetype in filetype_loop:
+                    parsed_output = device_poe_template.render(poe = poeJSON['response'],filetype_loop=loop_counter)
+                    loop_counter = loop_counter + 1
+
+                # -------------------------
+                # Save the files
+                # -------------------------
+                    if loop_counter <= 3:
+                        with open(f"{ device['hostname'] }/DNAC { device['hostname'] } Power over Ethernet.{ filetype }", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()                       
+                    else:
+                        with open(f"{ device['hostname'] }/DNAC { device['hostname'] } Power over Ethernet Mind Map.md", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()
+                    with open(f"{ device['hostname'] }/DNAC { device['hostname'] } Power over Ethernet.json", "w") as fh:
+                        json.dump(poeJSON, fh, indent=4, sort_keys=True)
+                        fh.close()
+                print(f"{ device['hostname'] } Power over Ethernet transformed")
+        # -------------------------
+        # VLANs
+        # -------------------------
+
+            deviceVlanRAW = requests.request("GET", f"{ dnac }/dna/intent/api/v1/network-device/{ device['id'] }/vlan", headers=headers)
+            deviceVlanJSON = deviceVlanRAW.json()
+
+            if deviceVlanJSON['response'] != []:
+                device_vlan_template = env.get_template('DNAC_device_vlan.j2')
+                loop_counter = 0
+                # Render Templates
+                for filetype in filetype_loop:
+                    parsed_output = device_vlan_template.render(vlan = deviceVlanJSON['response'],filetype_loop=loop_counter)
+                    loop_counter = loop_counter + 1
+
+                # -------------------------
+                # Save the files
+                # -------------------------
+                    if loop_counter <= 3:
+                        with open(f"{ device['hostname'] }/DNAC { device['hostname'] } VLANs.{ filetype }", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()                       
+                    else:
+                        with open(f"{ device['hostname'] }/DNAC { device['hostname'] } VLANs Mind Map.md", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()
+                    with open(f"{ device['hostname'] }/DNAC { device['hostname'] } VLANs.json", "w") as fh:
+                        json.dump(deviceVlanJSON, fh, indent=4, sort_keys=True)
+                        fh.close()
+                print(f"{ device['hostname'] } VLANs transformed")
+        # -------------------------
+        # Interfaces
+        # -------------------------
+
+            interfacesRAW = requests.request("GET", f"{ dnac }/dna/intent/api/v1/interface/network-device/{ device['id'] }", headers=headers)
+            interfacesJSON = interfacesRAW.json()
+
+            if interfacesJSON['response'] != []:
+                device_interface_template = env.get_template('DNAC_device_interface.j2')
+                loop_counter = 0
+                # Render Templates
+                for filetype in filetype_loop:
+                    parsed_output = device_interface_template.render(interfaces = interfacesJSON['response'],filetype_loop=loop_counter)
+                    loop_counter = loop_counter + 1
+
+                # -------------------------
+                # Save the files
+                # -------------------------
+                    if loop_counter <= 3:
+                        with open(f"{ device['hostname'] }/DNAC { device['hostname'] } Interfaces.{ filetype }", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()                       
+                    else:
+                        with open(f"{ device['hostname'] }/DNAC { device['hostname'] } Interfaces Mind Map.md", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()
+                    with open(f"{ device['hostname'] }/DNAC { device['hostname'] } Interfaces.json", "w") as fh:
+                        json.dump(interfacesJSON, fh, indent=4, sort_keys=True)
+                        fh.close()
+                print(f"{ device['hostname'] } Interfaces transformed")
+        # -------------------------
+        # Stack
+        # -------------------------
+
+            stackRAW = requests.request("GET", f"{ dnac }/dna/intent/api/v1/network-device/{ device['id'] }/stack", headers=headers)
+            stackJSON = stackRAW.json()
+
+            if stackJSON['response'] != []:
+                device_stack_template = env.get_template('DNAC_device_stack.j2')
+                loop_counter = 0
+                # Render Templates
+                for filetype in filetype_loop:
+                    parsed_output = device_stack_template.render(stack = stackJSON['response'],filetype_loop=loop_counter)
+                    loop_counter = loop_counter + 1
+
+                # -------------------------
+                # Save the files
+                # -------------------------
+                    if loop_counter <= 3:
+                        with open(f"{ device['hostname'] }/DNAC { device['hostname'] } Stack.{ filetype }", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()                       
+                    else:
+                        with open(f"{ device['hostname'] }/DNAC { device['hostname'] } Stack Mind Map.md", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()
+                    with open(f"{ device['hostname'] }/DNAC { device['hostname'] } Stack.json", "w") as fh:
+                        json.dump(stackJSON, fh, indent=4, sort_keys=True)
+                        fh.close()
+                print(f"{ device['hostname'] } Stack transformed")
+
+        # -------------------------
+        # Health
+        # -------------------------
+
+            if healthJSON['response'] != []:
+                device_health_template = env.get_template('DNAC_device_health.j2')
+                loop_counter = 0
+            # Render Templates
+                for filetype in filetype_loop:
+                    parsed_output = device_health_template.render(health = healthJSON['response'],device = deviceJSON['response'],filetype_loop=loop_counter)
+                    loop_counter = loop_counter + 1
+        
+                # -------------------------
+                # Save the files
+                # -------------------------
+                    if loop_counter <= 3:
+                        with open(f"{ device['hostname'] }/DNAC Device Health.{ filetype }", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()                       
+                    else:
+                        with open(f"{ device['hostname'] }/DNAC Device Health Mind Map.md", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()
+                    with open(f"{ device['hostname'] }/DNAC Device Health.json", "w") as fh:
+                        json.dump(healthJSON, fh, indent=4, sort_keys=True)
+                        fh.close()  
+                print(f"{ device['hostname'] } Health transformed")
+
+
+                # -------------------------
+                # Link Mismatch - VLAN
+                # -------------------------
+
+            insightVlanRAW = requests.request("GET", f"{ dnac }/dna/intent/api/v1/network-device/insight/{ globalSiteID }/device-link?category=vlan", headers=headers)
+            insightVlanJSON = insightVlanRAW.json()
+
+            if insightVlanJSON['response'] != []:
+                device_insightVLAN_template = env.get_template('DNAC_device_insight_vlan.j2')
+                loop_counter = 0
+            # Render Templates
+                for filetype in filetype_loop:
+                    parsed_output = device_insightVLAN_template.render(insightVLAN = insightVlanJSON['response'],device = deviceJSON['response'],filetype_loop=loop_counter)
+                    loop_counter = loop_counter + 1
+
+                # -------------------------
+                # Save the files
+                # -------------------------
+                    if loop_counter <= 3:
+                        with open(f"{ device['hostname'] }/DNAC Insight VLANs.{ filetype }", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()                       
+                    else:
+                        with open(f"{ device['hostname'] }/DNAC Insight VLANs Mind Map.md", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()
+                    with open(f"{ device['hostname'] }/DNAC Insight VLANs.json", "w") as fh:
+                        json.dump(insightVlanJSON, fh, indent=4, sort_keys=True)
+                        fh.close()                            
+                print(f"{ device['hostname'] } Insight VLAN transformed")
+
+                # -------------------------
+                # Link Mismatch - Speed Duplex
+                # -------------------------
+
+            insightSpeedDuplexRAW = requests.request("GET", f"{ dnac }/dna/intent/api/v1/network-device/insight/{ globalSiteID }/device-link?category=speed-duplex", headers=headers)
+            insightSpeedDuplexJSON = insightSpeedDuplexRAW.json()
+
+            if insightSpeedDuplexJSON['response'] != []:
+                device_insightSpeedDuplex_template = env.get_template('DNAC_device_insight_speed_duplex.j2')
+                loop_counter = 0
+                # Render Templates
+                for filetype in filetype_loop:
+                    parsed_output = device_insightSpeedDuplex_template.render(insightSpeedDuplex = insightSpeedDuplexJSON['response'],device = deviceJSON['response'],filetype_loop=loop_counter)
+                    loop_counter = loop_counter + 1
+
+                # -------------------------
+                # Save the files
+                # -------------------------
+                    if loop_counter <= 3:
+                        with open(f"{ device['hostname'] }/DNAC Insight Speed Duplex.{ filetype }", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()                       
+                    else:
+                        with open(f"{ device['hostname'] }/DNAC Insight Speed Duplex Mind Map.md", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()
+                    with open(f"{ device['hostname'] }/DNAC Insight Speed Duplex.json", "w") as fh:
+                        json.dump(insightSpeedDuplexJSON, fh, indent=4, sort_keys=True)
+                        fh.close()  
+                print(f"{ device['hostname'] } Insight Speed Duplex transformed")
+
+        # -------------------------
+        # Compliance
+        # -------------------------
+
+            complianceRAW = requests.request("GET", f"{ dnac }/dna/intent/api/v1/compliance/{ device['id'] }/detail", headers=headers)
+            complianceJSON = complianceRAW.json()
+
+            if complianceJSON['response'] != []:
+                device_compliance_template = env.get_template('DNAC_device_compliance.j2')
+                loop_counter = 0
+                # Render Templates
+                for filetype in filetype_loop:
+                    parsed_output = device_compliance_template.render(compliance = complianceJSON['response'],filetype_loop=loop_counter)
+                    loop_counter = loop_counter + 1
+
+                # -------------------------
+                # Save the files
+                # -------------------------
+                    if loop_counter <= 3:
+                        with open(f"{ device['hostname'] }/DNAC { device['hostname'] } Compliance.{ filetype }", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()                       
+                    else:
+                        with open(f"{ device['hostname'] }/DNAC { device['hostname'] } Compliance Mind Map.md", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()
+                    with open(f"{ device['hostname'] }/DNAC { device['hostname'] } Compliance.json", "w") as fh:
+                        json.dump(complianceJSON, fh, indent=4, sort_keys=True)
+                        fh.close()
+                print(f"{ device['hostname'] } Compliance transformed")
+            device_template = env.get_template('DNAC_device.j2')
+            loop_counter = 0
+
+        # -------------------------
+        # Pass to Jinja2 Template 
+        # -------------------------
+            for filetype in filetype_loop:
+                parsed_output = device_template.render(
+                        device = deviceJSON['response'],
+                        chassis = deviceChassisJSON['response'],
+                        powersupply = powerSupplyJSON['response'],
+                        fan = fanJSON['response'],
+                        backplane = backplaneJSON['response'],
+                        module = moduleSON['response'],
+                        processor = processorJSON['response'],
+                        other = otherJSON['response'],
+                        poe = poeJSON['response'],
+                        vlan = deviceVlanJSON['response'],
+                        insightVLAN = insightVlanJSON['response'],
+                        insightSpeedDuplex = insightSpeedDuplexJSON['response'],
+                        interfaces = interfacesJSON['response'],
+                        stack = stackJSON['response'],
+                        health = healthJSON['response'],
+                        compliance = complianceJSON['response'],
+                        filetype_loop=loop_counter
+                )
+                loop_counter = loop_counter + 1
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ device['hostname'] }/DNAC Device { device['hostname'] }.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                else:
+                    with open(f"{ device['hostname'] }/DNAC Device { device['hostname'] } Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                        loop_counter = 0
+                with open(f"{ device['hostname'] }/DNAC Device { device['hostname'] }.json", "w") as fh:
+                    json.dump(deviceJSON, fh, indent=4, sort_keys=True)
+                    fh.close()
+            print(f"{ device['hostname'] } transformed")
+                        
+        return(devicesJSON)
+    except Exception as e:
+        logging.exception(e)
+
 
 # ----------------
 # IOS ALL

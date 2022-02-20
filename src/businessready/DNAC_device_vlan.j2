@@ -1,0 +1,69 @@
+{%- if filetype_loop == 0 %}VLAN Number,Interface Name,IP Address,Network Address,Number of IPs
+{%-     for item in vlan %}
+{%-         if item.ipAddress %}
+{{ item.vlanNumber }},{{ item.interfaceName }},{{ item.ipAddress }} / {{ item.prefix }},{{ item.networkAddress }},{{ item.numberOfIPs }}
+{%-         else %}
+{{ item.vlanNumber }},{{ item.interfaceName }},N/A,N/A,N/A
+{%-         endif %}
+{%-     endfor %}
+{%- else %}
+{%-     if filetype_loop == 1 %}
+# Device VLANs
+| VLAN Number | Interface Name | IP Address | Network Address | Number of IPs |
+| ----------- | -------------- | ---------- | --------------- | ------------- |
+{%-     for item in vlan %}
+{%-         if item.ipAddress %}
+| {{ item.vlanNumber }} | {{ item.interfaceName }} | {{ item.ipAddress }} / {{ item.prefix }} | {{ item.networkAddress }} | {{ item.numberOfIPs }} |
+{%-         else %}
+| {{ item.vlanNumber }} | {{ item.interfaceName }} | N/A | N/A | N/A |
+{%-         endif %}
+{%-     endfor %}
+{%-     else %}
+{%-         if filetype_loop == 2 %}
+<html><body>
+<h1>Device VLANs</h1>
+<table>
+  <thead>
+    <tr>
+      <th>VLAN Number</th>
+      <th>Interface Name</th>
+      <th>IP Address</th>
+      <th>Network Address</th>
+      <th>Number of IPs</th>
+    </tr>
+  </thead>
+  <tbody>
+{%-     for item in vlan %}
+  <tr>
+{%-         if item.ipAddress %}
+    <td>{{ item.vlanNumber }}</td>
+    <td>{{ item.interfaceName }}</td>
+    <td>{{ item.ipAddress }} / {{ item.prefix }}</td>
+    <td>{{ item.networkAddress }}</td>
+    <td>{{ item.numberOfIPs }}</td>
+{%-         else %}
+    <td>{{ item.vlanNumber }}</td>
+    <td>{{ item.interfaceName }}</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+{%-         endif %}
+  </tr>
+{%-     endfor %}
+  </tbody>
+</table>
+</body></html>
+{%-         else %}
+# VLANs
+{%-     for item in vlan %}
+## {{ item.vlanNumber }}
+### Name: {{ item.interfaceName }}
+{%-         if item.ipAddress %}
+### IP Address: {{ item.ipAddress }} / {{ item.prefix }}
+### Network Address: {{ item.networkAddress }}
+### Number of IPs: {{ item.numberOfIPs }}
+{%-         endif %}
+{%-     endfor %}
+{%-         endif %}
+{%-     endif %}
+{%- endif %}
