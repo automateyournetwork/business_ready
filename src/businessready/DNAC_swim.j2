@@ -1,0 +1,221 @@
+{%- if filetype_loop == 0 %}Image Name,Description,ID,Service ID,Golden,Integrity,Type,Vendor,Family,Created,Filesize,Source,Type Type,Display Version,Full Version,MD5,SHA,Application Type,Feature,Boot ROM,Minimum Flash Size,Default Flash Size,Media,Default Boot ROM,Default RAM,GAIA Feature,Compession Code,RAM
+{%- for image in swim %}
+{{ image.name }},{{ image.extendedAttributes.Description }},{{ image.imageUuid }},{{ image.fileServiceId }},{{ image.isTaggedGolden }},{{ image.imageIntegrityStatus }},{{ image.imageType }},{{ image.vendor }},{{ image.family }},{{ image.createdTime }},{{ image.fileSize }},{{ image.imageSource }},{{ image.importSourceType }},{{ image.displayVersion }},{{ image.version }},{{ image.md5Checksum }},{{ image.shaCheckSum }},{{ image.applicationType }},{{ image.feature }},{{ image.extendedAttributes.BOOTROM }},{{ image.extendedAttributes.MINFLASHSIZE }},{{ image.extendedAttributes.DEFAULT_MINFLASHSIZE }},{{ image.extendedAttributes.MEDIA }},{{ image.extendedAttributes.DEFAULT_BOOTROM }},{{ image.extendedAttributes.DEFAULT_RAM }},{{ image.extendedAttributes.GAIA_FEATURE }},{{ image.extendedAttributes.COMPRESSION_CODE }},{{ image.extendedAttributes.RAM }}
+{%- endfor %}
+{%- else %}
+{%-     if filetype_loop == 1 %}
+# DNAC SWIM
+| Image Name | Description | ID | Service ID | Golden | Integrity | Type | Vendor | Family | Created | Filesize | Source | Type Type | Display Version | Full Version | MD5 | SHA | Application Type | Feature | Boot ROM | Minimum Flash Size | Default Flash Size | Media | Default Boot ROM | Default RAM | GAIA Feature | Compession Code | RAM |
+| ---------- | ----------- | -- | ---------- | ------ | --------- | ---- | ------ | ------ | ------- | -------- | ------ | --------- | --------------- | ------------ | --- | --- | ---------------- | ------- | -------- | ------------------ | ------------------ | ----- | ---------------- | ----------- | ------------ | --------------- | --- |
+{%- for image in swim %}
+| {{ image.name }} | {{ image.extendedAttributes.Description }} | {{ image.imageUuid }} | {{ image.fileServiceId }} | {{ image.isTaggedGolden }} | {{ image.imageIntegrityStatus }} | {{ image.imageType }} | {{ image.vendor }} | {{ image.family }} | {{ image.createdTime }} | {{ image.fileSize }} | {{ image.imageSource }} | {{ image.importSourceType }} | {{ image.displayVersion }} | {{ image.version }} | {{ image.md5Checksum }} | {{ image.shaCheckSum }} | {{ image.applicationType }} | {{ image.feature }} | {{ image.extendedAttributes.BOOTROM }} | {{ image.extendedAttributes.MINFLASHSIZE }} | {{ image.extendedAttributes.DEFAULT_MINFLASHSIZE }} | {{ image.extendedAttributes.MEDIA }} | {{ image.extendedAttributes.DEFAULT_BOOTROM }} | {{ image.extendedAttributes.DEFAULT_RAM }} | {{ image.extendedAttributes.GAIA_FEATURE }} | {{ image.extendedAttributes.COMPRESSION_CODE }} | {{ image.extendedAttributes.RAM }} |
+{%- endfor %}
+{%-     else %}
+{%-         if filetype_loop == 2 %}
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/colreorder/1.5.4/js/dataTables.colReorder.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/keytable/2.6.4/js/dataTables.keyTable.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.1.9/js/dataTables.fixedHeader.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.9/css/fixedHeader.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/keytable/2.6.4/css/keyTable.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+</head>
+<body>
+<h1>DNAC SWIM</h1>
+<table id ="swim">
+  <thead>
+    <tr>
+      <th>Image Name</th>
+      <th>Description</th>
+      <th>ID</th>
+      <th>Service ID</th>
+      <th>Golden</th>
+      <th>Integrity</th>
+      <th>Type</th>
+      <th>Vendor</th>
+      <th>Family</th>
+      <th>Created</th>
+      <th>Filesize</th>
+      <th>Source</th>
+      <th>Type Type</th>
+      <th>Display Version</th>
+      <th>Full Version</th>
+      <th>MD5</th>
+      <th>SHA</th>
+      <th>Application Type</th>
+      <th>Feature</th>
+      <th>Boot ROM</th>
+      <th>Minimum Flash Size</th>
+      <th>Default Flash Size</th>
+      <th>Media</th>
+      <th>Default Boot ROM</th>
+      <th>Default RAM</th>
+      <th>GAIA Feature</th>
+      <th>Compession Code</th>
+      <th>RAM</th>
+    </tr>
+  </thead>
+  <tbody>
+{%- for image in swim %}
+  {%                if loop.index is divisibleby 2 %}
+  <tr style='background-color:#ddd'>
+  {%-               else %}
+  <tr>
+  {%-               endif %}
+    <td>{{ image.name }}</td>
+    <td>{{ image.extendedAttributes.Description }}</td>
+    <td>{{ image.imageUuid }}</td>
+    <td>{{ image.fileServiceId }}</td>
+    <td>{{ image.isTaggedGolden }}</td>
+    <td>{{ image.imageIntegrityStatus }}</td>
+    <td>{{ image.imageType }}</td>
+    <td>{{ image.vendor }}</td>
+    <td>{{ image.family }}</td>
+    <td>{{ image.createdTime }}</td>
+    <td>{{ image.fileSize }}</td>
+    <td>{{ image.imageSource }}</td>
+    <td>{{ image.importSourceType }}</td>
+    <td>{{ image.displayVersion }}</td>
+    <td>{{ image.version }}</td>
+    <td>{{ image.md5Checksum }}</td>
+    <td>{{ image.shaCheckSum }}</td>
+    <td>{{ image.applicationType }}</td>
+    <td>{{ image.feature }}</td>
+    <td>{{ image.extendedAttributes.BOOTROM }}</td>
+    <td>{{ image.extendedAttributes.MINFLASHSIZE }}</td>
+    <td>{{ image.extendedAttributes.DEFAULT_MINFLASHSIZE }}</td>
+    <td>{{ image.extendedAttributes.MEDIA }}</td>
+    <td>{{ image.extendedAttributes.DEFAULT_BOOTROM }}</td>
+    <td>{{ image.extendedAttributes.DEFAULT_RAM }}</td>
+    <td>{{ image.extendedAttributes.GAIA_FEATURE }}</td>
+    <td>{{ image.extendedAttributes.COMPRESSION_CODE }}</td>
+    <td>{{ image.extendedAttributes.RAM }}</td>
+  </tr>
+{%- endfor %}
+  </tbody>
+</table>
+<script type = "text/javascript">
+  $(document).ready(function(){
+    $('#swim thead tr')
+    .clone(true)
+    .addClass('filters')
+    .appendTo('#swim thead');
+
+    var table = $('#swim').DataTable({
+        keys: true,
+        dom: 'Bfrtip',
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],
+            [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        buttons: [
+        'pageLength','colvis','copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        colReorder: true,
+        select: true,            
+        orderCellsTop: true,
+        fixedHeader: true,
+        initComplete: function () {
+        var api = this.api();
+
+        // For each column
+        api
+            .columns()
+            .eq(0)
+            .each(function (colIdx) {
+                // Set the header cell to contain the input element
+                var cell = $('.filters th').eq(
+                    $(api.column(colIdx).header()).index()
+                );
+                var title = $(cell).text();
+                $(cell).html('<input type="text" placeholder="' + title + '" />');
+
+                // On every keypress in this input
+                $(
+                    'input',
+                    $('.filters th').eq($(api.column(colIdx).header()).index())
+                )
+                    .off('keyup change')
+                    .on('keyup change', function (e) {
+                        e.stopPropagation();
+
+                        // Get the search value
+                        $(this).attr('title', $(this).val());
+                        var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                        var cursorPosition = this.selectionStart;
+                        // Search the column for that value
+                        api
+                            .column(colIdx)
+                            .search(
+                                this.value != ''
+                                    ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                    : '',
+                                this.value != '',
+                                this.value == ''
+                            )
+                            .draw();
+
+                        $(this)
+                            .focus()[0]
+                            .setSelectionRange(cursorPosition, cursorPosition);
+                    });
+            });
+    },
+});
+});        
+</script>
+</body></html>
+{%-         else %}
+# {{ DNAC }}
+## Image
+{%- for image in swim %}
+### {{ image.name }}
+#### Description: {{ image.extendedAttributes.Description }}
+#### ID
+##### {{ image.imageUuid }}
+##### Service: {{ image.fileServiceId }}
+#### Golden: {{ image.isTaggedGolden }}
+#### Integrity: {{ image.imageIntegrityStatus }}
+#### Type: {{ image.imageType }}
+#### Vendor: {{ image.vendor }}
+#### Family: {{ image.family }}
+#### Created: {{ image.createdTime }}
+#### Filesize: {{ image.fileSize }}
+#### Source
+##### [Source]({{ image.imageSource }})
+##### Type: {{ image.importSourceType }}
+#### Version
+##### {{ image.displayVersion }}
+##### Full: {{ image.version }}
+#### Checksum
+##### MD5: {{ image.md5Checksum }}
+##### SHA: {{ image.shaCheckSum }}
+#### Application Type: {{ image.applicationType }}
+#### Feature: {{ image.feature }}
+#### Extended Attributes
+##### Boot ROM: {{ image.extendedAttributes.BOOTROM }}
+##### Minimum Flash Size: {{ image.extendedAttributes.MINFLASHSIZE }}
+##### Default Flash Size: {{ image.extendedAttributes.DEFAULT_MINFLASHSIZE }}
+##### Media: {{ image.extendedAttributes.MEDIA }}
+##### Default Boot ROM: {{ image.extendedAttributes.DEFAULT_BOOTROM }}
+##### Default RAM: {{ image.extendedAttributes.DEFAULT_RAM }}
+##### GAIA Feature: {{ image.extendedAttributes.GAIA_FEATURE }}
+##### Compession Code: {{ image.extendedAttributes.COMPRESSION_CODE }}
+##### RAM: {{ image.extendedAttributes.RAM }}
+{%- endfor %}
+{%-         endif %}
+{%-     endif %}
+{%- endif %}

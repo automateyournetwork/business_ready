@@ -18,9 +18,29 @@
 | {{ interface }} | {% if to_parse_interface[interface].description is defined %}{{ to_parse_interface[interface].description }} | {% else %}No Description | {% endif %}N/A | N/A | {% if to_parse_interface[interface].type is defined %}{{ to_parse_interface[interface].type }}{% else %}N/A | {% endif %}{{ to_parse_interface[interface].enabled }} | {{ to_parse_interface[interface].oper_status }} | {% if to_parse_interface[interface].phys_address is defined %}{{ to_parse_interface[interface].phys_address }} | {% else %}N/A | {% endif %}{% if to_parse_interface[interface].mac_address is defined %}{{ to_parse_interface[interface].mac_address }} | {% else %}N/A | {% endif %}{% if to_parse_interface[interface].switchport_enable is defined %}{{ to_parse_interface[interface].switchport_enable }} | {% else %}N/A | {% endif %}{% if to_parse_interface[interface].switchport_mode is defined %}{{ to_parse_interface[interface].switchport_mode }} | {% else %}N/A | {% endif %}{% if to_parse_interface[interface].access_vlan is defined %}{{ to_parse_interface[interface].access_vlan }} | {% else %}N/A | {% endif %}{% if to_parse_interface[interface].trunk_vlans is defined %}{{ to_parse_interface[interface].trunk_vlans | replace(","," ") }} | {% else %}N/A | {% endif %}{% if to_parse_interface[interface].native_vlan is defined %}{{ to_parse_interface[interface].native_vlan }} | {% else %}N/A | {% endif %}{% if to_parse_interface[interface].vrf is defined %}{{ to_parse_interface[interface].vrf }} | {% else %}N/A | {% endif %}{{ to_parse_interface[interface].bandwidth }} | {{ to_parse_interface[interface].mtu }} | {{ to_parse_interface[interface].delay }} | {{ to_parse_interface[interface].encapsulation.encapsulation }} | {% if to_parse_interface[interface].medium is defined %}{{ to_parse_interface[interface].medium }} | {% else %}N/A | {% endif %}{% if to_parse_interface[interface].flow_control is defined %}{{ to_parse_interface[interface].flow_control.receive }} | {{ to_parse_interface[interface].flow_control.send }} | {% else %}N/A | N/A | {% endif %}{% if to_parse_interface[interface].last_change is defined %}{{ to_parse_interface[interface].last_change }} | {% else %}N/A | {% endif %}{{ to_parse_interface[interface].port_channel.port_channel_int }} | {{ to_parse_interface[interface].port_channel.port_channel_member }} | {% if to_parse_interface[interface].counters is defined %}{{ to_parse_interface[interface].counters.in_broadcast_pkts | default("N/A") }} | {{ to_parse_interface[interface].counters.in_crc_errors | default("N/A") }} | {{ to_parse_interface[interface].counters.in_errors }} | {{ to_parse_interface[interface].counters.in_unicast_pkts | default("N/A") }} | {{ to_parse_interface[interface].counters.in_multicast_pkts | default("N/A") }} | {{ to_parse_interface[interface].counters.in_pkts  | default("N/A") }} | {{ to_parse_interface[interface].counters.out_broadcast_pkts| default("N/A") }} | {{ to_parse_interface[interface].counters.out_discard | default("N/A") }} | {{ to_parse_interface[interface].counters.out_errors | default("N/A") }} | {{ to_parse_interface[interface].counters.out_unicast_pkts | default("N/A") }} | {{ to_parse_interface[interface].counters.out_multicast_pkts | default("N/A") }} | {{ to_parse_interface[interface].counters.out_pkts | default("N/A") }} | {{ to_parse_interface[interface].counters.rate.in_rate | default("N/A") }} | {{ to_parse_interface[interface].counters.rate.out_rate | default("N/A") }}{% else %}N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A |{% endif %}{% else %}
 | {{ interface }} | {% if to_parse_interface[interface].description is defined %}{{ to_parse_interface[interface].description }} | {% else %}No Description | {% endif %}N/A | N/A | {% if to_parse_interface[interface].type is defined %}{{ to_parse_interface[interface].type }} | {% else %}N/A | {% endif %}{{ to_parse_interface[interface].enabled }} | {{ to_parse_interface[interface].oper_status }} | {% if to_parse_interface[interface].phys_address is defined %}{{ to_parse_interface[interface].phys_address }} | {% else %}N/A | {% endif %}{% if to_parse_interface[interface].mac_address is defined %}{{ to_parse_interface[interface].mac_address }} | {% else %}N/A | {% endif %}{% if to_parse_interface[interface].switchport_enable is defined %}{{ to_parse_interface[interface].switchport_enable }} | {% else %}N/A | {% endif %}{% if to_parse_interface[interface].switchport_mode is defined %}{{ to_parse_interface[interface].switchport_mode }} | {% else %}N/A | {% endif %}{% if to_parse_interface[interface].access_vlan is defined %}{{ to_parse_interface[interface].access_vlan }} | {% else %}N/A | {% endif %}{% if to_parse_interface[interface].trunk_vlans is defined %}{{ to_parse_interface[interface].trunk_vlans | replace(","," ") }} | {% else %}N/A | {% endif %}{% if to_parse_interface[interface].native_vlan is defined %}{{ to_parse_interface[interface].native_vlan }} | {% else %}N/A | {% endif %}{% if to_parse_interface[interface].vrf is defined %}{{ to_parse_interface[interface].vrf }} | {% else %}N/A | {% endif %}{{ to_parse_interface[interface].bandwidth }} | {{ to_parse_interface[interface].mtu }} | {{ to_parse_interface[interface].delay }} | {{ to_parse_interface[interface].encapsulation.encapsulation }} | {% if to_parse_interface[interface].medium is defined %}{{ to_parse_interface[interface].medium }} | {% else %}N/A | {% endif %}{% if to_parse_interface[interface].flow_control is defined %}{{ to_parse_interface[interface].flow_control.receive }} | {{ to_parse_interface[interface].flow_control.send }} | {% else %}N/A | N/A | {% endif %}{% if to_parse_interface[interface].last_change is defined %}{{ to_parse_interface[interface].last_change }} | {% else %}N/A | {% endif %}{% if to_parse_interface[interface].port_channel.port_channel_member == "True" %} {{ interface }} | {% else %} N/A | {% endif %}{{ to_parse_interface[interface].port_channel.port_channel_member }} | {% if to_parse_interface[interface].counters is defined %}{{ to_parse_interface[interface].counters.in_broadcast_pkts | default("N/A") }} | {{ to_parse_interface[interface].counters.in_crc_errors | default("N/A") }} | {{ to_parse_interface[interface].counters.in_errors }} | {{ to_parse_interface[interface].counters.in_unicast_pkts | default("N/A") }} | {{ to_parse_interface[interface].counters.in_multicast_pkts | default("N/A") }} | {{ to_parse_interface[interface].counters.in_pkts  | default("N/A") }} | {{ to_parse_interface[interface].counters.out_broadcast_pkts| default("N/A") }} | {{ to_parse_interface[interface].counters.out_discard | default("N/A") }} | {{ to_parse_interface[interface].counters.out_errors | default("N/A") }} | {{ to_parse_interface[interface].counters.out_unicast_pkts | default("N/A") }} | {{ to_parse_interface[interface].counters.out_multicast_pkts | default("N/A") }} | {{ to_parse_interface[interface].counters.out_pkts | default("N/A") }} | {{ to_parse_interface[interface].counters.rate.in_rate | default("N/A") }} | {{ to_parse_interface[interface].counters.rate.out_rate | default("N/A") }}{% else %}N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A |{% endif %}{% endif %}{% endif %}{% else %}
 | {{ interface }} | {% if to_parse_interface[interface].description is defined %}{{ to_parse_interface[interface].description }} | {% else %}No Description | {% endif %}N/A | N/A | {% if to_parse_interface[interface].type is defined %}{{ to_parse_interface[interface].type }} | {% else %}N/A | {% endif %}{{ to_parse_interface[interface].enabled }} | {{ to_parse_interface[interface].oper_status }} | {% if to_parse_interface[interface].phys_address is defined %}{{ to_parse_interface[interface].phys_address }} | {% else %}N/A | {% endif %}{% if to_parse_interface[interface].mac_address is defined %}{{ to_parse_interface[interface].mac_address }} | {% else %}N/A | {% endif %}{% if to_parse_interface[interface].switchport_enable is defined %}{{ to_parse_interface[interface].switchport_enable }} | {% else %}N/A | {% endif %}{% if to_parse_interface[interface].switchport_mode is defined %}{{ to_parse_interface[interface].switchport_mode }} | {% else %}N/A | {% endif %}{% if to_parse_interface[interface].access_vlan is defined %}{{ to_parse_interface[interface].access_vlan }} | {% else %}N/A | {% endif %}{% if to_parse_interface[interface].trunk_vlans is defined %}{{ to_parse_interface[interface].trunk_vlans | replace(","," ") }} | {% else %}N/A | {% endif %}{% if to_parse_interface[interface].native_vlan is defined %}{{ to_parse_interface[interface].native_vlan }} | {% else %}N/A | {% endif %}{% if to_parse_interface[interface].vrf is defined %}{{ to_parse_interface[interface].vrf }} | {% else %}N/A | {% endif %}{{ to_parse_interface[interface].bandwidth }} | {{ to_parse_interface[interface].mtu }} | {{ to_parse_interface[interface].delay }} | {{ to_parse_interface[interface].encapsulation.encapsulation }} | {% if to_parse_interface[interface].medium is defined %}{{ to_parse_interface[interface].medium }} | {% else %}N/A | {% endif %}{% if to_parse_interface[interface].flow_control is defined %}{{ to_parse_interface[interface].flow_control.receive }} | {{ to_parse_interface[interface].flow_control.send }} | {% else %}N/A | N/A | {% endif %}N/A | N/A | {% if to_parse_interface[interface].last_change is defined %}{{ to_parse_interface[interface].last_change }} | {% else %}N/A | {% endif %}{{ to_parse_interface[interface].port_channel.port_channel_int }} | {{ to_parse_interface[interface].port_channel.port_channel_member }} | {% if to_parse_interface[interface].counters is defined %}{{ to_parse_interface[interface].counters.in_broadcast_pkts | default("N/A") }} | {{ to_parse_interface[interface].counters.in_crc_errors | default("N/A") }} | {{ to_parse_interface[interface].counters.in_errors }} | {{ to_parse_interface[interface].counters.in_unicast_pkts | default("N/A") }} | {{ to_parse_interface[interface].counters.in_multicast_pkts | default("N/A") }} | {{ to_parse_interface[interface].counters.in_pkts  | default("N/A") }} | {{ to_parse_interface[interface].counters.out_broadcast_pkts| default("N/A") }} | {{ to_parse_interface[interface].counters.out_discard | default("N/A") }} | {{ to_parse_interface[interface].counters.out_errors | default("N/A") }} | {{ to_parse_interface[interface].counters.out_unicast_pkts | default("N/A") }} | {{ to_parse_interface[interface].counters.out_multicast_pkts | default("N/A") }} | {{ to_parse_interface[interface].counters.out_pkts | default("N/A") }} | {{ to_parse_interface[interface].counters.rate.in_rate | default("N/A") }} | {{ to_parse_interface[interface].counters.rate.out_rate | default("N/A") }}{% else %}N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A |{% endif %}{% endif %}{% endif %}{% endif %}{% endfor %}{% else %}{% if filetype_loop == 2 %}
-<html></head><body>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/colreorder/1.5.4/js/dataTables.colReorder.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/keytable/2.6.4/js/dataTables.keyTable.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.1.9/js/dataTables.fixedHeader.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.9/css/fixedHeader.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/keytable/2.6.4/css/keyTable.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+</head>
+<body>
 <h1>Learn Interface</h1>
-<table>
+<table id = "interface">
   <thead>
   <tr>
     <th>Interface</th>
@@ -65,7 +85,11 @@
   </tr>
   </thead>
   <tbody>{% for interface in to_parse_interface %}{% if (to_parse_interface[interface].ipv4 is defined) and (to_parse_interface[interface].port_channel is defined) %}{% for ip_address in to_parse_interface[interface].ipv4 %}{% if to_parse_interface[interface].port_channel.port_channel_member_intfs %}{% for member in to_parse_interface[interface].port_channel.port_channel_member_intfs %}
+  {%                if loop.index is divisibleby 2 %}
+  <tr style='background-color:#ddd'>
+  {%-               else %}
   <tr>
+  {%-               endif %}
     <td>{{ interface }}</td>{% if to_parse_interface[interface].description is defined %}
     <td>{{ to_parse_interface[interface].description }}</td>{% else %}
     <td>No Description</td>{% endif %}{% if to_parse_interface[interface].ipv4 is defined %}
@@ -136,7 +160,11 @@
     <td>N/A</td>
     <td>N/A</td>
   </tr>{% endif %}{% endfor %}{% else %}{% if to_parse_interface[interface].port_channel.port_channel_member == "True" %}
+  {%                if loop.index is divisibleby 2 %}
+  <tr style='background-color:#ddd'>
+  {%-               else %}
   <tr>
+  {%-               endif %}
     <td>{{ interface }}</td>{% if to_parse_interface[interface].description is defined %}
     <td>{{ to_parse_interface[interface].description }}</td>{% else %}
     <td>No Description</td>{% endif %}{% if to_parse_interface[interface].ipv4 is defined %}
@@ -207,7 +235,11 @@
     <td>N/A</td>
     <td>N/A</td>
   </tr>{% endif %}{% else %}
+  {%                if loop.index is divisibleby 2 %}
+  <tr style='background-color:#ddd'>
+  {%-               else %}
   <tr>
+  {%-               endif %}
     <td>{{ interface }}</td>{% if to_parse_interface[interface].description is defined %}
     <td>{{ to_parse_interface[interface].description }}</td>{% else %}
     <td>No Description</td>{% endif %}{% if to_parse_interface[interface].ipv4 is defined %}
@@ -278,7 +310,11 @@
     <td>N/A</td>
     <td>N/A</td>
   <tr>{% endif %}{% endif %}{% endif %}{% endfor %}{% else %}{% if to_parse_interface[interface].ipv4 is defined %}
+  {%                if loop.index is divisibleby 2 %}
+  <tr style='background-color:#ddd'>
+  {%-               else %}
   <tr>
+  {%-               endif %}
     <td>{{ interface }}</td>{% if to_parse_interface[interface].description is defined %}
     <td>{{ to_parse_interface[interface].description }}</td>{% else %}
     <td>No Description</td>{% endif %}{% if to_parse_interface[interface].ipv4 is defined %}
@@ -349,7 +385,11 @@
     <td>N/A</td>
     <td>N/A</td>
   </tr>{% endif %}{% else %}{% if to_parse_interface[interface].port_channel is defined %}{% if to_parse_interface[interface].port_channel.port_channel_member_intfs %}{% for member in to_parse_interface[interface].port_channel.port_channel_member_intfs %}
+  {%                if loop.index is divisibleby 2 %}
+  <tr style='background-color:#ddd'>
+  {%-               else %}
   <tr>
+  {%-               endif %}
     <td>{{ interface }}</td>{% if to_parse_interface[interface].description is defined %}
     <td>{{ to_parse_interface[interface].description }}</td>{% else %}
     <td>No Description</td>{% endif %}
@@ -418,7 +458,11 @@
     <td>N/A</td>
     <td>N/A</td>
   </tr>{% endif %}{% endfor %}{% else %}{% if to_parse_interface[interface].port_channel.port_channel_member == "True" %}
+  {%                if loop.index is divisibleby 2 %}
+  <tr style='background-color:#ddd'>
+  {%-               else %}
   <tr>
+  {%-               endif %}
     <td>{{ interface }}</td>{% if to_parse_interface[interface].description is defined %}
     <td>{{ to_parse_interface[interface].description }}</td>{% else %}
     <td>No Description</td>{% endif %}
@@ -487,7 +531,11 @@
     <td>N/A</td>
     <td>N/A</td>
   </tr>{% endif %}{% else %}
+  {%                if loop.index is divisibleby 2 %}
+  <tr style='background-color:#ddd'>
+  {%-               else %}
   <tr>
+  {%-               endif %}
     <td>{{ interface }}</td>{% if to_parse_interface[interface].description is defined %}
     <td>{{ to_parse_interface[interface].description }}</td>{% else %}
     <td>No Description</td>{% endif %}
@@ -557,7 +605,11 @@
     <td>N/A</td>
     <td>N/A</td>
   </tr>{% endif %}{% endif %}{% endif %}{% else %}
+  {%                if loop.index is divisibleby 2 %}
+  <tr style='background-color:#ddd'>
+  {%-               else %}
   <tr>
+  {%-               endif %}
     <td>{{ interface }}</td>{% if to_parse_interface[interface].description is defined %}
     <td>{{ to_parse_interface[interface].description }}</td>{% else %}
     <td>No Description</td>{% endif %}
@@ -630,6 +682,77 @@
   </tr>{% endif %}{% endif %}{% endif %}{% endif %}{% endfor %}
   </tbody>
 </table>
+<script type = "text/javascript">
+  $(document).ready(function(){
+    $('#interface thead tr')
+    .clone(true)
+    .addClass('filters')
+    .appendTo('#interface thead');
+
+    var table = $('#interface').DataTable({
+        keys: true,
+        dom: 'Bfrtip',
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],
+            [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        buttons: [
+        'pageLength','colvis','copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        colReorder: true,
+        select: true,            
+        orderCellsTop: true,
+        fixedHeader: true,
+        initComplete: function () {
+        var api = this.api();
+
+        // For each column
+        api
+            .columns()
+            .eq(0)
+            .each(function (colIdx) {
+                // Set the header cell to contain the input element
+                var cell = $('.filters th').eq(
+                    $(api.column(colIdx).header()).index()
+                );
+                var title = $(cell).text();
+                $(cell).html('<input type="text" placeholder="' + title + '" />');
+
+                // On every keypress in this input
+                $(
+                    'input',
+                    $('.filters th').eq($(api.column(colIdx).header()).index())
+                )
+                    .off('keyup change')
+                    .on('keyup change', function (e) {
+                        e.stopPropagation();
+
+                        // Get the search value
+                        $(this).attr('title', $(this).val());
+                        var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                        var cursorPosition = this.selectionStart;
+                        // Search the column for that value
+                        api
+                            .column(colIdx)
+                            .search(
+                                this.value != ''
+                                    ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                    : '',
+                                this.value != '',
+                                this.value == ''
+                            )
+                            .draw();
+
+                        $(this)
+                            .focus()[0]
+                            .setSelectionRange(cursorPosition, cursorPosition);
+                    });
+            });
+    },
+});
+});        
+</script>
 </body></html>{% else %}
 # Learn Interface
 {%- for interface in to_parse_interface %}

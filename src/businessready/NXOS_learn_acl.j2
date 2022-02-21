@@ -18,9 +18,29 @@
 | {{ list }} | {{ ace }} | {{ to_parse_access_list[list].aces[ace].actions.forwarding }} | {{ to_parse_access_list[list].aces[ace].actions.logging | default ("No Logging") }} | Source Protocol | N/A | N/A | TCP | {% if to_parse_access_list[list].aces[ace].matches.l4.tcp.source_port.operator is defined %}{{ to_parse_access_list[list].aces[ace].matches.l4.tcp.source_port.operator.operator }} | {{ to_parse_access_list[list].aces[ace].matches.l4.tcp.source_port.operator.port }}{% else %} N/A | N/A {% endif %}|{% else %}{% if to_parse_access_list[list].aces[ace].matches.l4.tcp.destination_port is defined %}  
 | {{ list }} | {{ ace }} | {{ to_parse_access_list[list].aces[ace].actions.forwarding }} | {{ to_parse_access_list[list].aces[ace].actions.logging | default ("No Logging") }} | N/A | Destination Protocol | N/A | TCP | {% if to_parse_access_list[list].aces[ace].matches.l4.tcp.destination_port.operator is defined %}{{ to_parse_access_list[list].aces[ace].matches.l4.tcp.destination_port.operator.operator }} | {{ to_parse_access_list[list].aces[ace].matches.l4.tcp.destination_port.operator.port }}{% else %} N/A | N/A {% endif %} |{% endif %}{% endif %}{% endif %}{% endif %}{% endif %}{% endfor %}{% else %}
 | {{ list }} | No ACEs | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A |{% endif %}{% endfor %}{% else %}{% if filetype_loop == 2 %}
-<html><body>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/colreorder/1.5.4/js/dataTables.colReorder.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/keytable/2.6.4/js/dataTables.keyTable.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.1.9/js/dataTables.fixedHeader.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.9/css/fixedHeader.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/keytable/2.6.4/css/keyTable.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+</head>
+<body>
 <h1>Show Access-Lists</h1>
-<table style="width:100%">
+<table id = "acl">
   <tr>
     <th>Access Control List</th>
     <th>Access Control Entry</th>
@@ -33,7 +53,11 @@
     <th>Operator</th>
     <th>Port</th>
   </tr>{% for list in to_parse_access_list %}{% if to_parse_access_list[list].aces is defined %}{% for ace in to_parse_access_list[list].aces %}{% if to_parse_access_list[list].aces[ace].matches.l3 is defined %}{% if to_parse_access_list[list].aces[ace].matches.l3.ipv4 is defined %}{% if to_parse_access_list[list].aces[ace].matches.l3.ipv4.source_network is defined %}{% for source_network in to_parse_access_list[list].aces[ace].matches.l3.ipv4.source_network %}
+  {%                if loop.index is divisibleby 2 %}
+  <tr style='background-color:#ddd'>
+  {%-               else %}
   <tr>
+  {%-               endif %}
     <td>{{ list }}</td>
     <td>{{ ace }}</td>
     <td>{{ to_parse_access_list[list].aces[ace].actions.forwarding }}</td>
@@ -45,7 +69,11 @@
     <td>N/A</td>
     <td>N/A</td>
   </tr>{% endfor %}{% else %}{% for destination_network in to_parse_access_list[list].aces[ace].matches.l3.ipv4.destination_network %}
+  {%                if loop.index is divisibleby 2 %}
+  <tr style='background-color:#ddd'>
+  {%-               else %}
   <tr>
+  {%-               endif %}
     <td>{{ list }}</td>
     <td>{{ ace }}</td>
     <td>{{ to_parse_access_list[list].aces[ace].actions.forwarding }}</td>
@@ -57,7 +85,11 @@
     <td>N/A</td>
     <td>N/A</td>
   </tr>{% endfor %}{% endif %}{% endif %}{% endif %}{% endfor %}{% else %}
+  {%                if loop.index is divisibleby 2 %}
+  <tr style='background-color:#ddd'>
+  {%-               else %}
   <tr>
+  {%-               endif %}
     <td>{{ list }}</td>
     <td>No ACEs</td>
     <td>N/A</td>
@@ -69,7 +101,11 @@
     <td>N/A</td>
     <td>N/A</td>
   </tr>{% endif %}{% endfor %}{% for list in to_parse_access_list %}{% if to_parse_access_list[list].aces is defined %}{% for ace in to_parse_access_list[list].aces %}{% if to_parse_access_list[list].aces[ace].matches.l4 is defined %}{% if to_parse_access_list[list].aces[ace].matches.l4.udp is defined %}{% if to_parse_access_list[list].aces[ace].matches.l4.udp.source_port is defined %}
+  {%                if loop.index is divisibleby 2 %}
+  <tr style='background-color:#ddd'>
+  {%-               else %}
   <tr>
+  {%-               endif %}
     <td>{{ list }}</td>
     <td>{{ ace }}</td>
     <td>{{ to_parse_access_list[list].aces[ace].actions.forwarding }}</td>
@@ -83,7 +119,11 @@
     <td>N/A</td>
     <td>N/A</td>{% endif %}
   </tr>{% else %}{% if to_parse_access_list[list].aces[ace].matches.l4.udp.destination_port is defined%}
+  {%                if loop.index is divisibleby 2 %}
+  <tr style='background-color:#ddd'>
+  {%-               else %}
   <tr>
+  {%-               endif %}
     <td>{{ list }}</td>
     <td>{{ ace }}</td>
     <td>{{ to_parse_access_list[list].aces[ace].actions.forwarding }}</td>
@@ -97,7 +137,11 @@
     <td>N/A</td>
     <td>N/A</td>{% endif %}
   </tr>{% endif %}{% endif %}{% else %}{% if to_parse_access_list[list].aces[ace].matches.l4.tcp is defined %}{% if to_parse_access_list[list].aces[ace].matches.l4.tcp.source_port is defined %}
+  {%                if loop.index is divisibleby 2 %}
+  <tr style='background-color:#ddd'>
+  {%-               else %}
   <tr>
+  {%-               endif %}
     <td>{{ list }}</td>
     <td>{{ ace }}</td>
     <td>{{ to_parse_access_list[list].aces[ace].actions.forwarding }}</td>
@@ -111,7 +155,11 @@
     <td>N/A</td>
     <td>N/A</td>{% endif %}
   </tr>{% else %}{% if to_parse_access_list[list].aces[ace].matches.l4.tcp.destination_port is defined%}
+  {%                if loop.index is divisibleby 2 %}
+  <tr style='background-color:#ddd'>
+  {%-               else %}
   <tr>
+  {%-               endif %}
     <td>{{ list }}</td>
     <td>{{ ace }}</td>
     <td>{{ to_parse_access_list[list].aces[ace].actions.forwarding }}</td>
@@ -125,7 +173,11 @@
     <td>N/A</td>
     <td>N/A</td>{% endif %}
   </tr>{% endif %}{% endif %}{% endif %}{% endif %}{% endif %}{% endfor %}{% else %}
+  {%                if loop.index is divisibleby 2 %}
+  <tr style='background-color:#ddd'>
+  {%-               else %}
   <tr>
+  {%-               endif %}
     <td>{{ list }}</td>
     <td>No ACEs</td>
     <td>N/A</td>
@@ -138,6 +190,77 @@
     <td>N/A</td>
   </tr>{% endif %}{% endfor %}
 </table>
+<script type = "text/javascript">
+  $(document).ready(function(){
+    $('#acl thead tr')
+    .clone(true)
+    .addClass('filters')
+    .appendTo('#acl thead');
+
+    var table = $('#acl').DataTable({
+        keys: true,
+        dom: 'Bfrtip',
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],
+            [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        buttons: [
+        'pageLength','colvis','copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        colReorder: true,
+        select: true,            
+        orderCellsTop: true,
+        fixedHeader: true,
+        initComplete: function () {
+        var api = this.api();
+
+        // For each column
+        api
+            .columns()
+            .eq(0)
+            .each(function (colIdx) {
+                // Set the header cell to contain the input element
+                var cell = $('.filters th').eq(
+                    $(api.column(colIdx).header()).index()
+                );
+                var title = $(cell).text();
+                $(cell).html('<input type="text" placeholder="' + title + '" />');
+
+                // On every keypress in this input
+                $(
+                    'input',
+                    $('.filters th').eq($(api.column(colIdx).header()).index())
+                )
+                    .off('keyup change')
+                    .on('keyup change', function (e) {
+                        e.stopPropagation();
+
+                        // Get the search value
+                        $(this).attr('title', $(this).val());
+                        var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                        var cursorPosition = this.selectionStart;
+                        // Search the column for that value
+                        api
+                            .column(colIdx)
+                            .search(
+                                this.value != ''
+                                    ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                    : '',
+                                this.value != '',
+                                this.value == ''
+                            )
+                            .draw();
+
+                        $(this)
+                            .focus()[0]
+                            .setSelectionRange(cursorPosition, cursorPosition);
+                    });
+            });
+    },
+});
+});        
+</script>
 </body></html>{% else %}
 # Learn ACLs 
 ## Access Control List

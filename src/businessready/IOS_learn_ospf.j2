@@ -12,9 +12,29 @@
 | {{ vrf }} | {{ address_family }} | {{ instance }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].router_id }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].auto_cost.enable }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].bfd.enable }} | {{ graceful_restart }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].graceful_restart[graceful_restart].enable }} | {% if to_parse_ospf[vrf].address_family[address_family].instance[instance].mpls is defined %}{{ to_parse_ospf[vrf].address_family[address_family].instance[instance].mpls.ldp.autoconfig }} | {% else %}N/A | {% endif %}{{ to_parse_ospf[vrf].address_family[address_family].instance[instance].nsr.enable }} | {% if to_parse_ospf[vrf].address_family[address_family].instance[instance].preference is defined %}{{ to_parse_ospf[vrf].address_family[address_family].instance[instance].preference.single_value.all }} | {% else %}N/A | {% endif %}{% if to_parse_ospf[vrf].address_family[address_family].instance[instance].spf_control.paths is defined %}{{ to_parse_ospf[vrf].address_family[address_family].instance[instance].spf_control.paths }}{% else %}N/A{% endif %} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].spf_control.throttle.spf.start }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].spf_control.throttle.spf.hold }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].spf_control.throttle.spf.maximum }} | {{ area }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].area_type }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].statistics.spf_runs_count }} | {% if to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].mpls is defined %}{{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].mpls.te.enable }} | {% else %}N/A | {% endif %}{{ lsa_type }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].database.lsa_types[lsa_type].lsas[lsa].adv_router }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].database.lsa_types[lsa_type].lsas[lsa].lsa_id }} | N/A | N/A | N/A | N/A | N/A | YES | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].database.lsa_types[lsa_type].lsas[lsa].ospfv2.body.summary.network_mask }} | {{ topology }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].database.lsa_types[lsa_type].lsas[lsa].ospfv2.body.summary.topologies[topology].metric }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].database.lsa_types[lsa_type].lsas[lsa].ospfv2.header.age }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].database.lsa_types[lsa_type].lsas[lsa].ospfv2.header.checksum }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].database.lsa_types[lsa_type].lsas[lsa].ospfv2.header.length }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].database.lsa_types[lsa_type].lsas[lsa].ospfv2.header.option }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].database.lsa_types[lsa_type].lsas[lsa].ospfv2.header.seq_num }} | No Interfaces | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | No Neighbors | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A |{% endfor %}{% endif %}{% endif %}{% endfor %}{% endfor %}{% endfor %}{% endfor %}{% endfor %}{% endfor %}{% else %}{% for address_family in to_parse_ospf[vrf].address_family %}{% for instance in to_parse_ospf[vrf].address_family[address_family].instance %}{% for area in to_parse_ospf[vrf].address_family[address_family].instance[instance].areas %}{% for interface in to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces %}{% if to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors is defined %}{% for neighbor in to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors %}
 | {{ vrf }} | {{ address_family }} | {{ instance }} | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | {{ area }} | N/A | N/A | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].mpls.te.enable }} | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | NO | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | {{ interface }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].bfd.enable }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].cost }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].enable }} | {% if to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].passive is defined %}{{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].passive }}{% else %}N/A{% endif %} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].state }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].interface_type }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].dead_interval | default ("N/A") }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].dr_ip_addr | default ("N/A") }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].dr_router_id | default ("N/A") }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].hello_interval | default ("N/A") }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].hello_timer | default ("N/A") }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].priority | default ("N/A") }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].retransmit_interval | default ("N/A") }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].transmit_delay | default ("N/A") }} | {{ neighbor }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].address }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].bdr_ip_addr }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].dead_timer }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].dr_ip_addr }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].neighbor_router_id }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].state }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].statistics.nbr_event_count }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].statistics.nbr_retrans_qlen }} |{% endfor %}{% else %}
 | {{ vrf }} | {{ address_family }} | {{ instance }} | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | {{ area }} | N/A | N/A | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].mpls.te.enable }} | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | NO | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | {{ interface }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].bfd.enable }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].cost }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].enable }} | {% if to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].passive is defined %}{{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].passive }}{% else %}N/A{% endif %} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].state }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].interface_type }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].dead_interval | default ("N/A") }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].dr_ip_addr | default ("N/A") }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].dr_router_id | default ("N/A") }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].hello_interval | default ("N/A") }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].hello_timer | default ("N/A") }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].priority | default ("N/A") }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].retransmit_interval | default ("N/A") }} | {{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].transmit_delay | default ("N/A") }} | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A |{% endif %}{% endfor %}{% endfor %}{% endfor %}{% endfor %}{% endif %}{% endfor %}{% else %}{% if filetype_loop == 2 %}
-<html></head><body>
-<h1>Learn Interface</h1>
-<table>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/colreorder/1.5.4/js/dataTables.colReorder.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/keytable/2.6.4/js/dataTables.keyTable.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.1.9/js/dataTables.fixedHeader.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.9/css/fixedHeader.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/keytable/2.6.4/css/keyTable.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+</head>
+<body>
+<h1>Learn OSPF</h1>
+<table id = "ospf">
   <thead>
   <tr>
     <th>VRF</th>
@@ -80,7 +100,11 @@
   </tr>
   </thead>
   <tbody>{% for vrf in to_parse_ospf %}{% if vrf == "default" %}{% for address_family in to_parse_ospf[vrf].address_family %}{% for instance in to_parse_ospf[vrf].address_family[address_family].instance %}{% for graceful_restart in to_parse_ospf[vrf].address_family[address_family].instance[instance].graceful_restart %}{% for area in to_parse_ospf[vrf].address_family[address_family].instance[instance].areas %}{% for lsa_type in to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].database.lsa_types %}{% for lsa in to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].database.lsa_types[lsa_type].lsas %}{% if to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].database.lsa_types[lsa_type].lsas[lsa].ospfv2.body.router is defined %}{% for link in to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].database.lsa_types[lsa_type].lsas[lsa].ospfv2.body.router.links %}{% for topology in to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].database.lsa_types[lsa_type].lsas[lsa].ospfv2.body.router.links[link].topologies %}{% for interface in to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces %}{% if to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors is defined %}{% for neighbor in to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors %}
-    <tr>
+  {%                if loop.index is divisibleby 2 %}
+  <tr style='background-color:#ddd'>
+  {%-               else %}
+  <tr>
+  {%-               endif %}
       <td>{{ vrf }}</td>
       <td>{{ address_family }}</td>
       <td>{{ instance }}</td>
@@ -142,7 +166,11 @@
       <td>{{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].statistics.nbr_event_count }}</td>
       <td>{{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].statistics.nbr_retrans_qlen }}</td>
     </tr>{% endfor %}{% else %}
-    <tr>
+  {%                if loop.index is divisibleby 2 %}
+  <tr style='background-color:#ddd'>
+  {%-               else %}
+  <tr>
+  {%-               endif %}
       <td>{{ vrf }}</td>
       <td>{{ address_family }}</td>
       <td>{{ instance }}</td>
@@ -204,7 +232,11 @@
       <td>N/A</td>
       <td>N/A</td>
     </tr>{% endif %}{% endfor %}{% endfor %}{% endfor %}{% else %}{% if to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].database.lsa_types[lsa_type].lsas[lsa].ospfv2.body.summary is defined %}{% for topology in to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].database.lsa_types[lsa_type].lsas[lsa].ospfv2.body.summary.topologies %}
-    <tr>
+  {%                if loop.index is divisibleby 2 %}
+  <tr style='background-color:#ddd'>
+  {%-               else %}
+  <tr>
+  {%-               endif %}
       <td>{{ vrf }}</td>
       <td>{{ address_family }}</td>
       <td>{{ instance }}</td>
@@ -266,7 +298,11 @@
       <td>N/A</td>
       <td>N/A</td>
     </tr>{% endfor %}{% endif %}{% endif %}{% endfor %}{% endfor %}{% endfor %}{% endfor %}{% endfor %}{% endfor %}{% else %}{% for address_family in to_parse_ospf[vrf].address_family %}{% for instance in to_parse_ospf[vrf].address_family[address_family].instance %}{% for area in to_parse_ospf[vrf].address_family[address_family].instance[instance].areas %}{% for interface in to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces %}{% if to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors is defined %}{% for neighbor in to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors %}
-    <tr>
+  {%                if loop.index is divisibleby 2 %}
+  <tr style='background-color:#ddd'>
+  {%-               else %}
+  <tr>
+  {%-               endif %}
       <td>{{ vrf }}</td>
       <td>{{ address_family }}</td>
       <td>{{ instance }}</td>
@@ -327,7 +363,11 @@
       <td>{{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].statistics.nbr_event_count }}</td>
       <td>{{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].statistics.nbr_retrans_qlen }}</td>
     </tr>{% endfor %}{% else %}
-    <tr>
+  {%                if loop.index is divisibleby 2 %}
+  <tr style='background-color:#ddd'>
+  {%-               else %}
+  <tr>
+  {%-               endif %}
       <td>{{ vrf }}</td>
       <td>{{ address_family }}</td>
       <td>{{ instance }}</td>
@@ -391,6 +431,77 @@
     </tr>{% endif %}{% endfor %}{% endfor %}{% endfor %}{% endfor %}{% endif %}{% endfor %}
     </tbody>
 </table>
+<script type = "text/javascript">
+  $(document).ready(function(){
+    $('#ospf thead tr')
+    .clone(true)
+    .addClass('filters')
+    .appendTo('#ospf thead');
+
+    var table = $('#ospf').DataTable({
+        keys: true,
+        dom: 'Bfrtip',
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],
+            [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        buttons: [
+        'pageLength','colvis','copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        colReorder: true,
+        select: true,            
+        orderCellsTop: true,
+        fixedHeader: true,
+        initComplete: function () {
+        var api = this.api();
+
+        // For each column
+        api
+            .columns()
+            .eq(0)
+            .each(function (colIdx) {
+                // Set the header cell to contain the input element
+                var cell = $('.filters th').eq(
+                    $(api.column(colIdx).header()).index()
+                );
+                var title = $(cell).text();
+                $(cell).html('<input type="text" placeholder="' + title + '" />');
+
+                // On every keypress in this input
+                $(
+                    'input',
+                    $('.filters th').eq($(api.column(colIdx).header()).index())
+                )
+                    .off('keyup change')
+                    .on('keyup change', function (e) {
+                        e.stopPropagation();
+
+                        // Get the search value
+                        $(this).attr('title', $(this).val());
+                        var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                        var cursorPosition = this.selectionStart;
+                        // Search the column for that value
+                        api
+                            .column(colIdx)
+                            .search(
+                                this.value != ''
+                                    ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                    : '',
+                                this.value != '',
+                                this.value == ''
+                            )
+                            .draw();
+
+                        $(this)
+                            .focus()[0]
+                            .setSelectionRange(cursorPosition, cursorPosition);
+                    });
+            });
+    },
+});
+});        
+</script>
 </body></html>{% else %}
 # Learn OSPF
 {%-     for vrf in to_parse_ospf %}

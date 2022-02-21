@@ -31,7 +31,7 @@ log = logging.getLogger(__name__)
 # Filetype Loop
 # ----------------
 
-filetype_loop = ["csv","md","html","md"]
+filetype_loop = ["csv","md","html"]
 
 # -------------------------
 # DNA-C REST APIs
@@ -50,7 +50,13 @@ def DNAC_all(url, username, password):
     DNAC_physical_topology(url, username, password)
     DNAC_routing_topology(url, username, password)
     DNAC_network_health(url, username, password)
-    DNAC_devices(url, username, password)
+    DNAC_device(url, username, password)
+    DNAC_swim(url, username, password)
+    DNAC_projects(url, username, password)
+    DNAC_templates(url, username, password)
+    DNAC_rf_profiles(url, username, password)
+    DNAC_assurance_tests(url, username, password)
+    DNAC_flow_analysis(url, username, password)
     return("All DNA-C APIs Converted to Business Ready Documents")
 
 def DNAC_sites(url, username, password):
@@ -1117,6 +1123,372 @@ def DNAC_device(url, username, password):
     except Exception as e:
         logging.exception(e)
 
+def DNAC_swim(url, username, password):
+    try:
+        # -------------------------
+        # Headers
+        # -------------------------
+        encodedCredentials=base64.b64encode(bytes(f'{ username}:{ password}', 'utf-8')).decode()
+        
+        auth_headers = {
+            'Content-Type': 'application/json',
+            'Authorization': f'Basic { encodedCredentials }'
+            }
+
+        dnac = "https://sandboxdnac.cisco.com"
+
+        # -------------------------
+        # Get OAuth Token
+        # -------------------------
+
+        oAuthTokenRAW = requests.request("POST", f"{ dnac }/dna/system/api/v1/auth/token", headers=auth_headers)
+        oAuthTokenJSON = oAuthTokenRAW.json()
+        token = oAuthTokenJSON['Token']
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'X-Auth-Token': token,
+        }
+    
+        swimRAW = requests.request("GET", f"{ dnac }/dna/intent/api/v1/image/importation", headers=headers)
+        swimJSON = swimRAW.json()
+
+        # Pass to template 
+
+        if swimJSON is not None:
+            swim_template = env.get_template('DNAC_swim.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = swim_template.render(swim = swimJSON['response'],DNAC=url,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"DNAC Software Image Management.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()                       
+                else:
+                    with open("DNAC Software Image Management Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"DNAC Software Image Management.json", "w") as fh:
+                    json.dump(swimJSON, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(swimJSON)
+    except Exception as e:
+        logging.exception(e)
+
+def DNAC_projects(url, username, password):
+    try:
+        # -------------------------
+        # Headers
+        # -------------------------
+        encodedCredentials=base64.b64encode(bytes(f'{ username}:{ password}', 'utf-8')).decode()
+        
+        auth_headers = {
+            'Content-Type': 'application/json',
+            'Authorization': f'Basic { encodedCredentials }'
+            }
+
+        dnac = "https://sandboxdnac.cisco.com"
+
+        # -------------------------
+        # Get OAuth Token
+        # -------------------------
+
+        oAuthTokenRAW = requests.request("POST", f"{ dnac }/dna/system/api/v1/auth/token", headers=auth_headers)
+        oAuthTokenJSON = oAuthTokenRAW.json()
+        token = oAuthTokenJSON['Token']
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'X-Auth-Token': token,
+        }
+    
+        projectsRAW = requests.request("GET", f"{ dnac }/dna/intent/api/v1/template-programmer/project", headers=headers)
+        projectsJSON = projectsRAW.json()
+
+        # Pass to template 
+
+        if projectsJSON is not None:
+            projects_template = env.get_template('DNAC_projects.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = projects_template.render(projects = projectsJSON,DNAC=url,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"DNAC Projects.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()                       
+                else:
+                    with open("DNAC Projects Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"DNAC Projects.json", "w") as fh:
+                    json.dump(projectsJSON, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(projectsJSON)
+    except Exception as e:
+        logging.exception(e)
+
+def DNAC_templates(url, username, password):
+    try:
+        # -------------------------
+        # Headers
+        # -------------------------
+        encodedCredentials=base64.b64encode(bytes(f'{ username}:{ password}', 'utf-8')).decode()
+        
+        auth_headers = {
+            'Content-Type': 'application/json',
+            'Authorization': f'Basic { encodedCredentials }'
+            }
+
+        dnac = "https://sandboxdnac.cisco.com"
+
+        # -------------------------
+        # Get OAuth Token
+        # -------------------------
+
+        oAuthTokenRAW = requests.request("POST", f"{ dnac }/dna/system/api/v1/auth/token", headers=auth_headers)
+        oAuthTokenJSON = oAuthTokenRAW.json()
+        token = oAuthTokenJSON['Token']
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'X-Auth-Token': token,
+        }
+    
+        projectsRAW = requests.request("GET", f"{ dnac }/dna/intent/api/v1/template-programmer/project", headers=headers)
+        projectsJSON = projectsRAW.json()
+
+        # Pass to template 
+
+        if projectsJSON is not None:
+            for item in projectsJSON:
+                for template in item['templates']:
+                    templatesRAW = requests.request("GET", f"{ dnac }/dna/intent/api/v1/template-programmer/template/{ template['id'] }", headers=headers)
+                    templatesJSON = templatesRAW.json()
+
+        # -------------------------
+        # create folders to hold files
+        # -------------------------
+                    if not os.path.exists(f"{ template['name'] }"):
+                        os.mkdir(f"{ template['name'] }")
+                    else:
+                        print("Directory already exists")
+
+                    if templatesJSON is not None:
+                        templates_template = env.get_template('DNAC_templates.j2')
+                        loop_counter = 0
+        # Render Templates
+                        for filetype in filetype_loop:
+                            parsed_output = templates_template.render(project = item['name'],template = templatesJSON,filetype_loop=loop_counter)
+                            loop_counter = loop_counter + 1
+    # -------------------------
+    # Save the files
+    # -------------------------
+                            if loop_counter <= 3:
+                                with open(f"{ template['name'] }/DNAC { template['name'] } Template.{ filetype }", "w") as fh:
+                                    fh.write(parsed_output)               
+                                    fh.close()                       
+                            else:
+                                with open(f"{ template['name'] }/DNAC { template['name'] } Template Mind Map.md", "w") as fh:
+                                    fh.write(parsed_output)               
+                                    fh.close()
+                            with open(f"{ template['name'] }/DNAC { template['name'] } Template.json", "w") as fh:
+                                json.dump(templatesJSON, fh, indent=4, sort_keys=True)
+                                fh.close()                            
+        return(templatesJSON)
+    except Exception as e:
+        logging.exception(e)
+
+def DNAC_rf_profiles(url, username, password):
+    try:
+        # -------------------------
+        # Headers
+        # -------------------------
+        encodedCredentials=base64.b64encode(bytes(f'{ username}:{ password}', 'utf-8')).decode()
+        
+        auth_headers = {
+            'Content-Type': 'application/json',
+            'Authorization': f'Basic { encodedCredentials }'
+            }
+
+        dnac = "https://sandboxdnac.cisco.com"
+
+        # -------------------------
+        # Get OAuth Token
+        # -------------------------
+
+        oAuthTokenRAW = requests.request("POST", f"{ dnac }/dna/system/api/v1/auth/token", headers=auth_headers)
+        oAuthTokenJSON = oAuthTokenRAW.json()
+        token = oAuthTokenJSON['Token']
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'X-Auth-Token': token,
+        }
+    
+        rfProfileRAW = requests.request("GET", f"{ dnac }/dna/intent/api/v1/wireless/rf-profile", headers=headers)
+        rfProfileJSON = rfProfileRAW.json()
+
+        # Pass to template 
+
+        if rfProfileJSON is not None:
+            rf_profiles_template = env.get_template('DNAC_rf_profiles.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = rf_profiles_template.render(rfProfiles = rfProfileJSON['response'],DNAC=url,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"DNAC RF Profiles.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()                       
+                else:
+                    with open("DNAC RF Profiles Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"DNAC RF Profiles.json", "w") as fh:
+                    json.dump(rfProfileJSON, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(rfProfileJSON)
+    except Exception as e:
+        logging.exception(e)
+
+def DNAC_assurance_tests(url, username, password):
+    try:
+        # -------------------------
+        # Headers
+        # -------------------------
+        encodedCredentials=base64.b64encode(bytes(f'{ username}:{ password}', 'utf-8')).decode()
+        
+        auth_headers = {
+            'Content-Type': 'application/json',
+            'Authorization': f'Basic { encodedCredentials }'
+            }
+
+        dnac = "https://sandboxdnac.cisco.com"
+
+        # -------------------------
+        # Get OAuth Token
+        # -------------------------
+
+        oAuthTokenRAW = requests.request("POST", f"{ dnac }/dna/system/api/v1/auth/token", headers=auth_headers)
+        oAuthTokenJSON = oAuthTokenRAW.json()
+        token = oAuthTokenJSON['Token']
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'X-Auth-Token': token,
+        }
+    
+        assuranceTestsRAW = requests.request("GET", f"{ dnac }/dna/intent/api/v1/AssuranceGetSensorTestResults", headers=headers)
+        assuranceTestsJSON = assuranceTestsRAW.json()
+
+        # Pass to template 
+
+        if assuranceTestsJSON is not None:
+            assurance_tests_template = env.get_template('DNAC_assurance_tests.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = assurance_tests_template.render(assurance_tests = assuranceTestsJSON['response'],DNAC=url,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"DNAC Assurance Tests.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()                       
+                else:
+                    with open("DNAC Assurance Tests Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"DNAC Assurance Tests.json", "w") as fh:
+                    json.dump(assuranceTestsJSON, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(assuranceTestsJSON)
+    except Exception as e:
+        logging.exception(e)
+
+def DNAC_flow_analysis(url, username, password):
+    try:
+        # -------------------------
+        # Headers
+        # -------------------------
+        encodedCredentials=base64.b64encode(bytes(f'{ username}:{ password}', 'utf-8')).decode()
+        
+        auth_headers = {
+            'Content-Type': 'application/json',
+            'Authorization': f'Basic { encodedCredentials }'
+            }
+
+        dnac = "https://sandboxdnac.cisco.com"
+
+        # -------------------------
+        # Get OAuth Token
+        # -------------------------
+
+        oAuthTokenRAW = requests.request("POST", f"{ dnac }/dna/system/api/v1/auth/token", headers=auth_headers)
+        oAuthTokenJSON = oAuthTokenRAW.json()
+        token = oAuthTokenJSON['Token']
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'X-Auth-Token': token,
+        }
+    
+        flowAnalysisRAW = requests.request("GET", f"{ dnac }/dna/intent/api/v1/flow-analysis", headers=headers)
+        flowAnalysisJSON = flowAnalysisRAW.json()
+
+        # Pass to template 
+
+        if flowAnalysisJSON is not None:
+            flow_template = env.get_template('DNAC_flow_analysis.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = flow_template.render(flow_analysis = flowAnalysisJSON['response'],DNAC=url,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"DNAC Flow Analysis.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()                       
+                else:
+                    with open("DNAC Flow Analysis Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"DNAC Flow Analysis.json", "w") as fh:
+                    json.dump(flowAnalysisJSON, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(flowAnalysisJSON)
+    except Exception as e:
+        logging.exception(e)
 
 # ----------------
 # IOS ALL
