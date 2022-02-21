@@ -6,9 +6,29 @@
 | --------- | ------ | ---------- | --- | ------ | ------- | --------- | ------------- | ---------- | ------------ | ----------- | ---------- | -------- | --------- | ----------- | -------- | -------- | ----------- | ------------- | -------- | ------------ | -------------- | ------------------ | --------- |  {% for interface in to_parse_dot1x.interfaces %}{% if to_parse_dot1x.interfaces[interface].clients is defined %}{% for client in to_parse_dot1x.interfaces[interface].clients %}{% for session in to_parse_dot1x.interfaces[interface].clients[client].session %}
 | {{ interface }} | {{ client }} | {{ to_parse_dot1x.interfaces[interface].clients[client].eap_method }} | {{ to_parse_dot1x.interfaces[interface].clients[client].pae }} | {{ to_parse_dot1x.interfaces[interface].clients[client].status }} | {{ session }} | {{ to_parse_dot1x.interfaces[interface].clients[client].session[session].auth_bend_sm_state }} | {{ to_parse_dot1x.interfaces[interface].clients[client].session[session].auth_sm_state }} | {{ to_parse_dot1x.interfaces[interface].max_reauth_req }} | {{ to_parse_dot1x.interfaces[interface].max_req }} | {{ to_parse_dot1x.interfaces[interface].statistics.lastrxsrcmac }} | {{ to_parse_dot1x.interfaces[interface].statistics.rxinvalid }} | {{ to_parse_dot1x.interfaces[interface].statistics.rxlenerr }} | {{ to_parse_dot1x.interfaces[interface].statistics.rxlogoff }} | {{ to_parse_dot1x.interfaces[interface].statistics.rxresp }} | {{ to_parse_dot1x.interfaces[interface].statistics.rxstart }} | {{ to_parse_dot1x.interfaces[interface].statistics.rxtotal }} | {{ to_parse_dot1x.interfaces[interface].statistics.txreq }} | {{ to_parse_dot1x.interfaces[interface].statistics.txreqid }} | {{ to_parse_dot1x.interfaces[interface].statistics.txtotal }} | {{ to_parse_dot1x.interfaces[interface].timeout.quiet_period }} | {{ to_parse_dot1x.interfaces[interface].timeout.server_timeout }} | {{ to_parse_dot1x.interfaces[interface].timeout.supp_timeout }} | {{ to_parse_dot1x.interfaces[interface].timeout.tx_period }} |{% endfor %}{% endfor %}{% else %}
 | {{ interface }} | No Client | N/A | N/A | N/A | No Sessions | N/A | N/A | {{ to_parse_dot1x.interfaces[interface].max_reauth_req }} | {{ to_parse_dot1x.interfaces[interface].max_req }} | {{ to_parse_dot1x.interfaces[interface].statistics.lastrxsrcmac }} | {{ to_parse_dot1x.interfaces[interface].statistics.rxinvalid }} | {{ to_parse_dot1x.interfaces[interface].statistics.rxlenerr }} | {{ to_parse_dot1x.interfaces[interface].statistics.rxlogoff }} | {{ to_parse_dot1x.interfaces[interface].statistics.rxresp }} | {{ to_parse_dot1x.interfaces[interface].statistics.rxstart }} | {{ to_parse_dot1x.interfaces[interface].statistics.rxtotal }} | {{ to_parse_dot1x.interfaces[interface].statistics.txreq }} | {{ to_parse_dot1x.interfaces[interface].statistics.txreqid }} | {{ to_parse_dot1x.interfaces[interface].statistics.txtotal }} | {{ to_parse_dot1x.interfaces[interface].timeout.quiet_period }} | {{ to_parse_dot1x.interfaces[interface].timeout.server_timeout }} | {{ to_parse_dot1x.interfaces[interface].timeout.supp_timeout }} | {{ to_parse_dot1x.interfaces[interface].timeout.tx_period }} |{% endif %}{% endfor %}{% else %}{% if filetype_loop == 2 %}
-<html><head><link rel="stylesheet" href="../../../styles.css"></head><body>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/colreorder/1.5.4/js/dataTables.colReorder.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/keytable/2.6.4/js/dataTables.keyTable.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.1.9/js/dataTables.fixedHeader.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.9/css/fixedHeader.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/keytable/2.6.4/css/keyTable.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+</head>
+<body>
 <h1>Learn Dot1x/h1>
-<table class="merlin-table">
+<table id = "dot1x">
   <thead>
   <tr>
     <th>Interface</th>
@@ -38,7 +58,11 @@
   </tr>
   </thead>
   <tbody>{% for interface in to_parse_dot1x.interfaces %}{% if to_parse_dot1x.interfaces[interface].clients is defined %}{% for client in to_parse_dot1x.interfaces[interface].clients %}{% for session in to_parse_dot1x.interfaces[interface].clients[client].session %}
+  {%                if loop.index is divisibleby 2 %}
+  <tr style='background-color:#ddd'>
+  {%-               else %}
   <tr>
+  {%-               endif %}
     <td>{{ interface }}</td>
     <td>{{ client }}</td>
     <td>{{ to_parse_dot1x.interfaces[interface].clients[client].eap_method }}</td>
@@ -90,6 +114,77 @@
   </tr>{% endif %}{% endfor %}
   </tbody>  
 </table>
+<script type = "text/javascript">
+  $(document).ready(function(){
+    $('#dot1x thead tr')
+    .clone(true)
+    .addClass('filters')
+    .appendTo('#dot1x thead');
+
+    var table = $('#dot1x').DataTable({
+        keys: true,
+        dom: 'Bfrtip',
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],
+            [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        buttons: [
+        'pageLength','colvis','copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        colReorder: true,
+        select: true,            
+        orderCellsTop: true,
+        fixedHeader: true,
+        initComplete: function () {
+        var api = this.api();
+
+        // For each column
+        api
+            .columns()
+            .eq(0)
+            .each(function (colIdx) {
+                // Set the header cell to contain the input element
+                var cell = $('.filters th').eq(
+                    $(api.column(colIdx).header()).index()
+                );
+                var title = $(cell).text();
+                $(cell).html('<input type="text" placeholder="' + title + '" />');
+
+                // On every keypress in this input
+                $(
+                    'input',
+                    $('.filters th').eq($(api.column(colIdx).header()).index())
+                )
+                    .off('keyup change')
+                    .on('keyup change', function (e) {
+                        e.stopPropagation();
+
+                        // Get the search value
+                        $(this).attr('title', $(this).val());
+                        var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                        var cursorPosition = this.selectionStart;
+                        // Search the column for that value
+                        api
+                            .column(colIdx)
+                            .search(
+                                this.value != ''
+                                    ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                    : '',
+                                this.value != '',
+                                this.value == ''
+                            )
+                            .draw();
+
+                        $(this)
+                            .focus()[0]
+                            .setSelectionRange(cursorPosition, cursorPosition);
+                    });
+            });
+    },
+});
+});        
+</script>
 </body></html>{% else %}
 # Learn dot1x
 {%- for interface in to_parse_dot1x.interfaces %}

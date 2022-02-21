@@ -4,9 +4,29 @@
 | Forwarding Delay | Hello Time | Hold Count | Max Age | VLAN | Bridge Address | Bridge Priority | Configured Bridge Priority | Designated Root Address | Designated Root Priority | Forwarding Delay | Hello Time | Hold Count | Hold Time | Max Age | Last Topology Change | Total Topology Changes | Interface | Cost | BPDU Recieved | BPDU Sent | Designated Bridge Address | Designated Bridge Priority | Designated Cost | Designated Port Number | Designated Port Priority | Designated Root Address | Designated Root Priority | Forward Transtions | State | Role |
 | ---------------- | ---------- | ---------- | ------- | ---- | -------------- | --------------- | -------------------------- | ----------------------- | ------------------------ | ---------------- | ---------- | ---------- | --------- | ------- | -------------------- | ---------------------- | --------- | ---- | ------------- | --------- | ------------------------- | -------------------------- | --------------- | ---------------------- | ------------------------ | ----------------------- | ------------------------ | ------------------ | ----- | ---- |{% for id in to_parse_stp %}{% for vlan in to_parse_stp[id].vlans %}{% for interface in to_parse_stp[id].vlans[vlan].interfaces %}
 | {{ to_parse_stp[id].forwarding_delay }} | {{ to_parse_stp[id].hello_time }} | {{ to_parse_stp[id].hold_count }} | {{ to_parse_stp[id].max_age }} | {{ vlan }} | {{ to_parse_stp[id].vlans[vlan].bridge_address }} | {{ to_parse_stp[id].vlans[vlan].bridge_priority }} | {{ to_parse_stp[id].vlans[vlan].configured_bridge_priority }} | {{ to_parse_stp[id].vlans[vlan].designated_root_address }} | {{ to_parse_stp[id].vlans[vlan].designated_root_priority }} | {{ to_parse_stp[id].vlans[vlan].forwarding_delay }} | {{ to_parse_stp[id].vlans[vlan].hello_time }} | {{ to_parse_stp[id].vlans[vlan].hold_count }} | {{ to_parse_stp[id].vlans[vlan].hold_time }} | {{ to_parse_stp[id].vlans[vlan].max_age }} | {{ to_parse_stp[id].vlans[vlan].time_since_topology_change }} | {{ to_parse_stp[id].vlans[vlan].topology_changes }} | {{ interface }} | {{ to_parse_stp[id].vlans[vlan].interfaces[interface].cost | default("N/A") }} | {% if to_parse_stp[id].vlans[vlan].interfaces[interface].counters is defined %}{{ to_parse_stp[id].vlans[vlan].interfaces[interface].counters.bpdu_received }} | {{ to_parse_stp[id].vlans[vlan].interfaces[interface].counters.bpdu_sent }}{% else %}N/A | N/A {% endif %}| {{ to_parse_stp[id].vlans[vlan].interfaces[interface].designated_bridge_address | default("N/A") }} | {{ to_parse_stp[id].vlans[vlan].interfaces[interface].designated_bridge_priority | default("N/A") }} | {{ to_parse_stp[id].vlans[vlan].interfaces[interface].designated_cost | default("N/A") }} | {{ to_parse_stp[id].vlans[vlan].interfaces[interface].designated_port_num }} | {{ to_parse_stp[id].vlans[vlan].interfaces[interface].designated_port_priority }} | {{ to_parse_stp[id].vlans[vlan].interfaces[interface].designated_root_address | default("N/A") }} | {{ to_parse_stp[id].vlans[vlan].interfaces[interface].designated_root_priority | default("N/A") }} | {{ to_parse_stp[id].vlans[vlan].interfaces[interface].forward_transitions | default("N/A") }} | {{ to_parse_stp[id].vlans[vlan].interfaces[interface].port_state }} | {{ to_parse_stp[id].vlans[vlan].interfaces[interface].role }} | {% endfor %}{% endfor %}{% endfor %}{% else %}{% if filetype_loop == 2 %}
-<html><body>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/colreorder/1.5.4/js/dataTables.colReorder.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/keytable/2.6.4/js/dataTables.keyTable.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.1.9/js/dataTables.fixedHeader.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.9/css/fixedHeader.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/keytable/2.6.4/css/keyTable.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+</head>
+<body>
 <h1>Learn STP Rapid PVST+</h1>
-<table style="width:100%">
+<table id = "rpvst">
   <tr>
     <th>Forwarding Delay</th>
     <th>Hello Time</th>
@@ -40,7 +60,11 @@
     <th>State</th>
     <th>Role</th>
   </tr>{% for id in to_parse_stp %}{% for vlan in to_parse_stp[id].vlans %}{% for interface in to_parse_stp[id].vlans[vlan].interfaces %}
+  {%                if loop.index is divisibleby 2 %}
+  <tr style='background-color:#ddd'>
+  {%-               else %}
   <tr>
+  {%-               endif %}
     <td>{{ to_parse_stp[id].forwarding_delay }}</td>
     <td>{{ to_parse_stp[id].hello_time }}</td>
     <td>{{ to_parse_stp[id].hold_count }}</td>
@@ -76,6 +100,77 @@
     <td>{{ to_parse_stp[id].vlans[vlan].interfaces[interface].role }}</td>
   </tr>{% endfor %}{% endfor %}{% endfor %}  
 </table>
+<script type = "text/javascript">
+  $(document).ready(function(){
+    $('#rpvst thead tr')
+    .clone(true)
+    .addClass('filters')
+    .appendTo('#rpvst thead');
+
+    var table = $('#rpvst').DataTable({
+        keys: true,
+        dom: 'Bfrtip',
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],
+            [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        buttons: [
+        'pageLength','colvis','copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        colReorder: true,
+        select: true,            
+        orderCellsTop: true,
+        fixedHeader: true,
+        initComplete: function () {
+        var api = this.api();
+
+        // For each column
+        api
+            .columns()
+            .eq(0)
+            .each(function (colIdx) {
+                // Set the header cell to contain the input element
+                var cell = $('.filters th').eq(
+                    $(api.column(colIdx).header()).index()
+                );
+                var title = $(cell).text();
+                $(cell).html('<input type="text" placeholder="' + title + '" />');
+
+                // On every keypress in this input
+                $(
+                    'input',
+                    $('.filters th').eq($(api.column(colIdx).header()).index())
+                )
+                    .off('keyup change')
+                    .on('keyup change', function (e) {
+                        e.stopPropagation();
+
+                        // Get the search value
+                        $(this).attr('title', $(this).val());
+                        var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                        var cursorPosition = this.selectionStart;
+                        // Search the column for that value
+                        api
+                            .column(colIdx)
+                            .search(
+                                this.value != ''
+                                    ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                    : '',
+                                this.value != '',
+                                this.value == ''
+                            )
+                            .draw();
+
+                        $(this)
+                            .focus()[0]
+                            .setSelectionRange(cursorPosition, cursorPosition);
+                    });
+            });
+    },
+});
+});        
+</script>
 </body></html>{% else %}
 # Learn Rapid Per VLAN Spanning Tree
 {%- for id in to_parse_stp %}

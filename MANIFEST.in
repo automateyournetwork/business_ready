@@ -1,1 +1,1 @@
-include *.j2, *.py
+include *.j2, *.py, *.css, *.js

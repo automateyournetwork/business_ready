@@ -1,0 +1,199 @@
+{%- if filetype_loop == 0 %}Profile Name,Default Profile,Channel Width,Enable Brownfield,Enable CustomEnable Radio Type A,Enable Radio Type B,Radio Type A Radio Channels,Radio Type A Data Rates,Radio Type A Mandatory Data Rates,Radio Type A Power Threshold,Radio Type A RX SOP Threshold,Radio Type A Minimum Power,Radio Type A Maximum Power,Radio Type B Radio Channels,Radio Type B Data Rates,Radio Type B Mandatory Data Rates,Radio Type B Power Threshold,Radio Type B RX SOP Threshold,Radio Type B Minimum Power,Radio Type B Maximum Power
+{%- for profile in rfProfiles %}
+{{ profile.name }},{{ profile.defaultRfProfile }},{{ profile.channelWidth }},{{ profile.enableBrownField }},{{ profile.enableCustom }},{{ profile.enableRadioTypeA }},{{ profile.enableRadioTypeB }},{{ profile.radioTypeAProperties.radioChannels }},{{ profile.radioTypeAProperties.dataRates }},{{ profile.radioTypeAProperties.mandatoryDataRates }},{{ profile.radioTypeAProperties.powerThresholdV1 }},{{ profile.radioTypeAProperties.rxSopThreshold }},{{ profile.radioTypeAProperties.minPowerLevel }},{{ profile.radioTypeAProperties.maxPowerLevel }},{{ profile.radioTypeBProperties.radioChannels }},{{ profile.radioTypeBProperties.dataRates }},{{ profile.radioTypeBProperties.mandatoryDataRates }},{{ profile.radioTypeBProperties.powerThresholdV1 }},{{ profile.radioTypeBProperties.rxSopThreshold }},{{ profile.radioTypeBProperties.minPowerLevel }},{{ profile.radioTypeBProperties.maxPowerLevel }}
+{%- endfor %}
+{%- else %}
+{%-     if filetype_loop == 1 %}
+# DNAC RF Profiles
+| Profile Name | Default Profile | Channel Width | Enable Brownfield | Enable CustomEnable Radio Type A | Enable Radio Type B | Radio Type A Radio Channels | Radio Type A Data Rates | Radio Type A Mandatory Data Rates | Radio Type A Power Threshold | Radio Type A RX SOP Threshold | Radio Type A Minimum Power | Radio Type A Maximum Power | Radio Type B Radio Channels | Radio Type B Data Rates | Radio Type B Mandatory Data Rates | Radio Type B Power Threshold | Radio Type B RX SOP Threshold | Radio Type B Minimum Power | Radio Type B Maximum Power |
+| ------------ | --------------- | ------------- | ----------------- | -------------------------------- | ------------------- | --------------------------- | ----------------------- | --------------------------------- | ---------------------------- | ----------------------------- | -------------------------- | -------------------------- | --------------------------- | ----------------------- | --------------------------------- | ---------------------------- | ----------------------------- | -------------------------- | -------------------------- |
+{%- for profile in rfProfiles %}
+| {{ profile.name }} | {{ profile.defaultRfProfile }} | {{ profile.channelWidth }} | {{ profile.enableBrownField }} | {{ profile.enableCustom }} | {{ profile.enableRadioTypeA }} | {{ profile.enableRadioTypeB }} | {{ profile.radioTypeAProperties.radioChannels }} | {{ profile.radioTypeAProperties.dataRates }} | {{ profile.radioTypeAProperties.mandatoryDataRates }} | {{ profile.radioTypeAProperties.powerThresholdV1 }} | {{ profile.radioTypeAProperties.rxSopThreshold }} | {{ profile.radioTypeAProperties.minPowerLevel }} | {{ profile.radioTypeAProperties.maxPowerLevel }} | {{ profile.radioTypeBProperties.radioChannels }} | {{ profile.radioTypeBProperties.dataRates }} | {{ profile.radioTypeBProperties.mandatoryDataRates }} | {{ profile.radioTypeBProperties.powerThresholdV1 }} | {{ profile.radioTypeBProperties.rxSopThreshold }} | {{ profile.radioTypeBProperties.minPowerLevel }} | {{ profile.radioTypeBProperties.maxPowerLevel }} |
+{%- endfor %}
+{%-     else %}
+{%-         if filetype_loop == 2 %}
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/colreorder/1.5.4/js/dataTables.colReorder.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/keytable/2.6.4/js/dataTables.keyTable.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.1.9/js/dataTables.fixedHeader.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.9/css/fixedHeader.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/keytable/2.6.4/css/keyTable.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+</head>
+<body>
+<h1>DNAC RF Profiles</h1>
+<table id = "rf">
+  <thead>
+    <tr>
+      <th>Profile Name</th>
+      <th>Default Profile</th>
+      <th>Channel Width</th>
+      <th>Enable Brownfield</th>
+      <th>Enable CustomEnable Radio Type A</th>
+      <th>Enable Radio Type B</th>
+      <th>Radio Type A Radio Channels</th>
+      <th>Radio Type A Data Rates</th>
+      <th>Radio Type A Mandatory Data Rates</th>
+      <th>Radio Type A Power Threshold</th>
+      <th>Radio Type A RX SOP Threshold</th>
+      <th>Radio Type A Minimum Power</th>
+      <th>Radio Type A Maximum Power</th>
+      <th>Radio Type B Radio Channels</th>
+      <th>Radio Type B Data Rates</th>
+      <th>Radio Type B Mandatory Data Rates</th>
+      <th>Radio Type B Power Threshold</th>
+      <th>Radio Type B RX SOP Threshold</th>
+      <th>Radio Type B Minimum Power</th>
+      <th>Radio Type B Maximum Power</th>
+    </tr>
+  </thead>
+  <tbody>
+{%- for profile in rfProfiles %}
+  {%                if loop.index is divisibleby 2 %}
+  <tr style='background-color:#ddd'>
+  {%-               else %}
+  <tr>
+  {%-               endif %}
+    <td>{{ profile.name }}</td>
+    <td>{{ profile.defaultRfProfile }}</td>
+    <td>{{ profile.channelWidth }}</td>
+    <td>{{ profile.enableBrownField }}</td>
+    <td>{{ profile.enableCustom }}</td>
+    <td>{{ profile.enableRadioTypeA }}</td>
+    <td>{{ profile.enableRadioTypeB }}</td>
+    <td>{{ profile.radioTypeAProperties.radioChannels }}</td>
+    <td>{{ profile.radioTypeAProperties.dataRates }}</td>
+    <td>{{ profile.radioTypeAProperties.mandatoryDataRates }}</td>
+    <td>{{ profile.radioTypeAProperties.powerThresholdV1 }}</td>
+    <td>{{ profile.radioTypeAProperties.rxSopThreshold }}</td>
+    <td>{{ profile.radioTypeAProperties.minPowerLevel }}</td>
+    <td>{{ profile.radioTypeAProperties.maxPowerLevel }}</td>
+    <td>{{ profile.radioTypeBProperties.radioChannels }}</td>
+    <td>{{ profile.radioTypeBProperties.dataRates }}</td>
+    <td>{{ profile.radioTypeBProperties.mandatoryDataRates }}</td>
+    <td>{{ profile.radioTypeBProperties.powerThresholdV1 }}</td>
+    <td>{{ profile.radioTypeBProperties.rxSopThreshold }}</td>
+    <td>{{ profile.radioTypeBProperties.minPowerLevel }}</td>
+    <td>{{ profile.radioTypeBProperties.maxPowerLevel }}</td>
+  </tr>
+{%- endfor %}
+  </tbody>
+</table>
+<script type = "text/javascript">
+  $(document).ready(function(){
+    $('#rf thead tr')
+    .clone(true)
+    .addClass('filters')
+    .appendTo('#rf thead');
+
+    var table = $('#rf').DataTable({
+        keys: true,
+        dom: 'Bfrtip',
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],
+            [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        buttons: [
+        'pageLength','colvis','copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        colReorder: true,
+        select: true,            
+        orderCellsTop: true,
+        fixedHeader: true,
+        initComplete: function () {
+        var api = this.api();
+
+        // For each column
+        api
+            .columns()
+            .eq(0)
+            .each(function (colIdx) {
+                // Set the header cell to contain the input element
+                var cell = $('.filters th').eq(
+                    $(api.column(colIdx).header()).index()
+                );
+                var title = $(cell).text();
+                $(cell).html('<input type="text" placeholder="' + title + '" />');
+
+                // On every keypress in this input
+                $(
+                    'input',
+                    $('.filters th').eq($(api.column(colIdx).header()).index())
+                )
+                    .off('keyup change')
+                    .on('keyup change', function (e) {
+                        e.stopPropagation();
+
+                        // Get the search value
+                        $(this).attr('title', $(this).val());
+                        var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                        var cursorPosition = this.selectionStart;
+                        // Search the column for that value
+                        api
+                            .column(colIdx)
+                            .search(
+                                this.value != ''
+                                    ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                    : '',
+                                this.value != '',
+                                this.value == ''
+                            )
+                            .draw();
+
+                        $(this)
+                            .focus()[0]
+                            .setSelectionRange(cursorPosition, cursorPosition);
+                    });
+            });
+    },
+});
+});        
+</script>
+</body></html>
+{%-         else %}
+# {{ DNAC }}
+## RF Profiles
+{%- for profile in rfProfiles %}
+### {{ profile.name }}
+#### Default Profile: {{ profile.defaultRfProfile }}
+#### Channel Width: {{ profile.channelWidth }}
+#### Enable
+##### Brownfield: {{ profile.enableBrownField }}
+##### Custom: {{ profile.enableCustom }}
+##### Radio Type A: {{ profile.enableRadioTypeA }}
+##### Radio Type B: {{ profile.enableRadioTypeB }}
+#### Radio Type A
+##### Radio Channels: {{ profile.radioTypeAProperties.radioChannels }}
+##### Data Rates: {{ profile.radioTypeAProperties.dataRates }}
+##### Mandatory Data Rates: {{ profile.radioTypeAProperties.mandatoryDataRates }}
+##### Power Threshold: {{ profile.radioTypeAProperties.powerThresholdV1 }}
+##### RX SOP Threshold: {{ profile.radioTypeAProperties.rxSopThreshold }}
+##### Power Levels
+###### Minimum: {{ profile.radioTypeAProperties.minPowerLevel }}
+###### Maximum: {{ profile.radioTypeAProperties.maxPowerLevel }}
+#### Radio Type B
+##### Radio Channels: {{ profile.radioTypeBProperties.radioChannels }}
+##### Data Rates: {{ profile.radioTypeBProperties.dataRates }}
+##### Mandatory Data Rates: {{ profile.radioTypeBProperties.mandatoryDataRates }}
+##### Power Threshold: {{ profile.radioTypeBProperties.powerThresholdV1 }}
+##### RX SOP Threshold: {{ profile.radioTypeBProperties.rxSopThreshold }}
+##### Power Levels
+###### Minimum: {{ profile.radioTypeBProperties.minPowerLevel }}
+###### Maximum: {{ profile.radioTypeBProperties.maxPowerLevel }}
+{%- endfor %}
+{%-         endif %}
+{%-     endif %}
+{%- endif %}
