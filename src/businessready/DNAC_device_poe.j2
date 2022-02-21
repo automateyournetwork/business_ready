@@ -47,11 +47,7 @@
   </thead>
   <tbody>
 {%-     for interface in poe %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ interface.interfaceName }}</td>
     <td>{{ interface.operStatus }}</td>
     <td>{{ interface.adminStatus }}</td>

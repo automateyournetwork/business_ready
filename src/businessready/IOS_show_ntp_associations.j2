@@ -49,11 +49,7 @@
   </thead>
   <tbody>
 {%-             for peer in to_parse_ntp_associations.peer %}  
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ peer }}</td>
     <td>{{ to_parse_ntp_associations['peer'][peer]['local_mode']['client']['refid'] }}</td>
     <td>{{ to_parse_ntp_associations['peer'][peer]['local_mode']['client']['stratum'] }}</td>

@@ -42,11 +42,7 @@
     <th>Source Protocol</th>
     <th>Source Protocol Code</th>
   </tr>{% for vrf in to_parse_routing %}{% for address_family in to_parse_routing[vrf].address_family %}{% for route in to_parse_routing[vrf].address_family[address_family].routes %}{% if to_parse_routing[vrf].address_family[address_family].routes[route].next_hop.next_hop_list is defined %}{% for next_hop in to_parse_routing[vrf].address_family[address_family].routes[route].next_hop.next_hop_list %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ vrf }}</td>
     <td>{{ address_family }}</td>
     <td>{{ route }}</td>

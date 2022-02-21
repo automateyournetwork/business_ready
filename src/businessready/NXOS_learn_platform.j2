@@ -106,11 +106,7 @@ N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,{{ to_pa
   </tr>
 {%-         for slot in to_parse_platform.slot %}
 {%-             for sub_slot in to_parse_platform.slot[slot] %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>N/A</td>
     <td>N/A</td>
     <td>N/A</td>
@@ -142,11 +138,7 @@ N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,{{ to_pa
 {%-         endfor %}
 {%-         for virtual_device in to_parse_platform.virtual_device %}
 {%-             for interface in to_parse_platform.virtual_device[virtual_device].membership %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>N/A</td>
     <td>N/A</td>
     <td>N/A</td>

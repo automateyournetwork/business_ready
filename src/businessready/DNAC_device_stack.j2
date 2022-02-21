@@ -75,11 +75,7 @@ N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,{{ item.name }},{{ item.isSynchOk }},{{ 
   <tbody>
 {%-   if stack.stackSwitchInfo is not none %}
 {%-     for info in stack.stackSwitchInfo %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ info.stackMemberNumber }}</td>
     <td>{{ info.hwPriority }}</td>
     <td>{{ info.switchPriority }}</td>
@@ -104,11 +100,7 @@ N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,{{ item.name }},{{ item.isSynchOk }},{{ 
 {%    endif %}
 {%-   if stack.stackPortInfo is not none %}
 {%-     for item in stack.stackPortInfo %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>N/A</td>
     <td>N/A</td>
     <td>N/A</td>

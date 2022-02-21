@@ -87,11 +87,7 @@
   <tbody>
 {%-             for item in siteMembers if item.response %}
 {%-                 for member in item.response %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ site }}</td>
     <td>{{ member.hostname }}</td>
     <td>{{ member.instanceUuid }}</td>

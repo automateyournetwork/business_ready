@@ -53,11 +53,7 @@
   <tbody>
 {%-         for interface in to_parse_ip_arp %}
 {%-             for neighbor in to_parse_ip_arp[interface].ipv4.neighbors %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ interface }}</td>
     <td>{{ neighbor }}</td>
     <td>{{ to_parse_ip_arp[interface].ipv4.neighbors[neighbor].link_layer_address }}</td>

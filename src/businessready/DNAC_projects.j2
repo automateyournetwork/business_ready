@@ -58,11 +58,7 @@
   <tbody>
 {%- for project in projects %}
 {%-     for template in project.templates %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ project.name }}</td>
     <td>{{ project.id }}</td>
     <td>{{ project.isDeletable }}</td>

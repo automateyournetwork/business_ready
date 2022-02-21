@@ -48,11 +48,7 @@
   </thead>
   <tbody>
 {%- for item in compliance %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ item.complianceType }}</td>
     <td>{{ item.status }}</td>
     <td>{{ item.state }}</td>

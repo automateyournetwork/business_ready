@@ -73,11 +73,7 @@
   </thead>
   <tbody>
 {%-   for insight in insightVLAN if device.hostname == insight.startDeviceHostName or insight.endDeviceHostName %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ insight.id }}</td>
     <td>{{ insight.type }}</td>
     <td>{{ insight.avgUpdateFrequency }}</td>

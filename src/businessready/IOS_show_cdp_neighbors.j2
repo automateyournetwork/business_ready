@@ -47,11 +47,7 @@
   </thead>
   <tbody>
 {%-             for neighbor in to_parse_cdp_neighbors.index %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ to_parse_cdp_neighbors.index[neighbor].device_id }}</td>
     <td>{{ to_parse_cdp_neighbors.index[neighbor].platform }}</td>
     <td>{{ to_parse_cdp_neighbors.index[neighbor].local_interface }}</td>

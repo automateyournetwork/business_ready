@@ -56,11 +56,7 @@
   <tbody>
 {%- for flow in flow_analysis %}
 {%-     for inclusion in flow.inclusions %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ flow.id }}</td>
     <td>{{ flow.status }}</td>
     <td>{{ flow.createTime }}</td>

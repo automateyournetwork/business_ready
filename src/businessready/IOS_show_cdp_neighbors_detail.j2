@@ -56,11 +56,7 @@
   <tbody>
 {%-             for neighbor in to_parse_cdp_neighbors %}
 {%-                 for ip_address in to_parse_cdp_neighbors[neighbor].entry_addresses %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ to_parse_cdp_neighbors[neighbor].local_interface }}</td>
     <td>{{ to_parse_cdp_neighbors[neighbor].device_id }}</td>
     <td>{{ to_parse_cdp_neighbors[neighbor].port_id }}</td>

@@ -55,11 +55,7 @@
 {%-             for vlan in to_parse_mac_address_table.vlans %}
 {%-                 for mac in to_parse_mac_address_table.vlans[vlan].mac_addresses %}
 {%-                     for interface in to_parse_mac_address_table.vlans[vlan].mac_addresses[mac].interfaces %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ vlan }}</td>
     <td>{{ mac }}</td>
     <td>{{ interface }}</td>

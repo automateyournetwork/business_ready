@@ -72,11 +72,7 @@ N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,{{ link.id }},{{ link.so
   </thead>
   <tbody>
 {%-     for node in vlanTopology.nodes %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ node.label }}</td>
     <td>{{ node.id }}</td>
     <td>{{ node.deviceType }}</td>
@@ -105,11 +101,7 @@ N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,{{ link.id }},{{ link.so
   </tr>
 {%-         endfor %}
 {%-         for link in vlanTopology.links %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>N/A</td>
     <td>N/A</td>
     <td>N/A</td>

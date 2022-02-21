@@ -68,11 +68,7 @@
 {%-             for instance in to_parse_bgp %}
 {%-                 for vrf in to_parse_bgp[instance].vrf %}
 {%-                     for neighbor in to_parse_bgp[instance].vrf[vrf].neighbor %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ instance }}</td>
     <td>{{ to_parse_bgp[instance].bgp_id }}</td>
     <td>{{ to_parse_bgp[instance].protocol_state }}</td>

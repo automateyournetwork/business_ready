@@ -40,11 +40,7 @@
   </thead>
   <tbody>
   {% for interface in to_parse_interfaces_trunk %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ interface }}</td>
     <td>{{ to_parse_interfaces_trunk[interface].encapsulation }}</td>
     <td>{{ to_parse_interfaces_trunk[interface].mode }}</td>

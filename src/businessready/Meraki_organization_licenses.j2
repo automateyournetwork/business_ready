@@ -1,11 +1,17 @@
-{% if filetype_loop == 0 %}VRF,Description,Address Family,Route Target,Route Target Type,Route Distinguisher{% for vrf in to_parse_vrf %}{% for address_family in to_parse_vrf[vrf].address_family %}{% if to_parse_vrf[vrf].address_family[address_family].route_targets is defined %}{% for target in to_parse_vrf[vrf].address_family[address_family].route_targets %}
-{{ vrf }},{{ to_parse_vrf[vrf].description }},{{ target }},{{ to_parse_vrf[vrf].address_family[address_family].route_targets[target].rt_type }},{{ address_family }},{{ to_parse_vrf[vrf].route_distinguisher }}{% endfor %}{% else %}
-{{ vrf }},{{ to_parse_vrf[vrf].description }},N/A,N/A,{{ address_family }},{{ to_parse_vrf[vrf].route_distinguisher }}{% endif %}{% endfor %}{% endfor %}{% else %}{% if filetype_loop == 1 %}
-# Learn VRF
-| VRF | Description | Address Family | Route Target | Route Target Type | Route Distinguisher |
-| --- | ----------- | -------------- | ------------ | ----------------- | ------------------- |{% for vrf in to_parse_vrf %}{% for address_family in to_parse_vrf[vrf].address_family %}{% if to_parse_vrf[vrf].address_family[address_family].route_targets is defined %}{% for target in to_parse_vrf[vrf].address_family[address_family].route_targets %}
-| {{ vrf }} | {{ to_parse_vrf[vrf].description }} | {{ target }} | {{ to_parse_vrf[vrf].address_family[address_family].route_targets[target].rt_type }} | {{ address_family }} | {{ to_parse_vrf[vrf].route_distinguisher }} |{% endfor %}{% else %}
-| {{ vrf }} | {{ to_parse_vrf[vrf].description }} | N/A | N/A | {{ address_family }} | {{ to_parse_vrf[vrf].route_distinguisher }} |{% endif %}{% endfor %}{% endfor %}{% else %}{% if filetype_loop == 2 %}
+{%- if filetype_loop == 0 %}Activation Date,Claim Date,Device Serial Number,Duration In Days,Expiration Date,ID,License Key,License Type,Network Id,Order Number,Permanently Queued Licenses,Seat Count,State,Total Duration In Days
+{%-     for fact in license %}
+{{ fact.activationDate }},{{ fact.claimDate }},{{ fact.deviceSerial }},{{ fact.durationInDays }},{{ fact.expirationDate }},{{ fact.id }},{{ fact.licenseKey }},{{ fact.licenseType }},{{ fact.networkId }},{{ fact.orderNumber }},{%- for license in fact.permanentlyQueuedLicenses %}{{ license }} {%- endfor %},{{ fact.seatCount }},{{ fact.state }},{{ fact.totalDurationInDays }}
+{%-     endfor %}
+{%- else %}
+{%-     if filetype_loop == 1 %}
+# Meraki Organization Licenses
+| Activation Date | Claim Date | Device Serial Number | Duration In Days | Expiration Date | ID | License Key | License Type | Network Id | Order Number | Permanently Queued Licenses | Seat Count | State | Total Duration In Days |
+| --------------- | ---------- | -------------------- | ---------------- | --------------- | -- | ----------- | ------------ | ---------- | ------------ | --------------------------- | ---------- | ----- | ---------------------- |
+{%-     for fact in license %}
+| {{ fact.activationDate }} | {{ fact.claimDate }} | {{ fact.deviceSerial }} | {{ fact.durationInDays }} | {{ fact.expirationDate }} | {{ fact.id }} | {{ fact.licenseKey }} | {{ fact.licenseType }} | {{ fact.networkId }} | {{ fact.orderNumber }} | {%- for license in fact.permanentlyQueuedLicenses %}{{ license }}  {%- endfor %}| {{ fact.seatCount }} | {{ fact.state }} | {{ fact.totalDurationInDays }} |
+{%-     endfor %}
+{%-     else %}
+{%-         if filetype_loop == 2 %}
 <html>
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -27,45 +33,55 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
 </head>
 <body>
-<h1>Learn VRF</h1>
-<table id = "vrf">
+<h1>Meraki Organization Licenses</h1>
+<table id = "organizations">
   <thead>
-  <tr>
-    <th>VRF</th>
-    <th>Description</th>
-    <th>Address Family</th>
-    <th>Route Target</th>
-    <th>Route Target Type</th>
-    <th>Route Distinguisher</th>
-  </tr>
+    <tr>
+      <th>Activation Date</th>
+      <th>Claim Date</th>
+      <th>Device Serial Number</th>
+      <th>Duration In Days</th>
+      <th>Expiration Date</th>
+      <th>ID</th>
+      <th>License Key</th>
+      <th>License Type</th>
+      <th>Network Id</th>
+      <th>Order Number</th>
+      <th>Permanently Queued Licenses</th>
+      <th>Seat Count</th>
+      <th>State</th>
+      <th>Total Duration In Days</th>
+    </tr>
   </thead>
-  <tbody>{% for vrf in to_parse_vrf %}{% for address_family in to_parse_vrf[vrf].address_family %}{% if to_parse_vrf[vrf].address_family[address_family].route_targets is defined %}{% for target in to_parse_vrf[vrf].address_family[address_family].route_targets %}
-<tr>
-    <td>{{ vrf }}</td>
-    <td>{{ to_parse_vrf[vrf].description }}</td>
-    <td>{{ address_family }}</td>
-    <td>{{ target }}</td>
-    <td>{{ to_parse_vrf[vrf].address_family[address_family].route_targets[target].rt_type }}</td>
-    <td>{{ to_parse_vrf[vrf].route_distinguisher }}</td>
-  </tr>{% endfor %}{% else %}
-<tr>
-    <td>{{ vrf }}</td>
-    <td>{{ to_parse_vrf[vrf].description }}</td>
-    <td>{{ address_family }}</td>
-    <td>N/A</td>
-    <td>N/A</td>
-    <td>{{ to_parse_vrf[vrf].route_distinguisher }}</td>
-  </tr>  
-  </tbody>  
+  <tbody>
+{%-     for fact in license %}
+  <tr>
+    <td>{{ fact.activationDate }}</td>
+    <td>{{ fact.claimDate }}</td>
+    <td>{{ fact.deviceSerial }}</td>
+    <td>{{ fact.durationInDays }}</td>
+    <td>{{ fact.expirationDate }}</td>
+    <td>{{ fact.id }}</td>
+    <td>{{ fact.licenseKey }}</td>
+    <td>{{ fact.licenseType }}</td>
+    <td>{{ fact.networkId }}</td>
+    <td>{{ fact.orderNumber }}</td>
+    <td>{%- for license in fact.permanentlyQueuedLicenses %}{{ license }}{%- endfor %}</td>
+    <td>{{ fact.seatCount }}</td>
+    <td>{{ fact.state }}</td>
+    <td>{{ fact.totalDurationInDays }}</td>
+  </tr>
+{%-     endfor %}
+  </tbody>
 </table>
 <script type = "text/javascript">
   $(document).ready(function(){
-    $('#vrf thead tr')
+    $('#organizations thead tr')
     .clone(true)
     .addClass('filters')
-    .appendTo('#vrf thead');
+    .appendTo('#organizations thead');
 
-    var table = $('#vrf').DataTable({
+    var table = $('#organizations').DataTable({
         keys: true,
         dom: 'Bfrtip',
         lengthMenu: [
@@ -129,18 +145,28 @@
 });
 });        
 </script>
-</body></html>{% endif %}{% endfor %}{% endfor %}{% else %}
-# Learn VRF
-{%- for vrf in to_parse_vrf %}
-## {{ vrf }}
-{%-     for address_family in to_parse_vrf[vrf].address_family %}
-### {{ address_family }}
-{%-         if to_parse_vrf[vrf].address_family[address_family].route_targets is defined %}
-{%-             for target in to_parse_vrf[vrf].address_family[address_family].route_targets %}
-#### Target: {{ target }}
-{%-             endfor %}
-{%-         endif %}
-#### Route Distinguisher: {{ to_parse_vrf[vrf].route_distinguisher }}
-{%-     endfor %}
+</body></html>
+{%-         else %}
+# Meraki Organization Licenses
+## ID
+{%-     for fact in license %}
+### {{ fact.id }}
+#### Activation Date: {{ fact.activationDate }}
+#### Claim Date: {{ fact.claimDate }}
+#### Device Serial Number: {{ fact.deviceSerial }}
+#### Duration In Days: {{ fact.durationInDays }}
+#### Expiration Date: {{ fact.expirationDate }}
+#### License 
+##### Key: {{ fact.licenseKey }} 
+##### Type: {{ fact.licenseType }}
+#### Network ID: {{ fact.networkId }}
+#### Order Number: {{ fact.orderNumber }}
+#### Permanently Queued Licenses
+{%- for license in fact.permanentlyQueuedLicenses %}
+##### {{ license }}
 {%- endfor %}
+#### Seat Count: {{ fact.seatCount }}
+#### State: {{ fact.state }}
+#### Total Duration In Days: {{ fact.totalDurationInDays }}
+{%-     endfor %}
 {% endif %}{% endif %}{% endif %}

@@ -32,11 +32,7 @@
     <th>Server Address</th>
     <th>Preferred</th>
   </tr>{% for vrf in to_parse_ntp %}{% for address in to_parse_ntp[vrf].unicast_configuration.address %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ vrf }}</td>
     <td>{{ address }}</td>
     <td>{{ to_parse_ntp[vrf].unicast_configuration.address[address].type.server.preferred }}</td>

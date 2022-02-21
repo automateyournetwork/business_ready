@@ -57,11 +57,7 @@
   </thead>
   <tbody>
   {% for list in to_parse_access_list %}{% if to_parse_access_list[list].aces is defined %}{% for ace in to_parse_access_list[list].aces %}{% if to_parse_access_list[list].aces[ace].matches.l3 is defined %}{% if to_parse_access_list[list].aces[ace].matches.l3.ipv4 is defined %}{% if to_parse_access_list[list].aces[ace].matches.l3.ipv4.source_network is defined %}{% for source_network in to_parse_access_list[list].aces[ace].matches.l3.ipv4.source_network %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ list }}</td>
     <td>{{ ace }}</td>
     <td>{{ to_parse_access_list[list].aces[ace].actions.forwarding }}</td>
@@ -73,11 +69,7 @@
     <td>N/A</td>
     <td>N/A</td>
   </tr>{% endfor %}{% else %}{% for destination_network in to_parse_access_list[list].aces[ace].matches.l3.ipv4.destination_network %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ list }}</td>
     <td>{{ ace }}</td>
     <td>{{ to_parse_access_list[list].aces[ace].actions.forwarding }}</td>
@@ -89,11 +81,7 @@
     <td>N/A</td>
     <td>N/A</td>
   </tr>{% endfor %}{% endif %}{% endif %}{% endif %}{% endfor %}{% else %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ list }}</td>
     <td>No ACEs</td>
     <td>N/A</td>
@@ -105,11 +93,7 @@
     <td>N/A</td>
     <td>N/A</td>
   </tr>{% endif %}{% endfor %}{% for list in to_parse_access_list %}{% if to_parse_access_list[list].aces is defined %}{% for ace in to_parse_access_list[list].aces %}{% if to_parse_access_list[list].aces[ace].matches.l4 is defined %}{% if to_parse_access_list[list].aces[ace].matches.l4.udp is defined %}{% if to_parse_access_list[list].aces[ace].matches.l4.udp.source_port is defined %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ list }}</td>
     <td>{{ ace }}</td>
     <td>{{ to_parse_access_list[list].aces[ace].actions.forwarding }}</td>
@@ -123,11 +107,7 @@
     <td>N/A</td>
     <td>N/A</td>{% endif %}
   </tr>{% else %}{% if to_parse_access_list[list].aces[ace].matches.l4.udp.destination_port is defined%}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ list }}</td>
     <td>{{ ace }}</td>
     <td>{{ to_parse_access_list[list].aces[ace].actions.forwarding }}</td>
@@ -141,11 +121,7 @@
     <td>N/A</td>
     <td>N/A</td>{% endif %}
   </tr>{% endif %}{% endif %}{% else %}{% if to_parse_access_list[list].aces[ace].matches.l4.tcp is defined %}{% if to_parse_access_list[list].aces[ace].matches.l4.tcp.source_port is defined %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ list }}</td>
     <td>{{ ace }}</td>
     <td>{{ to_parse_access_list[list].aces[ace].actions.forwarding }}</td>
@@ -159,11 +135,7 @@
     <td>N/A</td>
     <td>N/A</td>{% endif %}
   </tr>{% else %}{% if to_parse_access_list[list].aces[ace].matches.l4.tcp.destination_port is defined%}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ list }}</td>
     <td>{{ ace }}</td>
     <td>{{ to_parse_access_list[list].aces[ace].actions.forwarding }}</td>
@@ -177,11 +149,7 @@
     <td>N/A</td>
     <td>N/A</td>{% endif %}
   </tr>{% endif %}{% endif %}{% endif %}{% endif %}{% endif %}{% endfor %}{% else %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ list }}</td>
     <td>No ACEs</td>
     <td>N/A</td>

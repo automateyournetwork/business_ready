@@ -52,11 +52,7 @@
   <tbody>
 {%-         for vlan in to_parse_vlan %}
 {%-             for interface in to_parse_vlan[vlan].interfaces %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ vlan }}</td>
     <td>{{ interface }}</td>
     <td>{{ to_parse_vlan[vlan].name }}</td>
