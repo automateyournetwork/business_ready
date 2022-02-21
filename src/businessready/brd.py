@@ -1501,6 +1501,9 @@ def DNAC_flow_analysis(url, username, password):
 def Meraki_all(url, token):
     Meraki_organizations(url, username, password)
     Meraki_organization_devices(url, username, password)
+    Meraki_organization_licenses(url, username, password)
+    Meraki_organization_adaptive_policies(url, username, password)
+    Meraki_organization_admins(url, username, password)
     return("All Meraki APIs Converted to Business Ready Documents")
 
 def Meraki_organizations(url, token):
@@ -1595,6 +1598,116 @@ def Meraki_organization_licenses(url, token):
                                 json.dump(organizationLicensesJSON, fh, indent=4, sort_keys=True)
                                 fh.close()                            
         return(organizationLicensesJSON)
+    except Exception as e:
+        logging.exception(e)
+
+def Meraki_organization_adaptive_policies(url, token):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'X-Cisco-Meraki-API-Key': token,
+        }
+    
+        organizationsRAW = requests.request("GET", f"{ url }/api/v1/organizations", headers=headers)
+        organizationsJSON = organizationsRAW.json()
+
+        # Pass to template 
+
+        if organizationsJSON is not None:
+            for org in organizationsJSON:                     
+    
+                organizationAdaptivePoliciesRAW = requests.request("GET", f"{ url }/api/v1/organizations/{ org['id'] }/adaptivePolicy/acls", headers=headers)
+                organizationAdaptivePoliciesJSON = organizationAdaptivePoliciesRAW.json()
+
+                if organizationAdaptivePoliciesJSON != []:
+        # -------------------------
+        # create folders to hold files
+        # -------------------------
+                    if not os.path.exists(f"{ org['name'] }"):
+                        os.mkdir(f"{ org['name'] }")
+                    else:
+                        print("Directory already exists")                      
+
+                    organization_adaptive_policy_template = env.get_template('Meraki_organization_adaptive_policies.j2')
+                    loop_counter = 0
+
+        # Render Templates
+                    for filetype in filetype_loop:
+                        parsed_output = organization_adaptive_policy_template.render(adaptivePolicies = organizationAdaptivePoliciesJSON,filetype_loop=loop_counter)
+                        loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                        if loop_counter <= 3:
+                            with open(f"{ org['name'] }/Meraki { org['name'] } Adaptive Policy ACLs.{ filetype }", "w") as fh:
+                                fh.write(parsed_output)               
+                                fh.close()
+                        else:
+                            with open(f"{ org['name'] }/Meraki { org['name'] } Adaptive Policy ACLs Mind Map.md", "w") as fh:
+                                fh.write(parsed_output)               
+                                fh.close()
+                        with open(f"{ org['name'] }/Meraki { org['name'] } Adaptive Policy ACLs.json", "w") as fh:
+                            json.dump(organizationAdaptivePoliciesJSON, fh, indent=4, sort_keys=True)
+                            fh.close()                            
+        return(organizationAdaptivePoliciesJSON)
+    except Exception as e:
+        logging.exception(e)
+
+def Meraki_organization_admins(url, token):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'X-Cisco-Meraki-API-Key': token,
+        }
+    
+        organizationsRAW = requests.request("GET", f"{ url }/api/v1/organizations", headers=headers)
+        organizationsJSON = organizationsRAW.json()
+
+        # Pass to template 
+
+        if organizationsJSON is not None:
+            for org in organizationsJSON:                     
+    
+                organizationAdminsRAW = requests.request("GET", f"{ url }/api/v1/organizations/{ org['id'] }/admins", headers=headers)
+                organizationAdminsJSON = organizationAdminsRAW.json()
+
+                if organizationAdminsJSON != []:
+        # -------------------------
+        # create folders to hold files
+        # -------------------------
+                    if not os.path.exists(f"{ org['name'] }"):
+                        os.mkdir(f"{ org['name'] }")
+                    else:
+                        print("Directory already exists")                      
+                        
+                    organization_admins_template = env.get_template('Meraki_organization_admins.j2')
+                    loop_counter = 0
+
+        # Render Templates
+                    for filetype in filetype_loop:
+                        parsed_output = organization_admins_template.render(admins = organizationAdminsJSON,filetype_loop=loop_counter)
+                        loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                        if loop_counter <= 3:
+                            with open(f"{ org['name'] }/Meraki { org['name'] } Admins.{ filetype }", "w") as fh:
+                                fh.write(parsed_output)               
+                                fh.close()
+                        else:
+                            with open(f"{ org['name'] }/Meraki { org['name'] } Admins Mind Map.md", "w") as fh:
+                                fh.write(parsed_output)               
+                                fh.close()
+                        with open(f"{ org['name'] }/Meraki { org['name'] } Admins.json", "w") as fh:
+                            json.dump(organizationAdminsJSON, fh, indent=4, sort_keys=True)
+                            fh.close()                            
+        return(organizationAdminsJSON)
     except Exception as e:
         logging.exception(e)
 

@@ -1,0 +1,218 @@
+{%- if filetype_loop == 0 %}ID,Name,E-Mail,Organization Access,Account Status,Two Factor Auth Enabled,Has API Key,Last Active,Authentication Method,Tag,Access,Network,Access
+{%- for admin in admins %}
+{{ admin.id }},{{ admin.name }},{{ admin.email }},{{ admin.orgAccess }},{{ admin.accountStatus }},{{ admin.twoFactorAuthEnabled }},{{ admin.hasApiKey }},{{ admin.lastActive }},{{ admin.authenticationMethod }},N/A,N/A,N/A,N/A
+{%-         for tag in admin.tags %}
+{{ admin.id }},{{ admin.name }},{{ admin.email }},{{ admin.orgAccess }},{{ admin.accountStatus }},{{ admin.twoFactorAuthEnabled }},{{ admin.hasApiKey }},{{ admin.lastActive }},{{ admin.authenticationMethod }},{{ tag.tag }},{{ tag.access }},N/A,N/A
+{%-         endfor %}
+{%-     for network in admin.networks %}
+{{ admin.id }},{{ admin.name }},{{ admin.email }},{{ admin.orgAccess }},{{ admin.accountStatus }},{{ admin.twoFactorAuthEnabled }},{{ admin.hasApiKey }},{{ admin.lastActive }},{{ admin.authenticationMethod }},N/A,N/A,{{ network.id }},{{ network.access }}
+{%-     endfor %}
+{%- endfor %}
+{%- else %}
+{%-     if filetype_loop == 1 %}
+# Meraki Organization Admins
+| ID | Name | E-Mail | Organization Access | Account Status | Two Factor Auth Enabled | Has API Key | Last Active | Authentication Method | Tag | Access | Network | Access |
+| -- | ---- | ------ | ------------------- | -------------- | ----------------------- | ----------- | ----------- | --------------------- | --- | ------ | ------- | ------ |
+{%- for admin in admins %}
+| {{ admin.id }} | {{ admin.name }} | {{ admin.email }} | {{ admin.orgAccess }} | {{ admin.accountStatus }} | {{ admin.twoFactorAuthEnabled }} | {{ admin.hasApiKey }} | {{ admin.lastActive }} | {{ admin.authenticationMethod }} | N/A | N/A | N/A | N/A |
+{%-     for tag in admin.tags %}
+| {{ admin.id }} | {{ admin.name }} | {{ admin.email }} | {{ admin.orgAccess }} | {{ admin.accountStatus }} | {{ admin.twoFactorAuthEnabled }} | {{ admin.hasApiKey }} | {{ admin.lastActive }} | {{ admin.authenticationMethod }} | {{ tag.tag }} | {{ tag.access }} | N/A | N/A |
+{%-     endfor %}
+{%-     for network in admin.networks %}
+| {{ admin.id }} | {{ admin.name }} | {{ admin.email }} | {{ admin.orgAccess }} | {{ admin.accountStatus }} | {{ admin.twoFactorAuthEnabled }} | {{ admin.hasApiKey }} | {{ admin.lastActive }} | {{ admin.authenticationMethod }} | N/A | N/A | {{ network.id }} | {{ network.access }} |
+{%-     endfor %}
+{%- endfor %}
+{%-     else %}
+{%-         if filetype_loop == 2 %}
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/colreorder/1.5.4/js/dataTables.colReorder.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/keytable/2.6.4/js/dataTables.keyTable.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.1.9/js/dataTables.fixedHeader.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.9/css/fixedHeader.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/keytable/2.6.4/css/keyTable.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+</head>
+<body>
+<h1>Meraki Organization Admins</h1>
+<table id = "organizations">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>E-Mail</th>
+      <th>Organization Access</th>
+      <th>Account Status</th>
+      <th>Two Factor Auth Enabled</th>
+      <th>Has API Key</th>
+      <th>Last Active</th>
+      <th>Authentication Method</th>
+      <th>Tag</th>
+      <th>Access</th>
+      <th>Network</th>
+      <th>Access</th>
+    </tr>
+  </thead>
+  <tbody>
+{%- for admin in admins %}
+  <tr>
+    <td>{{ admin.id }}</td>
+    <td>{{ admin.name }}</td>
+    <td>{{ admin.email }}</td>
+    <td>{{ admin.orgAccess }}</td>
+    <td>{{ admin.accountStatus }}</td>
+    <td>{{ admin.twoFactorAuthEnabled }}</td>
+    <td>{{ admin.hasApiKey }}</td>
+    <td>{{ admin.lastActive }}</td>
+    <td>{{ admin.authenticationMethod }}</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+  </tr>
+
+{%-     for tag in admin.tags %}
+  <tr>
+    <td>{{ admin.id }}</td>
+    <td>{{ admin.name }}</td>
+    <td>{{ admin.email }}</td>
+    <td>{{ admin.orgAccess }}</td>
+    <td>{{ admin.accountStatus }}</td>
+    <td>{{ admin.twoFactorAuthEnabled }}</td>
+    <td>{{ admin.hasApiKey }}</td>
+    <td>{{ admin.lastActive }}</td>
+    <td>{{ admin.authenticationMethod }}</td>
+    <td>{{ tag.tag }}</td>
+    <td>{{ tag.access }}</td>
+    <td>N/A</td>
+    <td>N/A</td>
+  </tr>
+{%-     endfor %}
+{%-     for network in admin.networks %}
+  <tr>
+    <td>{{ admin.id }}</td>
+    <td>{{ admin.name }}</td>
+    <td>{{ admin.email }}</td>
+    <td>{{ admin.orgAccess }}</td>
+    <td>{{ admin.accountStatus }}</td>
+    <td>{{ admin.twoFactorAuthEnabled }}</td>
+    <td>{{ admin.hasApiKey }}</td>
+    <td>{{ admin.lastActive }}</td>
+    <td>{{ admin.authenticationMethod }}</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>{{ network.id }}</td>
+    <td>{{ network.access }}</td>
+  </tr>
+{%-     endfor %}
+{%- endfor %}  
+  </tbody>
+</table>
+<script type = "text/javascript">
+  $(document).ready(function(){
+    $('#organizations thead tr')
+    .clone(true)
+    .addClass('filters')
+    .appendTo('#organizations thead');
+
+    var table = $('#organizations').DataTable({
+        keys: true,
+        dom: 'Bfrtip',
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],
+            [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        buttons: [
+        'pageLength','colvis','copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        colReorder: true,
+        select: true,            
+        orderCellsTop: true,
+        fixedHeader: true,
+        initComplete: function () {
+        var api = this.api();
+
+        // For each column
+        api
+            .columns()
+            .eq(0)
+            .each(function (colIdx) {
+                // Set the header cell to contain the input element
+                var cell = $('.filters th').eq(
+                    $(api.column(colIdx).header()).index()
+                );
+                var title = $(cell).text();
+                $(cell).html('<input type="text" placeholder="' + title + '" />');
+
+                // On every keypress in this input
+                $(
+                    'input',
+                    $('.filters th').eq($(api.column(colIdx).header()).index())
+                )
+                    .off('keyup change')
+                    .on('keyup change', function (e) {
+                        e.stopPropagation();
+
+                        // Get the search value
+                        $(this).attr('title', $(this).val());
+                        var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                        var cursorPosition = this.selectionStart;
+                        // Search the column for that value
+                        api
+                            .column(colIdx)
+                            .search(
+                                this.value != ''
+                                    ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                    : '',
+                                this.value != '',
+                                this.value == ''
+                            )
+                            .draw();
+
+                        $(this)
+                            .focus()[0]
+                            .setSelectionRange(cursorPosition, cursorPosition);
+                    });
+            });
+    },
+});
+});        
+</script>
+</body></html>
+{%-         else %}
+# Meraki Organization Admins
+## Admin
+{%- for admin in admins %}
+### {{ admin.name }}
+#### ID: {{ admin.id }}
+#### E-Mail: {{ admin.email }}
+#### Organization Access: {{ admin.orgAccess }}
+#### Account Status: {{ admin.accountStatus }}
+#### Two Factor Auth Enabled: {{ admin.twoFactorAuthEnabled }}
+#### Has API Key: {{ admin.hasApiKey }}
+#### Last Active: {{ admin.lastActive }}
+#### Authentication Method: {{ admin.authenticationMethod }}
+#### Tags
+{%-     for tag in admin.tags %}
+##### {{ tag.tag }}
+###### Access: {{ tag.access }}
+{%-     endfor %}
+#### Networks
+{%-     for network in admin.networks %}
+##### {{ network.id }}
+###### Access: {{ network.access }}
+{%-     endfor %}
+{%- endfor %}
+{% endif %}{% endif %}{% endif %}
