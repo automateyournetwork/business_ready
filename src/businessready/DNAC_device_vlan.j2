@@ -54,11 +54,7 @@
   </thead>
   <tbody>
 {%-     for item in vlan %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
 {%-         if item.ipAddress %}
     <td>{{ item.vlanNumber }}</td>
     <td>{{ item.interfaceName }}</td>

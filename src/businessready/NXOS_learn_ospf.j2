@@ -180,11 +180,7 @@
 {%-                                                 if to_parse_ospf.vrf[vrf].address_family[address_family].instance[instance].areas[area].database.lsa_types[lsa_type].lsa_type == 1 %}
 {%-                                                     for link in to_parse_ospf.vrf[vrf].address_family[address_family].instance[instance].areas[area].database.lsa_types[lsa_type].lsas[lsa].ospfv2.body.router.links %}
 {%-                                                         for topology in to_parse_ospf.vrf[vrf].address_family[address_family].instance[instance].areas[area].database.lsa_types[lsa_type].lsas[lsa].ospfv2.body.router.links[link].topologies %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ vrf }}</td>
     <td>{{ address_family }}</td>
     <td>{{ instance }}</td>
@@ -251,11 +247,7 @@
 {%-                                                 endif %}
 {% if to_parse_ospf.vrf[vrf].address_family[address_family].instance[instance].areas[area].database.lsa_types[lsa_type].lsa_type == 3 %}
 {%-                                                 for topology in to_parse_ospf.vrf[vrf].address_family[address_family].instance[instance].areas[area].database.lsa_types[lsa_type].lsas[lsa].ospfv2.body.summary.topologies %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ vrf }}</td>
     <td>{{ address_family }}</td>
     <td>{{ instance }}</td>
@@ -324,11 +316,7 @@
 {%-                                 endif %}
 {%-                                 for interface in to_parse_ospf.vrf[vrf].address_family[address_family].instance[instance].areas[area].interfaces %}
 {%-                                     for neighbor in to_parse_ospf.vrf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ vrf }}</td>
     <td>{{ address_family }}</td>
     <td>{{ instance }}</td>
@@ -394,11 +382,7 @@
 {%-                                 endfor %}
 {%-                             endfor %}
 {%-                         else %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ vrf }}</td>
     <td>{{ address_family }}</td>
     <td>{{ instance }}</td>

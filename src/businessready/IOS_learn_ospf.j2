@@ -100,11 +100,7 @@
   </tr>
   </thead>
   <tbody>{% for vrf in to_parse_ospf %}{% if vrf == "default" %}{% for address_family in to_parse_ospf[vrf].address_family %}{% for instance in to_parse_ospf[vrf].address_family[address_family].instance %}{% for graceful_restart in to_parse_ospf[vrf].address_family[address_family].instance[instance].graceful_restart %}{% for area in to_parse_ospf[vrf].address_family[address_family].instance[instance].areas %}{% for lsa_type in to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].database.lsa_types %}{% for lsa in to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].database.lsa_types[lsa_type].lsas %}{% if to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].database.lsa_types[lsa_type].lsas[lsa].ospfv2.body.router is defined %}{% for link in to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].database.lsa_types[lsa_type].lsas[lsa].ospfv2.body.router.links %}{% for topology in to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].database.lsa_types[lsa_type].lsas[lsa].ospfv2.body.router.links[link].topologies %}{% for interface in to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces %}{% if to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors is defined %}{% for neighbor in to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
       <td>{{ vrf }}</td>
       <td>{{ address_family }}</td>
       <td>{{ instance }}</td>
@@ -166,11 +162,7 @@
       <td>{{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].statistics.nbr_event_count }}</td>
       <td>{{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].statistics.nbr_retrans_qlen }}</td>
     </tr>{% endfor %}{% else %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
       <td>{{ vrf }}</td>
       <td>{{ address_family }}</td>
       <td>{{ instance }}</td>
@@ -232,11 +224,7 @@
       <td>N/A</td>
       <td>N/A</td>
     </tr>{% endif %}{% endfor %}{% endfor %}{% endfor %}{% else %}{% if to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].database.lsa_types[lsa_type].lsas[lsa].ospfv2.body.summary is defined %}{% for topology in to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].database.lsa_types[lsa_type].lsas[lsa].ospfv2.body.summary.topologies %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
       <td>{{ vrf }}</td>
       <td>{{ address_family }}</td>
       <td>{{ instance }}</td>
@@ -298,11 +286,7 @@
       <td>N/A</td>
       <td>N/A</td>
     </tr>{% endfor %}{% endif %}{% endif %}{% endfor %}{% endfor %}{% endfor %}{% endfor %}{% endfor %}{% endfor %}{% else %}{% for address_family in to_parse_ospf[vrf].address_family %}{% for instance in to_parse_ospf[vrf].address_family[address_family].instance %}{% for area in to_parse_ospf[vrf].address_family[address_family].instance[instance].areas %}{% for interface in to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces %}{% if to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors is defined %}{% for neighbor in to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
       <td>{{ vrf }}</td>
       <td>{{ address_family }}</td>
       <td>{{ instance }}</td>
@@ -363,11 +347,7 @@
       <td>{{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].statistics.nbr_event_count }}</td>
       <td>{{ to_parse_ospf[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].statistics.nbr_retrans_qlen }}</td>
     </tr>{% endfor %}{% else %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
       <td>{{ vrf }}</td>
       <td>{{ address_family }}</td>
       <td>{{ instance }}</td>

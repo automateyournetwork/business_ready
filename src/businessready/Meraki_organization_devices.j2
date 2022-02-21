@@ -1,11 +1,17 @@
-{% if filetype_loop == 0 %}VRF,Description,Address Family,Route Target,Route Target Type,Route Distinguisher{% for vrf in to_parse_vrf %}{% for address_family in to_parse_vrf[vrf].address_family %}{% if to_parse_vrf[vrf].address_family[address_family].route_targets is defined %}{% for target in to_parse_vrf[vrf].address_family[address_family].route_targets %}
-{{ vrf }},{{ to_parse_vrf[vrf].description }},{{ target }},{{ to_parse_vrf[vrf].address_family[address_family].route_targets[target].rt_type }},{{ address_family }},{{ to_parse_vrf[vrf].route_distinguisher }}{% endfor %}{% else %}
-{{ vrf }},{{ to_parse_vrf[vrf].description }},N/A,N/A,{{ address_family }},{{ to_parse_vrf[vrf].route_distinguisher }}{% endif %}{% endfor %}{% endfor %}{% else %}{% if filetype_loop == 1 %}
-# Learn VRF
-| VRF | Description | Address Family | Route Target | Route Target Type | Route Distinguisher |
-| --- | ----------- | -------------- | ------------ | ----------------- | ------------------- |{% for vrf in to_parse_vrf %}{% for address_family in to_parse_vrf[vrf].address_family %}{% if to_parse_vrf[vrf].address_family[address_family].route_targets is defined %}{% for target in to_parse_vrf[vrf].address_family[address_family].route_targets %}
-| {{ vrf }} | {{ to_parse_vrf[vrf].description }} | {{ target }} | {{ to_parse_vrf[vrf].address_family[address_family].route_targets[target].rt_type }} | {{ address_family }} | {{ to_parse_vrf[vrf].route_distinguisher }} |{% endfor %}{% else %}
-| {{ vrf }} | {{ to_parse_vrf[vrf].description }} | N/A | N/A | {{ address_family }} | {{ to_parse_vrf[vrf].route_distinguisher }} |{% endif %}{% endfor %}{% endfor %}{% else %}{% if filetype_loop == 2 %}
+{%- if filetype_loop == 0 %}Claimed At,License Expiration Date,MAC Address,Model,Name,Network Id,Order Number,Product Type,Serial Number,Tags
+{%- for fact in device %}
+{{ fact.claimedAt }},{{ fact.licenseExpirationDate }},{{ fact.mac }},{{ fact.model }},{{ fact.name }},{{ fact.networkId }},{{ fact.orderNumber }},{{ fact.productType }},{{ fact.serial }},{%- for tag in fact.tags %}{{ tag }}{%- endfor %}
+{%- endfor %}
+{%- else %}
+{%-     if filetype_loop == 1 %}
+# Meraki Organization Devices
+| Claimed At | License Expiration Date | MAC Address | Model | Name | Network Id | Order Number | Product Type | Serial Number | Tags |
+| ---------- | ----------------------- | ----------- | ----- | ---- | ---------- | ------------ | ------------ | ------------- | ---- |
+{%- for fact in device %}
+| {{ fact.claimedAt }} | {{ fact.licenseExpirationDate }} | {{ fact.mac }} | {{ fact.model }} | {{ fact.name }} | {{ fact.networkId }} | {{ fact.orderNumber }} | {{ fact.productType }} | {{ fact.serial }} | {%- for tag in fact.tags %}{{ tag }}{%- endfor %} |
+{%- endfor %}
+{%-     else %}
+{%-         if filetype_loop == 2 %}
 <html>
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -27,45 +33,47 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
 </head>
 <body>
-<h1>Learn VRF</h1>
-<table id = "vrf">
+<h1>Meraki Organization Devices</h1>
+<table id = "organizations">
   <thead>
-  <tr>
-    <th>VRF</th>
-    <th>Description</th>
-    <th>Address Family</th>
-    <th>Route Target</th>
-    <th>Route Target Type</th>
-    <th>Route Distinguisher</th>
-  </tr>
+    <tr>
+      <th>Claimed At</th>
+      <th>License Expiration Date</th>
+      <th>MAC Address</th>
+      <th>Model</th>
+      <th>Name</th>
+      <th>Network Id</th>
+      <th>Order Number</th>
+      <th>Product Type</th>
+      <th>Serial Number</th>
+      <th>Tags</th>
+    </tr>
   </thead>
-  <tbody>{% for vrf in to_parse_vrf %}{% for address_family in to_parse_vrf[vrf].address_family %}{% if to_parse_vrf[vrf].address_family[address_family].route_targets is defined %}{% for target in to_parse_vrf[vrf].address_family[address_family].route_targets %}
-<tr>
-    <td>{{ vrf }}</td>
-    <td>{{ to_parse_vrf[vrf].description }}</td>
-    <td>{{ address_family }}</td>
-    <td>{{ target }}</td>
-    <td>{{ to_parse_vrf[vrf].address_family[address_family].route_targets[target].rt_type }}</td>
-    <td>{{ to_parse_vrf[vrf].route_distinguisher }}</td>
-  </tr>{% endfor %}{% else %}
-<tr>
-    <td>{{ vrf }}</td>
-    <td>{{ to_parse_vrf[vrf].description }}</td>
-    <td>{{ address_family }}</td>
-    <td>N/A</td>
-    <td>N/A</td>
-    <td>{{ to_parse_vrf[vrf].route_distinguisher }}</td>
-  </tr>  
-  </tbody>  
+  <tbody>
+{%- for fact in device %}
+  <tr>
+    <td>{{ fact.claimedAt }}</td>
+    <td>{{ fact.licenseExpirationDate }}</td>
+    <td>{{ fact.mac }}</td>
+    <td>{{ fact.model }}</td>
+    <td>{{ fact.name }}</td>
+    <td>{{ fact.networkId }}</td>
+    <td>{{ fact.orderNumber }}</td>
+    <td>{{ fact.productType }}</td>
+    <td>{{ fact.serial }}</td>
+    <td>{%- for tag in fact.tags %}{{ tag }}{%- endfor %}</td>
+  </tr>
+{%- endfor %}
+  </tbody>
 </table>
 <script type = "text/javascript">
   $(document).ready(function(){
-    $('#vrf thead tr')
+    $('#organizations thead tr')
     .clone(true)
     .addClass('filters')
-    .appendTo('#vrf thead');
+    .appendTo('#organizations thead');
 
-    var table = $('#vrf').DataTable({
+    var table = $('#organizations').DataTable({
         keys: true,
         dom: 'Bfrtip',
         lengthMenu: [
@@ -129,18 +137,22 @@
 });
 });        
 </script>
-</body></html>{% endif %}{% endfor %}{% endfor %}{% else %}
-# Learn VRF
-{%- for vrf in to_parse_vrf %}
-## {{ vrf }}
-{%-     for address_family in to_parse_vrf[vrf].address_family %}
-### {{ address_family }}
-{%-         if to_parse_vrf[vrf].address_family[address_family].route_targets is defined %}
-{%-             for target in to_parse_vrf[vrf].address_family[address_family].route_targets %}
-#### Target: {{ target }}
-{%-             endfor %}
-{%-         endif %}
-#### Route Distinguisher: {{ to_parse_vrf[vrf].route_distinguisher }}
-{%-     endfor %}
+</body></html>
+{%-         else %}
+# Meraki Organization Devices
+{%- for fact in device %}
+## {{ fact.name }}
+### ID: {{ fact.networkId }}
+### Claimed At: {{ fact.claimedAt }}
+### License Expiration Date: {{ fact.licenseExpirationDate }}
+### MAC Address: {{ fact.mac }}
+### Model: {{ fact.model }}
+### Order Number: {{ fact.orderNumber }}
+### Product Type: {{ fact.productType }}
+### Serial NumbeR: {{ fact.serial }}
+### Tags
+{%- for tag in fact.tags %}
+#### {{ tag }}
+{%- endfor %}
 {%- endfor %}
 {% endif %}{% endif %}{% endif %}

@@ -42,11 +42,7 @@
   </thead>
   <tbody>
 {%-     for vlan in vlans %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ vlan }}</td>
   </tr>
 {%-     endfor %}

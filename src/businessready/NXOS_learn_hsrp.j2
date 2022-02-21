@@ -73,11 +73,7 @@
 {%-                 for address_family in to_parse_hsrp[vlan].address_family %}
 {%-                     for version in to_parse_hsrp[vlan].address_family[address_family].version %}
 {%-                         for group in to_parse_hsrp[vlan].address_family[address_family].version[version].groups %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ vlan }}</td>
     <td>{{ address_family }}</td>
     <td>{{ version }}</td>

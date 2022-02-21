@@ -47,11 +47,7 @@
   </thead>
   <tbody>
 {%-             for interface in to_parse_interfaces %}  
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ interface }}</td>
     <td>{{ to_parse_interfaces[interface].ip_address }}</td>
     <td>{{ to_parse_interfaces[interface].status }}</td>

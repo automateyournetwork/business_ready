@@ -72,11 +72,7 @@ N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,{{ link.id }},{{ link.so
   </thead>
   <tbody>
 {%-     for node in physicalTopology.nodes %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ node.label }}</td>
     <td>{{ node.id }}</td>
     <td>{{ node.deviceType }}</td>

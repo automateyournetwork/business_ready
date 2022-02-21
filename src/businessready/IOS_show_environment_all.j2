@@ -71,11 +71,7 @@
 {%-         for switch in to_parse_environment %}
 {%-             for fan in to_parse_environment[switch].fan %}
 {%-                 for power_supply in to_parse_environment[switch].power_supply %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ switch }}</td>
     <td>{{ to_parse_environment[switch].system_temperature_state }}</td>
     <td>{{ to_parse_environment[switch].inlet_temperature.state }}</td>

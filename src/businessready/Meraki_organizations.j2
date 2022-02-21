@@ -1,11 +1,17 @@
-{% if filetype_loop == 0 %}VRF,Description,Address Family,Route Target,Route Target Type,Route Distinguisher{% for vrf in to_parse_vrf %}{% for address_family in to_parse_vrf[vrf].address_family %}{% if to_parse_vrf[vrf].address_family[address_family].route_targets is defined %}{% for target in to_parse_vrf[vrf].address_family[address_family].route_targets %}
-{{ vrf }},{{ to_parse_vrf[vrf].description }},{{ target }},{{ to_parse_vrf[vrf].address_family[address_family].route_targets[target].rt_type }},{{ address_family }},{{ to_parse_vrf[vrf].route_distinguisher }}{% endfor %}{% else %}
-{{ vrf }},{{ to_parse_vrf[vrf].description }},N/A,N/A,{{ address_family }},{{ to_parse_vrf[vrf].route_distinguisher }}{% endif %}{% endfor %}{% endfor %}{% else %}{% if filetype_loop == 1 %}
-# Learn VRF
-| VRF | Description | Address Family | Route Target | Route Target Type | Route Distinguisher |
-| --- | ----------- | -------------- | ------------ | ----------------- | ------------------- |{% for vrf in to_parse_vrf %}{% for address_family in to_parse_vrf[vrf].address_family %}{% if to_parse_vrf[vrf].address_family[address_family].route_targets is defined %}{% for target in to_parse_vrf[vrf].address_family[address_family].route_targets %}
-| {{ vrf }} | {{ to_parse_vrf[vrf].description }} | {{ target }} | {{ to_parse_vrf[vrf].address_family[address_family].route_targets[target].rt_type }} | {{ address_family }} | {{ to_parse_vrf[vrf].route_distinguisher }} |{% endfor %}{% else %}
-| {{ vrf }} | {{ to_parse_vrf[vrf].description }} | N/A | N/A | {{ address_family }} | {{ to_parse_vrf[vrf].route_distinguisher }} |{% endif %}{% endfor %}{% endfor %}{% else %}{% if filetype_loop == 2 %}
+{%- if filetype_loop == 0 %}Name,ID,API Enabled,Cloud Region,Licensing Model,URL
+{%- for org in organizations %}
+{{ org.name }},{{ org.id }},{{ org.api.enabled }},{{ org.cloud.region.name }},{{ org.licensing.model }},{{ org.url }}
+{%- endfor %}
+{%- else %}
+{%-     if filetype_loop == 1 %}
+# Meraki Organizations
+| Name | ID | API Enabled | Cloud Region | Licensing Model | URL |
+| ---- | -- | ----------- | ------------ | --------------- | --- |
+{%- for org in organizations %}
+| {{ org.name }} | {{ org.id }} | {{ org.api.enabled }} | {{ org.cloud.region.name }} | {{ org.licensing.model }} | {{ org.url }} |
+{%- endfor %}
+{%-     else %}
+{%-         if filetype_loop == 2 %}
 <html>
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -27,45 +33,39 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
 </head>
 <body>
-<h1>Learn VRF</h1>
-<table id = "vrf">
+<h1>Meraki Organizations</h1>
+<table id = "organizations">
   <thead>
-  <tr>
-    <th>VRF</th>
-    <th>Description</th>
-    <th>Address Family</th>
-    <th>Route Target</th>
-    <th>Route Target Type</th>
-    <th>Route Distinguisher</th>
-  </tr>
+    <tr>
+      <th>Name</th>
+      <th>ID</th>
+      <th>API Enabled</th>
+      <th>Cloud Region</th>
+      <th>Licensing Model</th>
+      <th>URL</th>
+    </tr>
   </thead>
-  <tbody>{% for vrf in to_parse_vrf %}{% for address_family in to_parse_vrf[vrf].address_family %}{% if to_parse_vrf[vrf].address_family[address_family].route_targets is defined %}{% for target in to_parse_vrf[vrf].address_family[address_family].route_targets %}
+  <tbody>
+{%- for org in organizations %}  
 <tr>
-    <td>{{ vrf }}</td>
-    <td>{{ to_parse_vrf[vrf].description }}</td>
-    <td>{{ address_family }}</td>
-    <td>{{ target }}</td>
-    <td>{{ to_parse_vrf[vrf].address_family[address_family].route_targets[target].rt_type }}</td>
-    <td>{{ to_parse_vrf[vrf].route_distinguisher }}</td>
-  </tr>{% endfor %}{% else %}
-<tr>
-    <td>{{ vrf }}</td>
-    <td>{{ to_parse_vrf[vrf].description }}</td>
-    <td>{{ address_family }}</td>
-    <td>N/A</td>
-    <td>N/A</td>
-    <td>{{ to_parse_vrf[vrf].route_distinguisher }}</td>
-  </tr>  
-  </tbody>  
+    <td>{{ org.name }}</td>
+    <td>{{ org.id }}</td>
+    <td>{{ org.api.enabled }}</td>
+    <td>{{ org.cloud.region.name }}</td>
+    <td>{{ org.licensing.model }}</td>
+    <td>{{ org.url }}</td>
+  </tr>
+{%- endfor %}
+  </tbody>
 </table>
 <script type = "text/javascript">
   $(document).ready(function(){
-    $('#vrf thead tr')
+    $('#organizations thead tr')
     .clone(true)
     .addClass('filters')
-    .appendTo('#vrf thead');
+    .appendTo('#organizations thead');
 
-    var table = $('#vrf').DataTable({
+    var table = $('#organizations').DataTable({
         keys: true,
         dom: 'Bfrtip',
         lengthMenu: [
@@ -129,18 +129,15 @@
 });
 });        
 </script>
-</body></html>{% endif %}{% endfor %}{% endfor %}{% else %}
-# Learn VRF
-{%- for vrf in to_parse_vrf %}
-## {{ vrf }}
-{%-     for address_family in to_parse_vrf[vrf].address_family %}
-### {{ address_family }}
-{%-         if to_parse_vrf[vrf].address_family[address_family].route_targets is defined %}
-{%-             for target in to_parse_vrf[vrf].address_family[address_family].route_targets %}
-#### Target: {{ target }}
-{%-             endfor %}
-{%-         endif %}
-#### Route Distinguisher: {{ to_parse_vrf[vrf].route_distinguisher }}
-{%-     endfor %}
+</body></html>
+{%-         else %}
+# Meraki Organizations
+{%- for org in organizations %}
+## {{ org.name }}
+### ID: {{ org.id }}
+### API Enabled: {{ org.api.enabled }}
+### Cloud Region: {{ org.cloud.region.name }}
+### Licensing Model: {{ org.licensing.model }}
+### [URL]({{ org.url }})
 {%- endfor %}
 {% endif %}{% endif %}{% endif %}

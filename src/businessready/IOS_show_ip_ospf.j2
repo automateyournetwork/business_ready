@@ -90,11 +90,7 @@
 {%-                     for instance in to_parse_ip_ospf[vrf].address_family[address_family].instance %}
 {%-                         for area in to_parse_ip_ospf[vrf].address_family[address_family].instance[instance].areas %}
 {%-                             for graceful_restart in to_parse_ip_ospf[vrf].address_family[address_family].instance[instance].graceful_restart %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ vrf }}</td>
     <td>{{ address_family }}</td>
     <td>{{ instance }}</td>

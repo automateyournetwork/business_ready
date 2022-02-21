@@ -1,5 +1,5 @@
 # import sys
-# from .brd import DNAC_sites,DNAC_site_health,DNAC_site_member,DNAC_vlan,DNAC_vlan_topology,DNAC_physical_topology,DNAC_routing_topology,DNAC_network_health,DNAC_device,DNAC_projects,DNAC_swim,DNAC_templates,DNAC_rf_profiles,DNAC_assurance_tests,DNAC_flow_analysis,IOS_learn_acl,IOS_learn_arp,IOS_learn_bgp,IOS_learn_dot1x,IOS_learn_hsrp,IOS_learn_interface,IOS_learn_lldp,IOS_learn_ntp,IOS_learn_ospf,IOS_learn_routing,IOS_learn_stp,IOS_learn_vlan,IOS_learn_vrf,IOS_show_access_lists,IOS_show_cdp_neighbors,IOS_show_cdp_neighbors_details,IOS_show_environment_all,IOS_show_etherchannel_summary,IOS_show_interfaces,IOS_show_interfaces_status,IOS_show_interfaces_trunk,IOS_show_inventory_9000,IOS_show_ip_arp,IOS_show_ip_interface_brief,IOS_show_ip_ospf,IOS_show_ip_ospf_database,IOS_show_ip_ospf_interface,IOS_show_ip_ospf_neighbor,IOS_show_ip_ospf_neighbor_detail,IOS_show_ip_route,IOS_show_license_summary,IOS_show_mac_address_table,IOS_show_ntp_associations,IOS_show_version,IOS_show_vlan,IOS_show_vrf,NXOS_learn_acl,NXOS_learn_arp,NXOS_learn_bgp,NXOS_learn_hsrp,NXOS_learn_interface,NXOS_learn_ospf,NXOS_learn_platform,NXOS_learn_routing,NXOS_learn_vlan,NXOS_learn_vrf
+# from .brd import DNAC_sites,DNAC_site_health,DNAC_site_member,DNAC_vlan,DNAC_vlan_topology,DNAC_physical_topology,DNAC_routing_topology,DNAC_network_health,DNAC_device,DNAC_projects,DNAC_swim,DNAC_templates,DNAC_rf_profiles,DNAC_assurance_tests,DNAC_flow_analysis,Meraki_organizations,Meraki_organization_devices,Meraki_organization_licenses,IOS_learn_acl,IOS_learn_arp,IOS_learn_bgp,IOS_learn_dot1x,IOS_learn_hsrp,IOS_learn_interface,IOS_learn_lldp,IOS_learn_ntp,IOS_learn_ospf,IOS_learn_routing,IOS_learn_stp,IOS_learn_vlan,IOS_learn_vrf,IOS_show_access_lists,IOS_show_cdp_neighbors,IOS_show_cdp_neighbors_details,IOS_show_environment_all,IOS_show_etherchannel_summary,IOS_show_interfaces,IOS_show_interfaces_status,IOS_show_interfaces_trunk,IOS_show_inventory_9000,IOS_show_ip_arp,IOS_show_ip_interface_brief,IOS_show_ip_ospf,IOS_show_ip_ospf_database,IOS_show_ip_ospf_interface,IOS_show_ip_ospf_neighbor,IOS_show_ip_ospf_neighbor_detail,IOS_show_ip_route,IOS_show_license_summary,IOS_show_mac_address_table,IOS_show_ntp_associations,IOS_show_version,IOS_show_vlan,IOS_show_vrf,NXOS_learn_acl,NXOS_learn_arp,NXOS_learn_bgp,NXOS_learn_hsrp,NXOS_learn_interface,NXOS_learn_ospf,NXOS_learn_platform,NXOS_learn_routing,NXOS_learn_vlan,NXOS_learn_vrf
 # if __name__ == "__main__":
 #     print(DNAC_sites(sys.argv[2]))
 #     print(DNAC_site_health(sys.argv[2]))
@@ -16,6 +16,9 @@
 #     print(DNAC_rf_profiles(sys.argv[2]))
 #     print(DNAC_assurance_tests(sys.argv[2]))
 #     print(DNAC_flow_analysis(sys.argv[2]))
+#     print(Meraki_organizations(sys.argv[2]))
+#     print(Meraki_organization_devices(sys.argv[2]))
+#     print(Meraki_organization_licenses(sys.argv[2]))
 #     print(IOS_learn_acl(sys.argv[4]))
 #     print(IOS_learn_arp(sys.argv[4]))
 #     print(IOS_learn_bgp(sys.argv[4]))

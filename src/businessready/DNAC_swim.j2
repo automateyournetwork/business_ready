@@ -69,11 +69,7 @@
   </thead>
   <tbody>
 {%- for image in swim %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ image.name }}</td>
     <td>{{ image.extendedAttributes.Description }}</td>
     <td>{{ image.imageUuid }}</td>

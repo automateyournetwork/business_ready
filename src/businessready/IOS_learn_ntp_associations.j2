@@ -39,11 +39,7 @@
     <th>Reference ID</th>
     <th>Stratum</th>
   </tr>{% for vrf in to_parse_ntp %}{% for address in to_parse_ntp[vrf].associations.address %}{% for is_conf,value in to_parse_ntp[vrf].associations.address[address].local_mode.client.isconfigured.items() %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ vrf }}</td>
     <td>{{ address }}</td>
     <td>{{ value.delay }}</td>

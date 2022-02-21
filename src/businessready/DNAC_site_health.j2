@@ -98,11 +98,7 @@
   </thead>
   <tbody>
 {%-             for site in siteHealth %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
      <td>{{ site.siteName }}</td>
      <td>{{ site.siteId }}</td>
      <td>{{ site.parentSiteName }}</td>

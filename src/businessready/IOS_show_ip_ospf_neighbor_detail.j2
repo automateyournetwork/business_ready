@@ -80,11 +80,7 @@
 {%-                         for area in to_parse_ip_ospf_neighbor_detail[vrf].address_family[address_family].instance[instance].areas %}
 {%-                             for interface in to_parse_ip_ospf_neighbor_detail[vrf].address_family[address_family].instance[instance].areas[area].interfaces %}
 {%-                                 for neighbor in to_parse_ip_ospf_neighbor_detail[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ vrf }}</td>
     <td>{{ instance }}</td>
     <td>{{ area }}</td>

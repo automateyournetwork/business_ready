@@ -50,11 +50,7 @@
   <tbody>
 {%- for test,value in assurance_tests.items() if test != "totalTestCount" %}
 {%-     for inner_test in value %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ test }}</td>
     <td>{{ inner_test }}</td>
     <td>{{ value[inner_test].passCount }}</td>

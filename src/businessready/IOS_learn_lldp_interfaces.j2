@@ -40,11 +40,7 @@
     <th>Management Address</th>
     <th>System Description</th>
   </tr>{% for interface in to_parse_lldp %}{% if to_parse_lldp[interface].port_id is defined %}{% for port in to_parse_lldp[interface].port_id %}{% for neighbor in to_parse_lldp[interface].port_id[port].neighbors %}{% for capability in to_parse_lldp[interface].port_id[port].neighbors[neighbor].capabilities %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ interface }}</td>
     <td>{{ to_parse_lldp[interface].enabled }}</td>
     <td>{{ neighbor }}</td>
@@ -55,11 +51,7 @@
     <td>{{ to_parse_lldp[interface].port_id[port].neighbors[neighbor].management_address }}</td>
     <td>{{ to_parse_lldp[interface].port_id[port].neighbors[neighbor].system_description | replace(","," ") }}</td>
   </tr>{% endfor %}{% endfor %}{% endfor %}{% else %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ interface }}</td>
     <td>{{ to_parse_lldp[interface].enabled }}</td>
     <td>No Neighbor</td>

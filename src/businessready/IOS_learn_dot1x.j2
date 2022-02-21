@@ -58,11 +58,7 @@
   </tr>
   </thead>
   <tbody>{% for interface in to_parse_dot1x.interfaces %}{% if to_parse_dot1x.interfaces[interface].clients is defined %}{% for client in to_parse_dot1x.interfaces[interface].clients %}{% for session in to_parse_dot1x.interfaces[interface].clients[client].session %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ interface }}</td>
     <td>{{ client }}</td>
     <td>{{ to_parse_dot1x.interfaces[interface].clients[client].eap_method }}</td>

@@ -50,11 +50,7 @@
 {%-             for vrf in to_parse_vrf %}
 {%-                 for address_family in to_parse_vrf[vrf].address_family %}
 
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ vrf }}</td>
     <td>{{ address_family }}</td>
     <td>{{ to_parse_vrf[vrf].route_distinguisher }}</td>

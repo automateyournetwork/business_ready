@@ -69,11 +69,7 @@
   </thead>
   <tbody>
 {%- for interface in interfaces %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ interface.portName }}</td>
     <td>{{ interface.description }}</td>
     <td>{{ interface.adminStatus }}</td>

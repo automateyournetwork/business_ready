@@ -85,11 +85,7 @@
   </tr>
   </thead>
   <tbody>{% for interface in to_parse_interface %}{% if (to_parse_interface[interface].ipv4 is defined) and (to_parse_interface[interface].port_channel is defined) %}{% for ip_address in to_parse_interface[interface].ipv4 %}{% if to_parse_interface[interface].port_channel.port_channel_member_intfs %}{% for member in to_parse_interface[interface].port_channel.port_channel_member_intfs %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ interface }}</td>{% if to_parse_interface[interface].description is defined %}
     <td>{{ to_parse_interface[interface].description }}</td>{% else %}
     <td>No Description</td>{% endif %}{% if to_parse_interface[interface].ipv4 is defined %}
@@ -160,11 +156,7 @@
     <td>N/A</td>
     <td>N/A</td>
   </tr>{% endif %}{% endfor %}{% else %}{% if to_parse_interface[interface].port_channel.port_channel_member == "True" %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ interface }}</td>{% if to_parse_interface[interface].description is defined %}
     <td>{{ to_parse_interface[interface].description }}</td>{% else %}
     <td>No Description</td>{% endif %}{% if to_parse_interface[interface].ipv4 is defined %}
@@ -235,11 +227,7 @@
     <td>N/A</td>
     <td>N/A</td>
   </tr>{% endif %}{% else %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ interface }}</td>{% if to_parse_interface[interface].description is defined %}
     <td>{{ to_parse_interface[interface].description }}</td>{% else %}
     <td>No Description</td>{% endif %}{% if to_parse_interface[interface].ipv4 is defined %}
@@ -310,11 +298,7 @@
     <td>N/A</td>
     <td>N/A</td>
   <tr>{% endif %}{% endif %}{% endif %}{% endfor %}{% else %}{% if to_parse_interface[interface].ipv4 is defined %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ interface }}</td>{% if to_parse_interface[interface].description is defined %}
     <td>{{ to_parse_interface[interface].description }}</td>{% else %}
     <td>No Description</td>{% endif %}{% if to_parse_interface[interface].ipv4 is defined %}
@@ -385,11 +369,7 @@
     <td>N/A</td>
     <td>N/A</td>
   </tr>{% endif %}{% else %}{% if to_parse_interface[interface].port_channel is defined %}{% if to_parse_interface[interface].port_channel.port_channel_member_intfs %}{% for member in to_parse_interface[interface].port_channel.port_channel_member_intfs %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ interface }}</td>{% if to_parse_interface[interface].description is defined %}
     <td>{{ to_parse_interface[interface].description }}</td>{% else %}
     <td>No Description</td>{% endif %}
@@ -458,11 +438,7 @@
     <td>N/A</td>
     <td>N/A</td>
   </tr>{% endif %}{% endfor %}{% else %}{% if to_parse_interface[interface].port_channel.port_channel_member == "True" %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ interface }}</td>{% if to_parse_interface[interface].description is defined %}
     <td>{{ to_parse_interface[interface].description }}</td>{% else %}
     <td>No Description</td>{% endif %}
@@ -531,11 +507,7 @@
     <td>N/A</td>
     <td>N/A</td>
   </tr>{% endif %}{% else %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ interface }}</td>{% if to_parse_interface[interface].description is defined %}
     <td>{{ to_parse_interface[interface].description }}</td>{% else %}
     <td>No Description</td>{% endif %}
@@ -605,11 +577,7 @@
     <td>N/A</td>
     <td>N/A</td>
   </tr>{% endif %}{% endif %}{% endif %}{% else %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ interface }}</td>{% if to_parse_interface[interface].description is defined %}
     <td>{{ to_parse_interface[interface].description }}</td>{% else %}
     <td>No Description</td>{% endif %}

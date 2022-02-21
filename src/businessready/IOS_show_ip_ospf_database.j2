@@ -75,11 +75,7 @@
 {%-                     for area in to_parse_ip_ospf_database[vrf].address_family[address_family].instance[instance].areas %}
 {%-                         for lsa_type in to_parse_ip_ospf_database[vrf].address_family[address_family].instance[instance].areas[area].database.lsa_types %}
 {%-                             for lsa in to_parse_ip_ospf_database[vrf].address_family[address_family].instance[instance].areas[area].database.lsa_types[lsa_type].lsas %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ vrf }}</td>
     <td>{{ address_family }}</td>
     <td>{{ instance }}</td>

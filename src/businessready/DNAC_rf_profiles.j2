@@ -61,11 +61,7 @@
   </thead>
   <tbody>
 {%- for profile in rfProfiles %}
-  {%                if loop.index is divisibleby 2 %}
-  <tr style='background-color:#ddd'>
-  {%-               else %}
-  <tr>
-  {%-               endif %}
+<tr>
     <td>{{ profile.name }}</td>
     <td>{{ profile.defaultRfProfile }}</td>
     <td>{{ profile.channelWidth }}</td>
