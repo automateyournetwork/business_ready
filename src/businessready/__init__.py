@@ -1,2 +1,2 @@
-__version__ = '0.5.60'
+__version__ = '0.7.4'
 from .brd import *

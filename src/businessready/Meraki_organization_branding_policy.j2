@@ -1,0 +1,181 @@
+{%- if filetype_loop == 0 %}Branding Policy Id,Name,Enabled,Applies To,Help Tab,Get Help Sub Tab,Community Sub Tab,Cases Sub Tab,Data Protection Requests Sub Tab,Get Help Sub Tab Knowledge Base Search,Universal Search Knowledge Base Search,Cisco Meraki Product Documentation,Support Contact Info,New Features Sub Tab,Firewall Info Sub Tab,API Docs Sub Tab,Hardware Replacements Sub Tab,SM Forums
+{%-     for policy in brandingPolicy %}
+{{ policy.brandingPolicyId }},{{ policy.name }},{{ policy.enabled }},{{ policy.adminSettings.appliesTo }},{{ policy.helpSettings.helpTab }},{{ policy.helpSettings.getHelpSubtab }},{{ policy.helpSettings.communitySubtab }},{{ policy.helpSettings.casesSubtab }},{{ policy.helpSettings.dataProtectionRequestsSubtab }},{{ policy.helpSettings.getHelpSubtabKnowledgeBaseSearch }},{{ policy.helpSettings.universalSearchKnowledgeBaseSearch }},{{ policy.helpSettings.ciscoMerakiProductDocumentation }},{{ policy.helpSettings.supportContactInfo }},{{ policy.helpSettings.newFeaturesSubtab }},{{ policy.helpSettings.firewallInfoSubtab }},{{ policy.helpSettings.apiDocsSubtab }},{{ policy.helpSettings.hardwareReplacementsSubtab }},{{ policy.helpSettings.smForums }}
+{%-   endfor %}
+{%- else %}
+{%-     if filetype_loop == 1 %}
+# Meraki Organization Branding Policy
+| Branding Policy Id | Name | Enabled | Applies To | Help Tab | Get Help Sub Tab | Community Sub Tab | Cases Sub Tab | Data Protection Requests Sub Tab | Get Help Sub Tab Knowledge Base Search | Universal Search Knowledge Base Search | Cisco Meraki Product Documentation | Support Contact Info | New Features Sub Tab | Firewall Info Sub Tab | API Docs Sub Tab | Hardware Replacements Sub Tab | SM Forums |
+| ------------------ | ---- | ------- | ---------- | -------- | ---------------- | ----------------- | ------------- | --------------------------------- | -------------------------------------- | -------------------------------------- | ---------------------------------- | -------------------- | -------------------- | --------------------- | ---------------- | ----------------------------- | --------- |
+{%-     for policy in brandingPolicy %}
+| {{ policy.brandingPolicyId }} | {{ policy.name }} | {{ policy.enabled }} | {{ policy.adminSettings.appliesTo }} | {{ policy.helpSettings.helpTab }} | {{ policy.helpSettings.getHelpSubtab }} | {{ policy.helpSettings.communitySubtab }} | {{ policy.helpSettings.casesSubtab }} | {{ policy.helpSettings.dataProtectionRequestsSubtab }} | {{ policy.helpSettings.getHelpSubtabKnowledgeBaseSearch }} | {{ policy.helpSettings.universalSearchKnowledgeBaseSearch }} | {{ policy.helpSettings.ciscoMerakiProductDocumentation }} | {{ policy.helpSettings.supportContactInfo }} | {{ policy.helpSettings.newFeaturesSubtab }} | {{ policy.helpSettings.firewallInfoSubtab }} | {{ policy.helpSettings.apiDocsSubtab }} | {{ policy.helpSettings.hardwareReplacementsSubtab }} | {{ policy.helpSettings.smForums }} |
+{%-   endfor %}
+{%-     else %}
+{%-         if filetype_loop == 2 %}
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/colreorder/1.5.4/js/dataTables.colReorder.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/keytable/2.6.4/js/dataTables.keyTable.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.1.9/js/dataTables.fixedHeader.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.9/css/fixedHeader.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/keytable/2.6.4/css/keyTable.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+</head>
+<body>
+<h1>Meraki Organization Adaptive Branding Policy</h1>
+<table id = "organizations">
+  <thead>
+    <tr>
+      <th>Branding Policy Id</th>
+      <th>Name</th>
+      <th>Enabled</th>
+      <th>Applies To</th>
+      <th>Help Tab</th>
+      <th>Get Help Sub Tab</th>
+      <th>Community Sub Tab</th>
+      <th>Cases Sub Tab</th>
+      <th>Data Protection Requests Sub Tab</th>
+      <th>Get Help Sub Tab Knowledge Base Search</th>
+      <th>Universal Search Knowledge Base Search</th>
+      <th>Cisco Meraki Product Documentation</th>
+      <th>Support Contact Info</th>
+      <th>New Features Sub Tab</th>
+      <th>Firewall Info Sub Tab</th>
+      <th>API Docs Sub Tab</th>
+      <th>Hardware Replacements Sub Tab</th>
+      <th>SM Forums</th>
+    </tr>
+  </thead>
+  <tbody>
+{%-     for policy in brandingPolicy %}
+  <tr>
+    <td>{{ policy.brandingPolicyId }}</td>
+    <td>{{ policy.name }}</td>
+    <td>{{ policy.enabled }}</td>
+    <td>{{ policy.adminSettings.appliesTo }}</td>
+    <td>{{ policy.helpSettings.helpTab }}</td>
+    <td>{{ policy.helpSettings.getHelpSubtab }}</td>
+    <td>{{ policy.helpSettings.communitySubtab }}</td>
+    <td>{{ policy.helpSettings.casesSubtab }}</td>
+    <td>{{ policy.helpSettings.dataProtectionRequestsSubtab }}</td>
+    <td>{{ policy.helpSettings.getHelpSubtabKnowledgeBaseSearch }}</td>
+    <td>{{ policy.helpSettings.universalSearchKnowledgeBaseSearch }}</td>
+    <td>{{ policy.helpSettings.ciscoMerakiProductDocumentation }}</td>
+    <td>{{ policy.helpSettings.supportContactInfo }}</td>
+    <td>{{ policy.helpSettings.newFeaturesSubtab }}</td>
+    <td>{{ policy.helpSettings.firewallInfoSubtab }}</td>
+    <td>{{ policy.helpSettings.apiDocsSubtab }}</td>
+    <td>{{ policy.helpSettings.hardwareReplacementsSubtab }}</td>
+    <td>{{ policy.helpSettings.smForums }}</td>
+  </tr>
+{%-   endfor %}
+  </tbody>
+</table>
+<script type = "text/javascript">
+  $(document).ready(function(){
+    $('#organizations thead tr')
+    .clone(true)
+    .addClass('filters')
+    .appendTo('#organizations thead');
+
+    var table = $('#organizations').DataTable({
+        keys: true,
+        dom: 'Bfrtip',
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],
+            [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        buttons: [
+        'pageLength','colvis','copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        colReorder: true,
+        select: true,            
+        orderCellsTop: true,
+        fixedHeader: true,
+        initComplete: function () {
+        var api = this.api();
+
+        // For each column
+        api
+            .columns()
+            .eq(0)
+            .each(function (colIdx) {
+                // Set the header cell to contain the input element
+                var cell = $('.filters th').eq(
+                    $(api.column(colIdx).header()).index()
+                );
+                var title = $(cell).text();
+                $(cell).html('<input type="text" placeholder="' + title + '" />');
+
+                // On every keypress in this input
+                $(
+                    'input',
+                    $('.filters th').eq($(api.column(colIdx).header()).index())
+                )
+                    .off('keyup change')
+                    .on('keyup change', function (e) {
+                        e.stopPropagation();
+
+                        // Get the search value
+                        $(this).attr('title', $(this).val());
+                        var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                        var cursorPosition = this.selectionStart;
+                        // Search the column for that value
+                        api
+                            .column(colIdx)
+                            .search(
+                                this.value != ''
+                                    ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                    : '',
+                                this.value != '',
+                                this.value == ''
+                            )
+                            .draw();
+
+                        $(this)
+                            .focus()[0]
+                            .setSelectionRange(cursorPosition, cursorPosition);
+                    });
+            });
+    },
+});
+});        
+</script>
+</body></html>
+{%-         else %}
+# Meraki Organization Branding Policy
+## Policy
+{%-     for policy in brandingPolicy %}
+### {{ policy.name }}
+#### ID: {{ policy.brandingPolicyId }}
+#### Enabled: {{ policy.enabled }}
+#### Applies To: {{ policy.adminSettings.appliesTo }}
+#### Help Settings
+##### Help Tab:{{ policy.helpSettings.helpTab }}
+##### Get Help Sub Tab: {{ policy.helpSettings.getHelpSubtab }}
+##### Community Sub Tab: {{ policy.helpSettings.communitySubtab }}
+##### Cases Sub Tab: {{ policy.helpSettings.casesSubtab }}
+##### Data Protection Requests Sub Tab: {{ policy.helpSettings.dataProtectionRequestsSubtab }}
+##### Get Help Sub Tab Knowledge Base Search: {{ policy.helpSettings.getHelpSubtabKnowledgeBaseSearch }}
+##### Universal Search Knowledge Base Search: {{ policy.helpSettings.universalSearchKnowledgeBaseSearch }}
+##### Cisco Meraki Product Documentation: {{ policy.helpSettings.ciscoMerakiProductDocumentation }}
+##### Support Contact Info: {{ policy.helpSettings.supportContactInfo }}
+##### New Features Sub Tab: {{ policy.helpSettings.newFeaturesSubtab }}
+##### Firewall Info Sub Tab: {{ policy.helpSettings.firewallInfoSubtab }}
+##### API Docs Sub Tab: {{ policy.helpSettings.apiDocsSubtab }}
+##### Hardware Replacements Sub Tab: {{ policy.helpSettings.hardwareReplacementsSubtab }}
+##### SM Forums: {{ policy.helpSettings.smForums }}
+{%-   endfor %}
+{% endif %}{% endif %}{% endif %}
