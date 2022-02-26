@@ -1,0 +1,375 @@
+{%- if filetype_loop == 0 %}WLAN Name,Active Clients,Advertise AP Name,Assisted Roaming Dual Band Support,Assisted Roaming Neighbbor List,Assisted Roaming Prediction List,Band Select,Broadcast SSID,CCX Aironet Support,Channel Scan Defer Priority,Chd Per WLAN,Client Scan Report 11k Beacon Radio Measurement Request On Association,Client Scan Report 11k Beacon Radio Measurement Request On Roam,Device Analytics Advertise Support,Device Analytics Share Data With Client,Dot11ac MU MIMO,Dot11ax BSS Target Wake Up Time,Dot11ax BSS Target Wake Up Time Broadcast Support,Dot11ax MU MIMO Downlink,Dot11ax MU MIMO Uplink,Dot11ax OFDMA Downlink,Dot11ax OFDMA Uplink,Dot1x Authentication List Name,Dot1x Authorization List Name,Identifier,IEEE Dot11v BSS Max Idle Status,IEEE Dot11v BSS Max Idle Protected Mode,IEEE Dot11v BSS Transition Status,IEEE Dot11v BSS Transition Disassociation Imminent Status,IEEE Dot11v BSS Transition Disassociation Imminent Optimised Roaming Timer,IEEE Dot11v BSS Transition Disassociation Imminent Timer,IEEE Dot11v BSS Transition Dual Neighbor List,IEEE Dot11v Directed Multicast Service,IEEE Dot11v Traffic Filtering Servce,IEEE Dot11v WMN Sleep Mode,IP Source Guard,Load Balancing,Local EAP Authentication,MAC Filter Authorization List Name,MAC Filter Override Authorization List Name,Max Clients AP,Max Clients AP Radio,Max Clients WLAN,MDNS Gateway Status,Media Stream Multicast Direct,Multicast Buffer,Multicast Buffer Frames,OKC,P2P Blocking Action,Radio Policy,Scan Defer Time Milliseconds,Conditional Web Redirect,Dot11 Authentication,FT Over The DS Mode,FT Reassociation Time,FT Support Status,OSEN,OWE Transition Mode,PMF Association Comeback Timeout,PMF SA Query Time Milliseconds,PMF Support Status,Splash Page Web Redirect,Static WEP Keys,Web Based Authentication,Webauth Authentication List Name,Webauth Authorization List Name,Webauth On MAC Flter Failure,Webauth Parameter Map,Wifi Protected Access WPA1 WPA2 WPA3,SSID,Status,Universal AP Admin,Wifi Alliance Agile Multiband,Wifi Direct Policy,Wifi To Cellular Steering,WMM
+{%-     for wlan in to_parse_wlan %}
+{{ wlan }},{{ to_parse_wlan[wlan].active_clients }},{{ to_parse_wlan[wlan].advertise_ap_name }},{{ to_parse_wlan[wlan].assisted_roaming.dual_band_support }},{{ to_parse_wlan[wlan].assisted_roaming.neighbbor_list }},{{ to_parse_wlan[wlan].assisted_roaming.prediction_list }},{{ to_parse_wlan[wlan].band_select }},{{ to_parse_wlan[wlan].broadcast_ssid }},{{ to_parse_wlan[wlan].ccx_aironet_support }},{%- for priority in to_parse_wlan[wlan].channel_scan_defer_priority.priority %}{{ priority }} {%- endfor %}{{ to_parse_wlan[wlan].chd_per_wlan }},{{ to_parse_wlan[wlan].client_scan_report_11k_beacon_radio_measurement.request_on_association }},{{ to_parse_wlan[wlan].client_scan_report_11k_beacon_radio_measurement.request_on_roam }},{{ to_parse_wlan[wlan].device_analytics.advertise_support }},{{ to_parse_wlan[wlan].device_analytics.share_data_with_client }},{{ to_parse_wlan[wlan].dot11ac_mu_mimo }},{{ to_parse_wlan[wlan].dot11ax_parameters.bss_target_wake_up_time }},{{ to_parse_wlan[wlan].dot11ax_parameters.bss_target_wake_up_time_broadcast_support }},{{ to_parse_wlan[wlan].dot11ax_parameters.mu_mimo_downlink }},{{ to_parse_wlan[wlan].dot11ax_parameters.mu_mimo_uplink }},{{ to_parse_wlan[wlan].dot11ax_parameters.ofdma_downlink }},{{ to_parse_wlan[wlan].dot11ax_parameters.ofdma_uplink }},{{ to_parse_wlan[wlan].dot1x_authentication_list_name }},{{ to_parse_wlan[wlan].dot1x_authorization_list_name }},{{ to_parse_wlan[wlan].identifier }},{{ to_parse_wlan[wlan].ieee_dot11v_parameters.bss_max_idle.bss_max_idle_status }},{{ to_parse_wlan[wlan].ieee_dot11v_parameters.bss_max_idle.protected_mode }},{{ to_parse_wlan[wlan].ieee_dot11v_parameters.bss_transition.bss_transition_status }},{{ to_parse_wlan[wlan].ieee_dot11v_parameters.bss_transition.disassociation_imminent.disassociation_imminent_status }},{{ to_parse_wlan[wlan].ieee_dot11v_parameters.bss_transition.disassociation_imminent.optimised_roaming_timer }},{{ to_parse_wlan[wlan].ieee_dot11v_parameters.bss_transition.disassociation_imminent.timer }},{{ to_parse_wlan[wlan].ieee_dot11v_parameters.bss_transition.dual_neighbor_list }},{{ to_parse_wlan[wlan].ieee_dot11v_parameters.directed_multicast_service }},{{ to_parse_wlan[wlan].ieee_dot11v_parameters.traffic_filtering_servce }},{{ to_parse_wlan[wlan].ieee_dot11v_parameters.wmn_sleep_mode }},{{ to_parse_wlan[wlan].ip_source_guard }},{{ to_parse_wlan[wlan].load_balancing }},{{ to_parse_wlan[wlan].local_eap_authentication }},{{ to_parse_wlan[wlan].mac_filter_authorization_list_name }},{{ to_parse_wlan[wlan].mac_filter_override_authorization_list_name }},{{ to_parse_wlan[wlan].max_clients_ap }},{{ to_parse_wlan[wlan].max_clients_ap_radio }},{{ to_parse_wlan[wlan].max_clients_wlan }},{{ to_parse_wlan[wlan].mdns_gateway_status }},{{ to_parse_wlan[wlan].media_stream_multicast_direct }},{{ to_parse_wlan[wlan].multicast_buffer }},{{ to_parse_wlan[wlan].multicast_buffer_frames }},{{ to_parse_wlan[wlan].okc }},{{ to_parse_wlan[wlan].p2p_blocking_action }},{{ to_parse_wlan[wlan].radio_policy }},{{ to_parse_wlan[wlan].scan_defer_time_msecs }},{{ to_parse_wlan[wlan].security.conditional_web_redirect }},{{ to_parse_wlan[wlan].security.dot11_authentication }},{{ to_parse_wlan[wlan].security.ft_support.ft_over_the_ds_mode }},{{ to_parse_wlan[wlan].security.ft_support.ft_reassociation_timer_secs }},{{ to_parse_wlan[wlan].security.ft_support.ft_support_status }},{{ to_parse_wlan[wlan].security.osen }},{{ to_parse_wlan[wlan].security.owe_transition_mode }},{{ to_parse_wlan[wlan].security.pmf_support.pmf_association_comeback_timeout_secs }},{{ to_parse_wlan[wlan].security.pmf_support.pmf_sa_query_time_msecs }},{{ to_parse_wlan[wlan].security.pmf_support.pmf_support_status }},{{ to_parse_wlan[wlan].security.splash_page_web_redirect }},{{ to_parse_wlan[wlan].security.static_wep_keys }},{{ to_parse_wlan[wlan].security.web_based_authenticaion }},{{ to_parse_wlan[wlan].security.webauth_authentication_list_name }},{{ to_parse_wlan[wlan].security.webauth_authorization_list_name }},{{ to_parse_wlan[wlan].security.webauth_on_mac_filter_failure }},{{ to_parse_wlan[wlan].security.webauth_parameter_map }},{{ to_parse_wlan[wlan].security.wifi_protected_access_wpa1_wpa2_wpa3 }},{{ to_parse_wlan[wlan].ssid }},{{ to_parse_wlan[wlan].status }},{{ to_parse_wlan[wlan].universal_ap_admin }},{{ to_parse_wlan[wlan].wifi_alliance_agile_multiband }},{{ to_parse_wlan[wlan].wifi_direct_policy }},{{ to_parse_wlan[wlan].wifi_to_cellular_steering }},{{ to_parse_wlan[wlan].wmm }}
+{%-     endfor %}
+{%- else %}
+{%-     if filetype_loop == 1 %}
+# Show WLAN All
+| WLAN Name | Active Clients | Advertise AP Name | Assisted Roaming Dual Band Support | Assisted Roaming Neighbbor List | Assisted Roaming Prediction List | Band Select | Broadcast SSID | CCX Aironet Support | Channel Scan Defer Priority | Chd Per WLAN | Client Scan Report 11k Beacon Radio Measurement Request On Association | Client Scan Report 11k Beacon Radio Measurement Request On Roam | Device Analytics Advertise Support | Device Analytics Share Data With Client | Dot11ac MU MIMO | Dot11ax BSS Target Wake Up Time | Dot11ax BSS Target Wake Up Time Broadcast Support | Dot11ax MU MIMO Downlink | Dot11ax MU MIMO Uplink | Dot11ax OFDMA Downlink | Dot11ax OFDMA Uplink | Dot1x Authentication List Name | Dot1x Authorization List Name | Identifier | IEEE Dot11v BSS Max Idle Status | IEEE Dot11v BSS Max Idle Protected Mode | IEEE Dot11v BSS Transition Status | IEEE Dot11v BSS Transition Disassociation Imminent Status | IEEE Dot11v BSS Transition Disassociation Imminent Optimised Roaming Timer | IEEE Dot11v BSS Transition Disassociation Imminent Timer | IEEE Dot11v BSS Transition Dual Neighbor List | IEEE Dot11v Directed Multicast Service | IEEE Dot11v Traffic Filtering Servce | IEEE Dot11v WMN Sleep Mode | IP Source Guard | Load Balancing | Local EAP Authentication | MAC Filter Authorization List Name | MAC Filter Override Authorization List Name | Max Clients AP | Max Clients AP Radio | Max Clients WLAN | MDNS Gateway Status | Media Stream Multicast Direct | Multicast Buffer | Multicast Buffer Frames | OKC | P2P Blocking Action | Radio Policy | Scan Defer Time Milliseconds | Conditional Web Redirect | Dot11 Authentication | FT Over The DS Mode | FT Reassociation Time | FT Support Status | OSEN | OWE Transition Mode | PMF Association Comeback Timeout | PMF SA Query Time Milliseconds | PMF Support Status | Splash Page Web Redirect | Static WEP Keys | Web Based Authentication | Webauth Authentication List Name | Webauth Authorization List Name | Webauth On MAC Flter Failure | Webauth Parameter Map | Wifi Protected Access WPA1 WPA2 WPA3 | SSID | Status | Universal AP Admin | Wifi Alliance Agile Multiband | Wifi Direct Policy | Wifi To Cellular Steering | WMM |
+| --------- | -------------- | ----------------- | ---------------------------------- | ------------------------------- | -------------------------------- | ----------- | -------------- | ------------------- | --------------------------- | ------------ | ---------------------------------------------------------------------- | --------------------------------------------------------------- | ---------------------------------- | --------------------------------------- | --------------- | ------------------------------- | ------------------------------------------------- | ------------------------ | ---------------------- | ---------------------- | -------------------- | ------------------------------ | ----------------------------- | ---------- | ------------------------------- | --------------------------------------- | --------------------------------- | --------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------- | --------------------------------------------- | -------------------------------------- | ------------------------------------ | -------------------------- | --------------- | -------------- | ------------------------ | ---------------------------------- | ------------------------------------------- | -------------- | -------------------- | ---------------- | ------------------- | ----------------------------- | ---------------- | ----------------------- | --- | ------------------- | ------------ | ---------------------------- | ------------------------ | -------------------- | ------------------- | --------------------- | ----------------- | ---- | ------------------- | -------------------------------- | ------------------------------ | ------------------ | ------------------------ | --------------- | ------------------------ | -------------------------------- | ------------------------------- | ---------------------------- | --------------------- | ------------------------------------ | ---- | ------ | ------------------ | ----------------------------- | ------------------ | ------------------------- | --- |
+{%-     for wlan in to_parse_wlan %}
+| {{ wlan }} | {{ to_parse_wlan[wlan].active_clients }} | {{ to_parse_wlan[wlan].advertise_ap_name }} | {{ to_parse_wlan[wlan].assisted_roaming.dual_band_support }} | {{ to_parse_wlan[wlan].assisted_roaming.neighbbor_list }} | {{ to_parse_wlan[wlan].assisted_roaming.prediction_list }} | {{ to_parse_wlan[wlan].band_select }} | {{ to_parse_wlan[wlan].broadcast_ssid }} | {{ to_parse_wlan[wlan].ccx_aironet_support }} | {%- for priority in to_parse_wlan[wlan].channel_scan_defer_priority.priority %}{{ priority }} {%- endfor %}{{ to_parse_wlan[wlan].chd_per_wlan }} | {{ to_parse_wlan[wlan].client_scan_report_11k_beacon_radio_measurement.request_on_association }} | {{ to_parse_wlan[wlan].client_scan_report_11k_beacon_radio_measurement.request_on_roam }} | {{ to_parse_wlan[wlan].device_analytics.advertise_support }} | {{ to_parse_wlan[wlan].device_analytics.share_data_with_client }} | {{ to_parse_wlan[wlan].dot11ac_mu_mimo }} | {{ to_parse_wlan[wlan].dot11ax_parameters.bss_target_wake_up_time }} | {{ to_parse_wlan[wlan].dot11ax_parameters.bss_target_wake_up_time_broadcast_support }} | {{ to_parse_wlan[wlan].dot11ax_parameters.mu_mimo_downlink }} | {{ to_parse_wlan[wlan].dot11ax_parameters.mu_mimo_uplink }} | {{ to_parse_wlan[wlan].dot11ax_parameters.ofdma_downlink }} | {{ to_parse_wlan[wlan].dot11ax_parameters.ofdma_uplink }} | {{ to_parse_wlan[wlan].dot1x_authentication_list_name }} | {{ to_parse_wlan[wlan].dot1x_authorization_list_name }} | {{ to_parse_wlan[wlan].identifier }} | {{ to_parse_wlan[wlan].ieee_dot11v_parameters.bss_max_idle.bss_max_idle_status }} | {{ to_parse_wlan[wlan].ieee_dot11v_parameters.bss_max_idle.protected_mode }} | {{ to_parse_wlan[wlan].ieee_dot11v_parameters.bss_transition.bss_transition_status }} | {{ to_parse_wlan[wlan].ieee_dot11v_parameters.bss_transition.disassociation_imminent.disassociation_imminent_status }} | {{ to_parse_wlan[wlan].ieee_dot11v_parameters.bss_transition.disassociation_imminent.optimised_roaming_timer }} | {{ to_parse_wlan[wlan].ieee_dot11v_parameters.bss_transition.disassociation_imminent.timer }} | {{ to_parse_wlan[wlan].ieee_dot11v_parameters.bss_transition.dual_neighbor_list }} | {{ to_parse_wlan[wlan].ieee_dot11v_parameters.directed_multicast_service }} | {{ to_parse_wlan[wlan].ieee_dot11v_parameters.traffic_filtering_servce }} | {{ to_parse_wlan[wlan].ieee_dot11v_parameters.wmn_sleep_mode }} | {{ to_parse_wlan[wlan].ip_source_guard }} | {{ to_parse_wlan[wlan].load_balancing }} | {{ to_parse_wlan[wlan].local_eap_authentication }} | {{ to_parse_wlan[wlan].mac_filter_authorization_list_name }} | {{ to_parse_wlan[wlan].mac_filter_override_authorization_list_name }} | {{ to_parse_wlan[wlan].max_clients_ap }} | {{ to_parse_wlan[wlan].max_clients_ap_radio }} | {{ to_parse_wlan[wlan].max_clients_wlan }} | {{ to_parse_wlan[wlan].mdns_gateway_status }} | {{ to_parse_wlan[wlan].media_stream_multicast_direct }} | {{ to_parse_wlan[wlan].multicast_buffer }} | {{ to_parse_wlan[wlan].multicast_buffer_frames }} | {{ to_parse_wlan[wlan].okc }} | {{ to_parse_wlan[wlan].p2p_blocking_action }} | {{ to_parse_wlan[wlan].radio_policy }} | {{ to_parse_wlan[wlan].scan_defer_time_msecs }} | {{ to_parse_wlan[wlan].security.conditional_web_redirect }} | {{ to_parse_wlan[wlan].security.dot11_authentication }} | {{ to_parse_wlan[wlan].security.ft_support.ft_over_the_ds_mode }} | {{ to_parse_wlan[wlan].security.ft_support.ft_reassociation_timer_secs }} | {{ to_parse_wlan[wlan].security.ft_support.ft_support_status }} | {{ to_parse_wlan[wlan].security.osen }} | {{ to_parse_wlan[wlan].security.owe_transition_mode }} | {{ to_parse_wlan[wlan].security.pmf_support.pmf_association_comeback_timeout_secs }} | {{ to_parse_wlan[wlan].security.pmf_support.pmf_sa_query_time_msecs }} | {{ to_parse_wlan[wlan].security.pmf_support.pmf_support_status }} | {{ to_parse_wlan[wlan].security.splash_page_web_redirect }} | {{ to_parse_wlan[wlan].security.static_wep_keys }} | {{ to_parse_wlan[wlan].security.web_based_authenticaion }} | {{ to_parse_wlan[wlan].security.webauth_authentication_list_name }} | {{ to_parse_wlan[wlan].security.webauth_authorization_list_name }} | {{ to_parse_wlan[wlan].security.webauth_on_mac_filter_failure }} | {{ to_parse_wlan[wlan].security.webauth_parameter_map }} | {{ to_parse_wlan[wlan].security.wifi_protected_access_wpa1_wpa2_wpa3 }} | {{ to_parse_wlan[wlan].ssid }} | {{ to_parse_wlan[wlan].status }} | {{ to_parse_wlan[wlan].universal_ap_admin }} | {{ to_parse_wlan[wlan].wifi_alliance_agile_multiband }} | {{ to_parse_wlan[wlan].wifi_direct_policy }} | {{ to_parse_wlan[wlan].wifi_to_cellular_steering }} | {{ to_parse_wlan[wlan].wmm }} |
+{%-     endfor %}
+{%-     else %}
+{%-         if filetype_loop == 2 %}
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/colreorder/1.5.4/js/dataTables.colReorder.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/keytable/2.6.4/js/dataTables.keyTable.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.1.9/js/dataTables.fixedHeader.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.9/css/fixedHeader.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/keytable/2.6.4/css/keyTable.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+</head>
+<body>
+<h1>Show WLAN All</h1>
+<table id = "wlan">
+  <thead>
+    <tr>
+      <th>WLAN Name</th>
+      <th>Active Clients</th>
+      <th>Advertise AP Name</th>
+      <th>Assisted Roaming Dual Band Support</th>
+      <th>Assisted Roaming Neighbbor List</th>
+      <th>Assisted Roaming Prediction List</th>
+      <th>Band Select</th>
+      <th>Broadcast SSID</th>
+      <th>CCX Aironet Support</th>
+      <th>Channel Scan Defer Priority</th>
+      <th>Chd Per WLAN</th>
+      <th>Client Scan Report 11k Beacon Radio Measurement Request On Association</th>
+      <th>Client Scan Report 11k Beacon Radio Measurement Request On Roam</th>
+      <th>Device Analytics Advertise Support</th>
+      <th>Device Analytics Share Data With Client</th>
+      <th>Dot11ac MU MIMO</th>
+      <th>Dot11ax BSS Target Wake Up Time</th>
+      <th>Dot11ax BSS Target Wake Up Time Broadcast Support</th>
+      <th>Dot11ax MU MIMO Downlink</th>
+      <th>Dot11ax MU MIMO Uplink</th>
+      <th>Dot11ax OFDMA Downlink</th>
+      <th>Dot11ax OFDMA Uplink</th>
+      <th>Dot1x Authentication List Name</th>
+      <th>Dot1x Authorization List Name</th>
+      <th>Identifier</th>
+      <th>IEEE Dot11v BSS Max Idle Status</th>
+      <th>IEEE Dot11v BSS Max Idle Protected Mode</th>
+      <th>IEEE Dot11v BSS Transition Status</th>
+      <th>IEEE Dot11v BSS Transition Disassociation Imminent Status</th>
+      <th>IEEE Dot11v BSS Transition Disassociation Imminent Optimised Roaming Timer</th>
+      <th>IEEE Dot11v BSS Transition Disassociation Imminent Timer</th>
+      <th>IEEE Dot11v BSS Transition Dual Neighbor List</th>
+      <th>IEEE Dot11v Directed Multicast Service</th>
+      <th>IEEE Dot11v Traffic Filtering Servce</th>
+      <th>IEEE Dot11v WMN Sleep Mode</th>
+      <th>IP Source Guard</th>
+      <th>Load Balancing</th>
+      <th>Local EAP Authentication</th>
+      <th>MAC Filter Authorization List Name</th>
+      <th>MAC Filter Override Authorization List Name</th>
+      <th>Max Clients AP</th>
+      <th>Max Clients AP Radio</th>
+      <th>Max Clients WLAN</th>
+      <th>MDNS Gateway Status</th>
+      <th>Media Stream Multicast Direct</th>
+      <th>Multicast Buffer</th>
+      <th>Multicast Buffer Frames</th>
+      <th>OKC</th>
+      <th>P2P Blocking Action</th>
+      <th>Radio Policy</th>
+      <th>Scan Defer Time Milliseconds</th>
+      <th>Conditional Web Redirect</th>
+      <th>Dot11 Authentication</th>
+      <th>FT Over The DS Mode</th>
+      <th>FT Reassociation Time</th>
+      <th>FT Support Status</th>
+      <th>OSEN</th>
+      <th>OWE Transition Mode</th>
+      <th>PMF Association Comeback Timeout</th>
+      <th>PMF SA Query Time Milliseconds</th>
+      <th>PMF Support Status</th>
+      <th>Splash Page Web Redirect</th>
+      <th>Static WEP Keys</th>
+      <th>Web Based Authentication</th>
+      <th>Webauth Authentication List Name</th>
+      <th>Webauth Authorization List Name</th>
+      <th>Webauth On MAC Flter Failure</th>
+      <th>Webauth Parameter Map</th>
+      <th>Wifi Protected Access WPA1 WPA2 WPA3</th>
+      <th>SSID</th>
+      <th>Status</th>
+      <th>Universal AP Admin</th>
+      <th>Wifi Alliance Agile Multiband</th>
+      <th>Wifi Direct Policy</th>
+      <th>Wifi To Cellular Steering</th>
+      <th>WMM</th>
+    </tr>
+  </thead>
+  <tbody>
+{%-     for wlan in to_parse_wlan %}  
+    <tr>
+      <td>{{ wlan }}</td>
+      <td>{{ to_parse_wlan[wlan].active_clients }}</td>
+      <td>{{ to_parse_wlan[wlan].advertise_ap_name }}</td>
+      <td>{{ to_parse_wlan[wlan].assisted_roaming.dual_band_support }}</td>
+      <td>{{ to_parse_wlan[wlan].assisted_roaming.neighbbor_list }}</td>
+      <td>{{ to_parse_wlan[wlan].assisted_roaming.prediction_list }}</td>
+      <td>{{ to_parse_wlan[wlan].band_select }}</td>
+      <td>{{ to_parse_wlan[wlan].broadcast_ssid }}</td>
+      <td>{{ to_parse_wlan[wlan].ccx_aironet_support }}</td>
+      <td>{%- for priority in to_parse_wlan[wlan].channel_scan_defer_priority.priority %}{{ priority }} {%- endfor %}{{ to_parse_wlan[wlan].chd_per_wlan }}</td>
+      <td>{{ to_parse_wlan[wlan].client_scan_report_11k_beacon_radio_measurement.request_on_association }}</td>
+      <td>{{ to_parse_wlan[wlan].client_scan_report_11k_beacon_radio_measurement.request_on_roam }}</td>
+      <td>{{ to_parse_wlan[wlan].device_analytics.advertise_support }}</td>
+      <td>{{ to_parse_wlan[wlan].device_analytics.share_data_with_client }}</td>
+      <td>{{ to_parse_wlan[wlan].dot11ac_mu_mimo }}</td>
+      <td>{{ to_parse_wlan[wlan].dot11ax_parameters.bss_target_wake_up_time }}</td>
+      <td>{{ to_parse_wlan[wlan].dot11ax_parameters.bss_target_wake_up_time_broadcast_support }}
+      <td>{{ to_parse_wlan[wlan].dot11ax_parameters.mu_mimo_downlink }}</td>
+      <td>{{ to_parse_wlan[wlan].dot11ax_parameters.mu_mimo_uplink }}</td>
+      <td>{{ to_parse_wlan[wlan].dot11ax_parameters.ofdma_downlink }}</td>
+      <td>{{ to_parse_wlan[wlan].dot11ax_parameters.ofdma_uplink }}</td>
+      <td>{{ to_parse_wlan[wlan].dot1x_authentication_list_name }}</td>
+      <td>{{ to_parse_wlan[wlan].dot1x_authorization_list_name }}</td>
+      <td>{{ to_parse_wlan[wlan].identifier }}</td>
+      <td>{{ to_parse_wlan[wlan].ieee_dot11v_parameters.bss_max_idle.bss_max_idle_status }}</td>
+      <td>{{ to_parse_wlan[wlan].ieee_dot11v_parameters.bss_max_idle.protected_mode }}</td>
+      <td>{{ to_parse_wlan[wlan].ieee_dot11v_parameters.bss_transition.bss_transition_status }}</td>
+      <td>{{ to_parse_wlan[wlan].ieee_dot11v_parameters.bss_transition.disassociation_imminent.disassociation_imminent_status }}</td>
+      <td>{{ to_parse_wlan[wlan].ieee_dot11v_parameters.bss_transition.disassociation_imminent.optimised_roaming_timer }}</td>
+      <td>{{ to_parse_wlan[wlan].ieee_dot11v_parameters.bss_transition.disassociation_imminent.timer }}</td>
+      <td>{{ to_parse_wlan[wlan].ieee_dot11v_parameters.bss_transition.dual_neighbor_list }}</td>
+      <td>{{ to_parse_wlan[wlan].ieee_dot11v_parameters.directed_multicast_service }}</td>
+      <td>{{ to_parse_wlan[wlan].ieee_dot11v_parameters.traffic_filtering_servce }}</td>
+      <td>{{ to_parse_wlan[wlan].ieee_dot11v_parameters.wmn_sleep_mode }}</td>
+      <td>{{ to_parse_wlan[wlan].ip_source_guard }}</td>
+      <td>{{ to_parse_wlan[wlan].load_balancing }}</td>
+      <td>{{ to_parse_wlan[wlan].local_eap_authentication }}</td>
+      <td>{{ to_parse_wlan[wlan].mac_filter_authorization_list_name }}</td>
+      <td>{{ to_parse_wlan[wlan].mac_filter_override_authorization_list_name }}</td>
+      <td>{{ to_parse_wlan[wlan].max_clients_ap }}</td>
+      <td>{{ to_parse_wlan[wlan].max_clients_ap_radio }}</td>
+      <td>{{ to_parse_wlan[wlan].max_clients_wlan }}</td>
+      <td>{{ to_parse_wlan[wlan].mdns_gateway_status }}</td>
+      <td>{{ to_parse_wlan[wlan].media_stream_multicast_direct }}</td>
+      <td>{{ to_parse_wlan[wlan].multicast_buffer }}</td>
+      <td>{{ to_parse_wlan[wlan].multicast_buffer_frames }}</td>
+      <td>{{ to_parse_wlan[wlan].okc }}</td>
+      <td>{{ to_parse_wlan[wlan].p2p_blocking_action }}</td>
+      <td>{{ to_parse_wlan[wlan].radio_policy }}</td>
+      <td>{{ to_parse_wlan[wlan].scan_defer_time_msecs }}</td>
+      <td>{{ to_parse_wlan[wlan].security.conditional_web_redirect }}</td>
+      <td>{{ to_parse_wlan[wlan].security.dot11_authentication }}</td>
+      <td>{{ to_parse_wlan[wlan].security.ft_support.ft_over_the_ds_mode }}</td>
+      <td>{{ to_parse_wlan[wlan].security.ft_support.ft_reassociation_timer_secs }}</td>
+      <td>{{ to_parse_wlan[wlan].security.ft_support.ft_support_status }}</td>
+      <td>{{ to_parse_wlan[wlan].security.osen }}</td>
+      <td>{{ to_parse_wlan[wlan].security.owe_transition_mode }}
+      <td>{{ to_parse_wlan[wlan].security.pmf_support.pmf_association_comeback_timeout_secs }}</td>
+      <td>{{ to_parse_wlan[wlan].security.pmf_support.pmf_sa_query_time_msecs }}</td>
+      <td>{{ to_parse_wlan[wlan].security.pmf_support.pmf_support_status }}</td>
+      <td>{{ to_parse_wlan[wlan].security.splash_page_web_redirect }}</td>
+      <td>{{ to_parse_wlan[wlan].security.static_wep_keys }}</td>
+      <td>{{ to_parse_wlan[wlan].security.web_based_authenticaion }}</td>
+      <td>{{ to_parse_wlan[wlan].security.webauth_authentication_list_name }}</td>
+      <td>{{ to_parse_wlan[wlan].security.webauth_authorization_list_name }}</td>
+      <td>{{ to_parse_wlan[wlan].security.webauth_on_mac_filter_failure }}</td>
+      <td>{{ to_parse_wlan[wlan].security.webauth_parameter_map }}</td>
+      <td>{{ to_parse_wlan[wlan].security.wifi_protected_access_wpa1_wpa2_wpa3 }}</td>
+      <td>{{ to_parse_wlan[wlan].ssid }}</td>
+      <td>{{ to_parse_wlan[wlan].status }}</td>
+      <td>{{ to_parse_wlan[wlan].universal_ap_admin }}</td>
+      <td>{{ to_parse_wlan[wlan].wifi_alliance_agile_multiband }}</td>
+      <td>{{ to_parse_wlan[wlan].wifi_direct_policy }}</td>
+      <td>{{ to_parse_wlan[wlan].wifi_to_cellular_steering }}</td>
+      <td>{{ to_parse_wlan[wlan].wmm }}</td>
+    </tr>
+{%-     endfor %}    
+  </tbody>
+</table>
+<script type = "text/javascript">
+  $(document).ready(function(){
+    $('#wlan thead tr')
+    .clone(true)
+    .addClass('filters')
+    .appendTo('#wlan thead');
+
+    var table = $('#wlan').DataTable({
+        keys: true,
+        dom: 'Bfrtip',
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],
+            [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        buttons: [
+        'pageLength','colvis','copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        colReorder: true,
+        select: true,            
+        orderCellsTop: true,
+        fixedHeader: true,
+        initComplete: function () {
+        var api = this.api();
+
+        // For each column
+        api
+            .columns()
+            .eq(0)
+            .each(function (colIdx) {
+                // Set the header cell to contain the input element
+                var cell = $('.filters th').eq(
+                    $(api.column(colIdx).header()).index()
+                );
+                var title = $(cell).text();
+                $(cell).html('<input type="text" placeholder="' + title + '" />');
+
+                // On every keypress in this input
+                $(
+                    'input',
+                    $('.filters th').eq($(api.column(colIdx).header()).index())
+                )
+                    .off('keyup change')
+                    .on('keyup change', function (e) {
+                        e.stopPropagation();
+
+                        // Get the search value
+                        $(this).attr('title', $(this).val());
+                        var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                        var cursorPosition = this.selectionStart;
+                        // Search the column for that value
+                        api
+                            .column(colIdx)
+                            .search(
+                                this.value != ''
+                                    ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                    : '',
+                                this.value != '',
+                                this.value == ''
+                            )
+                            .draw();
+
+                        $(this)
+                            .focus()[0]
+                            .setSelectionRange(cursorPosition, cursorPosition);
+                    });
+            });
+    },
+});
+});        
+</script>
+</body></html>
+{%-         else %}
+# Show WLAN All
+{%-     for wlan in to_parse_wlan %}  
+## {{ wlan }}
+### Active Clients: {{ to_parse_wlan[wlan].active_clients }}
+### Advertise AP Name: {{ to_parse_wlan[wlan].advertise_ap_name }}
+### Assisted Roaming Dual Band Support: {{ to_parse_wlan[wlan].assisted_roaming.dual_band_support }}
+### Assisted Roaming Neighbbor List: {{ to_parse_wlan[wlan].assisted_roaming.neighbbor_list }}
+### Assisted Roaming Prediction List: {{ to_parse_wlan[wlan].assisted_roaming.prediction_list }}
+### Band Select: {{ to_parse_wlan[wlan].band_select }}
+### Broadcast SSID: {{ to_parse_wlan[wlan].broadcast_ssid }}
+### CCX Aironet Support: {{ to_parse_wlan[wlan].ccx_aironet_support }}
+### Channel Scan Defer Priority
+{%- for priority in to_parse_wlan[wlan].channel_scan_defer_priority.priority %}
+#### {{ priority }}
+{%- endfor %}
+### Chd Per WLAN: {{ to_parse_wlan[wlan].chd_per_wlan }}
+### Client Scan Report 11k Beacon Radio Measurement Request
+#### On Association: {{ to_parse_wlan[wlan].client_scan_report_11k_beacon_radio_measurement.request_on_association }}
+#### On Roam: {{ to_parse_wlan[wlan].client_scan_report_11k_beacon_radio_measurement.request_on_roam }}
+### Device Analytics
+#### Advertise Support: {{ to_parse_wlan[wlan].device_analytics.advertise_support }}
+#### Share Data With Client: {{ to_parse_wlan[wlan].device_analytics.share_data_with_client }}
+### Dot11ac
+#### MU MIMO: {{ to_parse_wlan[wlan].dot11ac_mu_mimo }}
+#### BSS Target Wake Up Time
+##### {{ to_parse_wlan[wlan].dot11ax_parameters.bss_target_wake_up_time }}
+##### Broadcast Support: {{ to_parse_wlan[wlan].dot11ax_parameters.bss_target_wake_up_time_broadcast_support }}
+#### MU MIMO Links
+##### Downlink: {{ to_parse_wlan[wlan].dot11ax_parameters.mu_mimo_downlink }}
+##### Uplink: {{ to_parse_wlan[wlan].dot11ax_parameters.mu_mimo_uplink }}
+#### OFDMA Links
+##### Downlink: {{ to_parse_wlan[wlan].dot11ax_parameters.ofdma_downlink }}
+##### Uplink: {{ to_parse_wlan[wlan].dot11ax_parameters.ofdma_uplink }}
+### Dot1x
+#### Authentication List Name: {{ to_parse_wlan[wlan].dot1x_authentication_list_name }}
+#### Authorization List Name: {{ to_parse_wlan[wlan].dot1x_authorization_list_name }}
+### Identifier: {{ to_parse_wlan[wlan].identifier }}
+### IEEE Dot11v BSS
+#### Max Idle
+##### Status: {{ to_parse_wlan[wlan].ieee_dot11v_parameters.bss_max_idle.bss_max_idle_status }}
+##### Protected Mode: {{ to_parse_wlan[wlan].ieee_dot11v_parameters.bss_max_idle.protected_mode }}
+#### Transition 
+##### Status: {{ to_parse_wlan[wlan].ieee_dot11v_parameters.bss_transition.bss_transition_status }}
+##### Disassociation Imminent
+###### Status: {{ to_parse_wlan[wlan].ieee_dot11v_parameters.bss_transition.disassociation_imminent.disassociation_imminent_status }}
+###### Optimised Roaming Timer: {{ to_parse_wlan[wlan].ieee_dot11v_parameters.bss_transition.disassociation_imminent.optimised_roaming_timer }}
+###### Timer: {{ to_parse_wlan[wlan].ieee_dot11v_parameters.bss_transition.disassociation_imminent.timer }}
+##### Dual Neighbor List: {{ to_parse_wlan[wlan].ieee_dot11v_parameters.bss_transition.dual_neighbor_list }}
+#### Directed Multicast Service: {{ to_parse_wlan[wlan].ieee_dot11v_parameters.directed_multicast_service }}
+#### Traffic Filtering Service: {{ to_parse_wlan[wlan].ieee_dot11v_parameters.traffic_filtering_servce }}
+#### WMN Sleep Mode: {{ to_parse_wlan[wlan].ieee_dot11v_parameters.wmn_sleep_mode }}
+### IP Source Guard: {{ to_parse_wlan[wlan].ip_source_guard }}
+### Load Balancing: {{ to_parse_wlan[wlan].load_balancing }}
+### Local EAP Authentication: {{ to_parse_wlan[wlan].local_eap_authentication }}
+### MAC Filter
+#### Authorization List Name: {{ to_parse_wlan[wlan].mac_filter_authorization_list_name }}
+#### Override Authorization List Name: {{ to_parse_wlan[wlan].mac_filter_override_authorization_list_name }}
+### Max Clients
+#### AP: {{ to_parse_wlan[wlan].max_clients_ap }}
+#### AP Radio: {{ to_parse_wlan[wlan].max_clients_ap_radio }}
+#### WLAN: {{ to_parse_wlan[wlan].max_clients_wlan }}
+### MDNS Gateway Status: {{ to_parse_wlan[wlan].mdns_gateway_status }}
+### Media Stream Multicast Direct: {{ to_parse_wlan[wlan].media_stream_multicast_direct }}
+### Multicast Buffer
+#### {{ to_parse_wlan[wlan].multicast_buffer }}
+#### Frames: {{ to_parse_wlan[wlan].multicast_buffer_frames }}
+### OKC: {{ to_parse_wlan[wlan].okc }}
+### P2P Blocking Action: {{ to_parse_wlan[wlan].p2p_blocking_action }}
+### Radio Policy: {{ to_parse_wlan[wlan].radio_policy }}
+### Scan Defer Timer Milliseconds: {{ to_parse_wlan[wlan].scan_defer_time_msecs }}
+### Security 
+#### Conditional Web Redirect: {{ to_parse_wlan[wlan].security.conditional_web_redirect }}
+#### Dot11 Authentication: {{ to_parse_wlan[wlan].security.dot11_authentication }}
+#### FT Support
+##### Over The DS Mode: {{ to_parse_wlan[wlan].security.ft_support.ft_over_the_ds_mode }}
+##### Reassociation Time: {{ to_parse_wlan[wlan].security.ft_support.ft_reassociation_timer_secs }}
+##### Support Status: {{ to_parse_wlan[wlan].security.ft_support.ft_support_status }}
+#### OSEN: {{ to_parse_wlan[wlan].security.osen }}
+#### OWE Transition Mode: {{ to_parse_wlan[wlan].security.owe_transition_mode }}
+#### PMF
+##### Association Comeback Timeout: {{ to_parse_wlan[wlan].security.pmf_support.pmf_association_comeback_timeout_secs }}
+##### SA Query Time Milliseconds: {{ to_parse_wlan[wlan].security.pmf_support.pmf_sa_query_time_msecs }}
+##### Support Status: {{ to_parse_wlan[wlan].security.pmf_support.pmf_support_status }}
+#### Splash Page Web Redirect: {{ to_parse_wlan[wlan].security.splash_page_web_redirect }}
+#### Static WEP Keys: {{ to_parse_wlan[wlan].security.static_wep_keys }}
+#### Web Based Authentication: {{ to_parse_wlan[wlan].security.web_based_authenticaion }}
+##### Webauth Authentication List Name: {{ to_parse_wlan[wlan].security.webauth_authentication_list_name }}
+##### Webauth Authorization List Name: {{ to_parse_wlan[wlan].security.webauth_authorization_list_name }}
+##### On MAC Filter Failure: {{ to_parse_wlan[wlan].security.webauth_on_mac_filter_failure }}
+##### Parameter Map: {{ to_parse_wlan[wlan].security.webauth_parameter_map }}
+#### Wifi Protected Access WPA1 WPA2 WPA3: {{ to_parse_wlan[wlan].security.wifi_protected_access_wpa1_wpa2_wpa3 }}
+### SSID: {{ to_parse_wlan[wlan].ssid }}
+### Status: {{ to_parse_wlan[wlan].status }}
+### Universal AP Admin: {{ to_parse_wlan[wlan].universal_ap_admin }}
+### Wifi
+#### Alliance Agile Multiband: {{ to_parse_wlan[wlan].wifi_alliance_agile_multiband }}
+#### Direct Policy: {{ to_parse_wlan[wlan].wifi_direct_policy }}
+#### To Cellular Steering: {{ to_parse_wlan[wlan].wifi_to_cellular_steering }}
+### WMM: {{ to_parse_wlan[wlan].wmm }}
+{%-     endfor %}    
+{%-         endif %}
+{%-     endif %}
+{%- endif %}

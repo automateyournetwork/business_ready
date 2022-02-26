@@ -1504,6 +1504,9 @@ def Meraki_all(url, token):
     Meraki_organization_licenses(url, username, password)
     Meraki_organization_adaptive_policies(url, username, password)
     Meraki_organization_admins(url, username, password)
+    Meraki_organization_alert_profiles(url, username, password)
+    Meraki_organization_branding_policy(url, username, password)
+    Meraki_organization_clients(url, username, password)
     return("All Meraki APIs Converted to Business Ready Documents")
 
 def Meraki_organizations(url, token):
@@ -1708,6 +1711,172 @@ def Meraki_organization_admins(url, token):
                             json.dump(organizationAdminsJSON, fh, indent=4, sort_keys=True)
                             fh.close()                            
         return(organizationAdminsJSON)
+    except Exception as e:
+        logging.exception(e)
+
+def Meraki_organization_alert_profiles(url, token):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'X-Cisco-Meraki-API-Key': token,
+        }
+    
+        organizationsRAW = requests.request("GET", f"{ url }/api/v1/organizations", headers=headers)
+        organizationsJSON = organizationsRAW.json()
+
+        # Pass to template 
+
+        if organizationsJSON is not None:
+            for org in organizationsJSON:                     
+    
+                organizationAlertProfilesRAW = requests.request("GET", f"{ url }/api/v1/organizations/{ org['id'] }/alerts/profiles", headers=headers)
+                organizationAlertProfilesJSON = organizationAlertProfilesRAW.json()
+
+                if organizationAlertProfilesJSON != []:
+        # -------------------------
+        # create folders to hold files
+        # -------------------------
+                    if not os.path.exists(f"{ org['name'] }"):
+                        os.mkdir(f"{ org['name'] }")
+                    else:
+                        print("Directory already exists")                      
+                        
+                    organization_alert_profiles_template = env.get_template('Meraki_organization_alert_profiles.j2')
+                    loop_counter = 0
+
+        # Render Templates
+                    for filetype in filetype_loop:
+                        parsed_output = organization_alert_profiles_template.render(alertProfiles = organizationAlertProfilesJSON,filetype_loop=loop_counter)
+                        loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                        if loop_counter <= 3:
+                            with open(f"{ org['name'] }/Meraki { org['name'] } Alert Profiles.{ filetype }", "w") as fh:
+                                fh.write(parsed_output)               
+                                fh.close()
+                        else:
+                            with open(f"{ org['name'] }/Meraki { org['name'] } Alert Profiles Mind Map.md", "w") as fh:
+                                fh.write(parsed_output)               
+                                fh.close()
+                        with open(f"{ org['name'] }/Meraki { org['name'] } Alert Profiles.json", "w") as fh:
+                            json.dump(organizationAlertProfilesJSON, fh, indent=4, sort_keys=True)
+                            fh.close()                            
+        return(organizationAlertProfilesJSON)
+    except Exception as e:
+        logging.exception(e)
+
+def Meraki_organization_branding_policy(url, token):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'X-Cisco-Meraki-API-Key': token,
+        }
+    
+        organizationsRAW = requests.request("GET", f"{ url }/api/v1/organizations", headers=headers)
+        organizationsJSON = organizationsRAW.json()
+
+        # Pass to template 
+
+        if organizationsJSON is not None:
+            for org in organizationsJSON:                     
+    
+                organizationBrandingPolicyRAW = requests.request("GET", f"{ url }/api/v1/organizations/{ org['id'] }/brandingPolicies", headers=headers)
+                organizationBrandingPolicyJSON = organizationBrandingPolicyRAW.json()
+                
+                if "errors" not in organizationBrandingPolicyJSON:
+                    print(organizationBrandingPolicyJSON)
+        # -------------------------
+        # create folders to hold files
+        # -------------------------
+                    if not os.path.exists(f"{ org['name'] }"):
+                        os.mkdir(f"{ org['name'] }")
+                    else:
+                        print("Directory already exists")                      
+                        
+                    organization_branding_policy_template = env.get_template('Meraki_organization_branding_policy.j2')
+                    loop_counter = 0
+
+        # Render Templates
+                    for filetype in filetype_loop:
+                        parsed_output = organization_branding_policy_template.render(brandingPolicy = organizationBrandingPolicyJSON,filetype_loop=loop_counter)
+                        loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                        if loop_counter <= 3:
+                            with open(f"{ org['name'] }/Meraki { org['name'] } Branding Policy.{ filetype }", "w") as fh:
+                                fh.write(parsed_output)               
+                                fh.close()
+                        else:
+                            with open(f"{ org['name'] }/Meraki { org['name'] } Branding Policy Mind Map.md", "w") as fh:
+                                fh.write(parsed_output)               
+                                fh.close()
+                        with open(f"{ org['name'] }/Meraki { org['name'] } Branding Policy.json", "w") as fh:
+                            json.dump(organizationBrandingPolicyJSON, fh, indent=4, sort_keys=True)
+                            fh.close()                            
+        return(organizationBrandingPolicyJSON)
+    except Exception as e:
+        logging.exception(e)
+
+def Meraki_organization_clients(url, token):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'X-Cisco-Meraki-API-Key': token,
+        }
+    
+        organizationsRAW = requests.request("GET", f"{ url }/api/v1/organizations", headers=headers)
+        organizationsJSON = organizationsRAW.json()
+
+        # Pass to template 
+
+        if organizationsJSON is not None:
+            for org in organizationsJSON:                     
+    
+                organizationClientsRAW = requests.request("GET", f"{ url }/api/v1/organizations/{ org['id'] }/clients/search", headers=headers)
+                organizationClientsJSON = organizationClientsRAW.json()
+
+                if organizationClientsJSON != []:
+        # -------------------------
+        # create folders to hold files
+        # -------------------------
+                    if not os.path.exists(f"{ org['name'] }"):
+                        os.mkdir(f"{ org['name'] }")
+                    else:
+                        print("Directory already exists")                      
+                        
+                    organization_clients_template = env.get_template('Meraki_organization_clients.j2')
+                    loop_counter = 0
+
+        # Render Templates
+                    for filetype in filetype_loop:
+                        parsed_output = organization_clients_template.render(clients = organizationClientsJSON,filetype_loop=loop_counter)
+                        loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                        if loop_counter <= 3:
+                            with open(f"{ org['name'] }/Meraki { org['name'] } Clients.{ filetype }", "w") as fh:
+                                fh.write(parsed_output)               
+                                fh.close()
+                        else:
+                            with open(f"{ org['name'] }/Meraki { org['name'] } Clients Mind Map.md", "w") as fh:
+                                fh.write(parsed_output)               
+                                fh.close()
+                        with open(f"{ org['name'] }/Meraki { org['name'] } Clients.json", "w") as fh:
+                            json.dump(organizationClientsJSON, fh, indent=4, sort_keys=True)
+                            fh.close()                            
+        return(organizationClientsJSON)
     except Exception as e:
         logging.exception(e)
 
@@ -2794,6 +2963,11 @@ def IOS_show_all(hostname, username, password, ip):
     IOS_show_license_summary(hostname, username, password, ip)
     IOS_show_mac_address_table(hostname, username, password, ip)
     IOS_show_ntp_associations(hostname, username, password, ip)
+    IOS_show_wlan_all(hostname, username, password, ip)
+    IOS_show_wlan_client_stats(hostname, username, password, ip)
+    IOS_show_wlan_summary(hostname, username, password, ip)
+    IOS_show_wireless_profile_summary(hostname, username, password, ip)
+    IOS_show_wireless_profile_detailed(hostname, username, password, ip)
     IOS_show_version(hostname, username, password, ip)
     IOS_show_vlan(hostname, username, password, ip)
     IOS_show_vrf(hostname, username, password, ip)
@@ -4199,6 +4373,373 @@ def IOS_show_ntp_associations(hostname, username, password, ip):
                     json.dump(show_ntp_associations, fh, indent=4, sort_keys=True)
                     fh.close()                                 
         return(show_ntp_associations)
+    except Exception as e:
+        logging.exception(e)
+
+def IOS_show_wlan_summary(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'iosxe',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show WLAN Summary to JSON
+
+            try:
+                show_wlan_summary = device.parse("show wlan summary")
+            except:
+                show_wlan_summary = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_wlan_summary != f"{ hostname } Can't Parse":
+            IOS_show_wlan_summary_template = env.get_template('IOS_show_wlan_summary.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = IOS_show_wlan_summary_template.render(to_parse_wlan=show_wlan_summary['wlan_summary']['wlan_id'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show WLAN Summary.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show WLAN Summary Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show WLAN Summary.json", "w") as fh:
+                    json.dump(show_wlan_summary, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_wlan_summary)
+    except Exception as e:
+        logging.exception(e)
+
+def IOS_show_wlan_all(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'iosxe',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show WLAN all to JSON
+
+            try:
+                show_wlan_all = device.parse("show wlan all")
+            except:
+                show_wlan_all = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_wlan_all != f"{ hostname } Can't Parse":
+            IOS_show_wlan_all_template = env.get_template('IOS_show_wlan_all.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = IOS_show_wlan_all_template.render(to_parse_wlan=show_wlan_all['wlan_names'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show WLAN All.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show WLAN All Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show WLAN All.json", "w") as fh:
+                    json.dump(show_wlan_all, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_wlan_all)
+    except Exception as e:
+        logging.exception(e)
+
+def IOS_show_wlan_client_stats(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'iosxe',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show WLAN Summary to JSON
+
+            try:
+                show_wlan_summary = device.parse("show wlan summary")
+            except:
+                show_wlan_summary = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_wlan_summary != f"{ hostname } Can't Parse":
+            for wlan in show_wlan_summary['wlan_summary']['wlan_id']:
+                try:
+                    show_wlan_client_stats = device.parse(f"show wlan id { wlan } client stats")
+                except:
+                    show_wlan_client_stats = f"{ hostname } Can't Parse"
+
+                if show_wlan_client_stats != f"{ hostname } Can't Parse":
+                # -------------------------
+                # create folders to hold files
+                # -------------------------
+                    if not os.path.exists(f"WLAN_ID { wlan }"):
+                        os.mkdir(f"WLAN_ID { wlan }")
+                    else:
+                        print("Directory already exists")                    
+                    IOS_show_wlan_client_stats_template = env.get_template('IOS_show_wlan_client_stats.j2')
+                    loop_counter = 0
+                # Render Templates
+                    for filetype in filetype_loop:
+                        parsed_output = IOS_show_wlan_client_stats_template.render(to_parse_wlan=show_wlan_client_stats['wlan_id'],filetype_loop=loop_counter)
+                        loop_counter = loop_counter + 1
+
+                    # -------------------------
+                    # Save the files
+                    # -------------------------
+                        if loop_counter <= 3:
+                            with open(f"WLAN_ID { wlan }/{ filename }_Show WLAN { wlan } Client Stats.{ filetype }", "w") as fh:
+                                fh.write(parsed_output)               
+                                fh.close()
+                        else:
+                            with open(f"WLAN_ID { wlan }/{ filename }_Show WLAN { wlan } Client Stats Mind Map.md", "w") as fh:
+                                fh.write(parsed_output)               
+                                fh.close()
+                        with open(f"WLAN_ID { wlan }/{ filename }_Show WLAN { wlan } Client Stats.json", "w") as fh:
+                            json.dump(show_wlan_client_stats, fh, indent=4, sort_keys=True)
+                            fh.close()                                 
+        return(show_wlan_client_stats)
+    except Exception as e:
+        logging.exception(e)
+
+def IOS_show_wireless_profile_policy_summary(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'iosxe',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show Wireless Profile Policy Summary to JSON
+
+            try:
+                show_wireless_profile_policy_summary = device.parse("show wireless profile policy summary")
+            except:
+                show_wireless_profile_policy_summary = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_wireless_profile_policy_summary != f"{ hostname } Can't Parse":
+            IOS_show_wireless_profile_policy_summary_template = env.get_template('IOS_show_wireless_profile_policy_summary.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = IOS_show_wireless_profile_policy_summary_template.render(to_parse_wireless=show_wireless_profile_policy_summary['policy_name'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show Wireless Profile Policy Summary.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show Wireless Profile Policy Summary Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show Wireless Profile Policy Summary.json", "w") as fh:
+                    json.dump(show_wireless_profile_policy_summary, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_wireless_profile_policy_summary)
+    except Exception as e:
+        logging.exception(e)
+
+def IOS_show_wireless_profile_policy_detailed(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'iosxe',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show Wireless Profile Policy Summary to JSON
+
+            try:
+                show_wireless_profile_policy_summary = device.parse("show wireless profile policy summary")
+            except:
+                show_wireless_profile_policy_summary = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+            for policy in show_wireless_profile_policy_summary['policy_name']:
+                # Show WLAN all to JSON
+                try:
+                    show_wireless_profile_policy_detail = device.parse(f"show wireless profile policy detailed { policy }")
+                except:
+                    show_wireless_profile_policy_detail = f"{ hostname } Can't Parse"
+
+                if show_wireless_profile_policy_detail != f"{ hostname } Can't Parse":
+                    # -------------------------
+                    # create folders to hold files
+                    # -------------------------
+                    if not os.path.exists(f"{ policy }"):
+                        os.mkdir(f"{ policy }")
+                    else:
+                        print("Directory already exists")                        
+                    IOS_show_wireless_profile_policy_detailed_template = env.get_template('IOS_show_wireless_profile_policy_detailed.j2')
+                    loop_counter = 0
+                # RenderTemplates
+                    for filetype in filetype_loop:
+                        parsed_output = IOS_show_wireless_profile_policy_detailed_template.render(to_parse_wireless=show_wireless_profile_policy_detail,filetype_loop=loop_counter)
+                        loop_counter = loop_counter + 1
+
+                # -------------------------
+                # Save the files
+                # -------------------------
+                        if loop_counter <= 3:
+                            with open(f"{ show_wireless_profile_policy_summary['policy_name'][policy] }/{ filename }_Show Wireless Profile Policy { show_wireless_profile_policy_summary['policy_name'][policy] } Detailed.{ filetype }", "w") as fh:
+                                fh.write(parsed_output)               
+                                fh.close()
+                        else:
+                            with open(f"{ show_wireless_profile_policy_summary['policy_name'][policy] }/{ filename }_Show Wireless Profile Policy { show_wireless_profile_policy_summary['policy_name'][policy] } Detailed Mind Map.md", "w") as fh:
+                                fh.write(parsed_output)               
+                                fh.close()
+                        with open(f"{ show_wireless_profile_policy_summary['policy_name'][policy] }/{ filename }_Show Wireless Profile Policy { show_wireless_profile_policy_summary['policy_name'][policy] } Detailed.json", "w") as fh:
+                            json.dump(show_wireless_profile_policy_detail, fh, indent=4, sort_keys=True)
+                            fh.close()                                 
+        return(show_wireless_profile_policy_detail)
     except Exception as e:
         logging.exception(e)
 

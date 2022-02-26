@@ -1,0 +1,168 @@
+{%- if filetype_loop == 0 %}ID,Type,Description,Enabled,Alert Duration,Alert Window,Alert Bit Rate BPS,Interface,E-Mail Recipients,HTTP Server IDs,Network Tags
+{%-     for profile in alertProfiles %}
+{{ profile.id }},{{ profile.type }},{{ profile.description }},{{ profile.enabled }},{{ profile.alertCondition.duration }},{{ profile.alertCondition.window }},{{ profile.alertCondition.bit_rate_bps }},{{ profile.alertCondition.interface }},{%-         for email in profile.recipients.emails %}{{ email }} ,{%-         endfor %}{%-         for server in profile.recipients.httpServerIds %}{{ server }} ,{%-         endfor %}{%-         for tag in profile.networkTags %}{{ tag }} {%-         endfor %}
+{%-     endfor %}
+{%- else %}
+{%-     if filetype_loop == 1 %}
+# Meraki Organization Alert Profiles
+| ID | Type | Description | Enabled | Alert Duration | Alert Window | Alert Bit Rate BPS | Interface | E-Mail Recipients | HTTP Server IDs | Network Tags |
+| -- | ---- | ----------- | ------- | -------------- | ------------ | ------------------ | --------- | ----------------- | --------------- | ------------ |
+{%-     for profile in alertProfiles %}
+| {{ profile.id }} | {{ profile.type }} | {{ profile.description }} | {{ profile.enabled }} | {{ profile.alertCondition.duration }} | {{ profile.alertCondition.window }} | {{ profile.alertCondition.bit_rate_bps }} | {{ profile.alertCondition.interface }} | {%-         for email in profile.recipients.emails %}{{ email }}  | {%-         endfor %}{%-         for server in profile.recipients.httpServerIds %}{{ server }}  | {%-         endfor %}{%-         for tag in profile.networkTags %}{{ tag }} {%-         endfor %} |
+{%-     endfor %}
+{%-     else %}
+{%-         if filetype_loop == 2 %}
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/colreorder/1.5.4/js/dataTables.colReorder.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/keytable/2.6.4/js/dataTables.keyTable.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.1.9/js/dataTables.fixedHeader.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.9/css/fixedHeader.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/keytable/2.6.4/css/keyTable.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+</head>
+<body>
+<h1>Meraki Organization Alert Profiles</h1>
+<table id = "organizations">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Enabled</th>
+      <th>Alert Duration</th>
+      <th>Alert Window</th>
+      <th>Alert Bit Rate BPS</th>
+      <th>Interface</th>
+      <th>E-Mail Recipients</th>
+      <th>HTTP Server IDs</th>
+      <th>Network Tags</th>
+    </tr>
+  </thead>
+  <tbody>
+{%-     for profile in alertProfiles %}
+  <tr>
+    <td>{{ profile.id }}</td>
+    <td>{{ profile.type }}</td>
+    <td>{{ profile.description }}</td>
+    <td>{{ profile.enabled }}</td>
+    <td>{{ profile.alertCondition.duration }}</td>
+    <td>{{ profile.alertCondition.window }}</td>
+    <td>{{ profile.alertCondition.bit_rate_bps }}</td>
+    <td>{{ profile.alertCondition.interface }}</td>
+    <td>{%- for email in profile.recipients.emails %}{{ email }} {%- endfor %}</td>
+    <td>{%- for server in profile.recipients.httpServerIds %}{{ server }} {%- endfor %}</td>
+    <td>{%- for tag in profile.networkTags %}{{ tag }} {%- endfor %}</td>
+  </tr>
+{%-     endfor %}
+  </tbody>
+</table>
+<script type = "text/javascript">
+  $(document).ready(function(){
+    $('#organizations thead tr')
+    .clone(true)
+    .addClass('filters')
+    .appendTo('#organizations thead');
+
+    var table = $('#organizations').DataTable({
+        keys: true,
+        dom: 'Bfrtip',
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],
+            [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        buttons: [
+        'pageLength','colvis','copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        colReorder: true,
+        select: true,            
+        orderCellsTop: true,
+        fixedHeader: true,
+        initComplete: function () {
+        var api = this.api();
+
+        // For each column
+        api
+            .columns()
+            .eq(0)
+            .each(function (colIdx) {
+                // Set the header cell to contain the input element
+                var cell = $('.filters th').eq(
+                    $(api.column(colIdx).header()).index()
+                );
+                var title = $(cell).text();
+                $(cell).html('<input type="text" placeholder="' + title + '" />');
+
+                // On every keypress in this input
+                $(
+                    'input',
+                    $('.filters th').eq($(api.column(colIdx).header()).index())
+                )
+                    .off('keyup change')
+                    .on('keyup change', function (e) {
+                        e.stopPropagation();
+
+                        // Get the search value
+                        $(this).attr('title', $(this).val());
+                        var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                        var cursorPosition = this.selectionStart;
+                        // Search the column for that value
+                        api
+                            .column(colIdx)
+                            .search(
+                                this.value != ''
+                                    ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                    : '',
+                                this.value != '',
+                                this.value == ''
+                            )
+                            .draw();
+
+                        $(this)
+                            .focus()[0]
+                            .setSelectionRange(cursorPosition, cursorPosition);
+                    });
+            });
+    },
+});
+});        
+</script>
+</body></html>
+{%-         else %}
+# Meraki Organization Alert Profiles
+{%-     for profile in alertProfiles %}
+## {{ profile.id }}
+### Type: {{ profile.type }}
+### Description: {{ profile.description }}
+### Enabled: {{ profile.enabled }}
+### Alert Conditions
+#### Duration: {{ profile.alertCondition.duration }}
+#### Window: {{ profile.alertCondition.window }}
+#### Bit Rate BPS: {{ profile.alertCondition.bit_rate_bps }}
+#### Interface: {{ profile.alertCondition.interface }}
+### Email Addresses
+{%- for email in profile.recipients.emails %}
+#### {{ email }}
+{%- endfor %}
+### Servers
+{%- for server in profile.recipients.httpServerIds %}
+#### {{ server }}
+{%- endfor %}
+### Tags
+{%- for tag in profile.networkTags %}
+#### {{ tag }}
+{%- endfor %}
+{%-     endfor %}
+{% endif %}{% endif %}{% endif %}
