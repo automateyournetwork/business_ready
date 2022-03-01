@@ -1,0 +1,164 @@
+{% if filetype_loop == 0 %}VRF,Address Family,Instance,Area,Interface,Neighbor,Neighbor Address,Neighbor Events,DBD Options,Dead Timer,Hello Options,Last Non Hello Received,Last State Change,Neighbor Router ID,State{% for vrf in to_parse_ip_ospf_neighbor %}{% for address_family in to_parse_ip_ospf_neighbor[vrf].address_family %}{% for instance in to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance %}{% for area in to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas %}{% for interface in to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces %}{% for neighbor in to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors %}
+{{ vrf }},{{ address_family }},{{ instance }},{{ area }},{{ interface }},{{ neighbor }},{{ to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].address }},{{ to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].statistics.nbr_event_count }},{{ to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].dbd_options }},{{ to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].dead_timer }},{{ to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].hello_options }},{{ to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].last_non_hello_packet_received }},{{ to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].last_state_change }},{{ to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].neighbor_router_id }},{{ to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].state }}{% endfor %}{% endfor %}{% endfor %}{% endfor %}{% endfor %}{% endfor %}
+{% else %}{% if filetype_loop == 1 %}
+# Show 
+# Show IP OSPF Neighbor Detail VRF
+| VRF | Address Family | Instance | Area | Interface | Neighbor | Neighbor Address | Neighbor Events | DBD Options | Dead Timer | Hello Options | Last Non Hello Received | Last State Change | Neighbor Router ID | State |
+| --- | -------------- | -------- | ---- | --------- | -------- | ---------------- | --------------- | ----------- | ---------- | ------------- | ----------------------- | ----------------- | ------------------ | ----- |{% for vrf in to_parse_ip_ospf_neighbor %}{% for address_family in to_parse_ip_ospf_neighbor[vrf].address_family %}{% for instance in to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance %}{% for area in to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas %}{% for interface in to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces %}{% for neighbor in to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors %}
+| {{ vrf }} | {{ address_family }} | {{ instance }} | {{ area }} | {{ interface }} | {{ neighbor }} | {{ to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].address }} | {{ to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].statistics.nbr_event_count }} | {{ to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].dbd_options }} | {{ to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].dead_timer }} | {{ to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].hello_options }} | {{ to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].last_non_hello_packet_received }} | {{ to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].last_state_change }} | {{ to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].neighbor_router_id }} | {{ to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].state }} |{% endfor %}{% endfor %}{% endfor %}{% endfor %}{% endfor %}{% endfor %}
+{% else %}{% if filetype_loop == 2 %}
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/colreorder/1.5.4/js/dataTables.colReorder.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/keytable/2.6.4/js/dataTables.keyTable.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.1.9/js/dataTables.fixedHeader.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.9/css/fixedHeader.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/keytable/2.6.4/css/keyTable.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+</head>
+<body>
+<h1>Show IP OSPF Neighbors Detail</h1>
+<table id = "ospf">
+  <tr>
+    <th>VRF</th>
+    <th>Address Family</th>
+    <th>Instance</th>
+    <th>Area</th>
+    <th>Interface</th>
+    <th>Neighbor</th>
+    <th>Neighbor Address</th>
+    <th>Neighbor Events</th>
+    <th>DBD Options</th>
+    <th>Dead Timer</th>
+    <th>Hello Options</th>
+    <th>Last Non Hello Received</th>
+    <th>Last State Change</th>
+    <th>Neighbor Router ID</th>
+    <th>State</th>
+  </tr>
+{%- for vrf in to_parse_ip_ospf_neighbor %}{% for address_family in to_parse_ip_ospf_neighbor[vrf].address_family %}{% for instance in to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance %}{% for area in to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas %}{% for interface in to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces %}{% for neighbor in to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors %}
+  <tr>
+    <td>{{ vrf }}</td>
+    <td>{{ address_family }}</td>
+    <td>{{ instance }}</td>
+    <td>{{ area }}</td>
+    <td>{{ interface }}</td>
+    <td>{{ neighbor }}</td>
+    <td>{{ to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].address }}</td>
+    <td>{{ to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].statistics.nbr_event_count }}</td>
+    <td>{{ to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].dbd_options }}</td>
+    <td>{{ to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].dead_timer }}</td>
+    <td>{{ to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].hello_options }}</td>
+    <td>{{ to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].last_non_hello_packet_received }}</td>
+    <td>{{ to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].last_state_change }}</td>
+    <td>{{ to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].neighbor_router_id }}</td>
+    <td>{{ to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].state }}</td>
+  </tr>
+{%- endfor %}{% endfor %}{% endfor %}{% endfor %}{% endfor %}{% endfor %}
+</table>
+<script type = "text/javascript">
+  $(document).ready(function(){
+    $('#ospf thead tr')
+    .clone(true)
+    .addClass('filters')
+    .appendTo('#ospf thead');
+
+    var table = $('#ospf').DataTable({
+        keys: true,
+        dom: 'Bfrtip',
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],
+            [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        buttons: [
+        'pageLength','colvis','copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        colReorder: true,
+        select: true,            
+        orderCellsTop: true,
+        fixedHeader: true,
+        initComplete: function () {
+        var api = this.api();
+
+        // For each column
+        api
+            .columns()
+            .eq(0)
+            .each(function (colIdx) {
+                // Set the header cell to contain the input element
+                var cell = $('.filters th').eq(
+                    $(api.column(colIdx).header()).index()
+                );
+                var title = $(cell).text();
+                $(cell).html('<input type="text" placeholder="' + title + '" />');
+
+                // On every keypress in this input
+                $(
+                    'input',
+                    $('.filters th').eq($(api.column(colIdx).header()).index())
+                )
+                    .off('keyup change')
+                    .on('keyup change', function (e) {
+                        e.stopPropagation();
+
+                        // Get the search value
+                        $(this).attr('title', $(this).val());
+                        var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                        var cursorPosition = this.selectionStart;
+                        // Search the column for that value
+                        api
+                            .column(colIdx)
+                            .search(
+                                this.value != ''
+                                    ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                    : '',
+                                this.value != '',
+                                this.value == ''
+                            )
+                            .draw();
+
+                        $(this)
+                            .focus()[0]
+                            .setSelectionRange(cursorPosition, cursorPosition);
+                    });
+            });
+    },
+});
+});        
+</script>
+</body></html>
+{%- else %}
+# Show IP OSPF Neighbor Detail
+{%- for vrf in to_parse_ip_ospf_neighbor %}
+{%-     for address_family in to_parse_ip_ospf_neighbor[vrf].address_family %}
+{%-         for instance in to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance %}
+## {{ vrf }} Address Family {{ address_family }} Instance {{ instance }}
+{%-              for area in to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas %}
+### {{ area }}
+{%-                  for interface in to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces %}
+#### {{ interface }}
+{%-                      for neighbor in to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors %}
+##### {{ neighbor }}
+###### Address: {{ to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].address }}
+###### Event Count: {{ to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].statistics.nbr_event_count }}
+###### DBD Options: {{ to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].dbd_options }}
+###### Dead Timer: {{ to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].dead_timer }}
+###### Hello Options: {{ to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].hello_options }}
+###### Last Non Hello Packer Received: {{ to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].last_non_hello_packet_received }}
+###### Last State Change: {{ to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].last_state_change }}
+###### Router ID: {{ to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].neighbor_router_id }}
+###### State: {{ to_parse_ip_ospf_neighbor[vrf].address_family[address_family].instance[instance].areas[area].interfaces[interface].neighbors[neighbor].state }}
+{%- endfor %}{% endfor %}{% endfor %}{% endfor %}{% endfor %}{% endfor %}
+{%- endif %}{% endif %}{% endif %}

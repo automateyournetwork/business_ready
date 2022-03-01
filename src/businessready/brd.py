@@ -1499,14 +1499,14 @@ def DNAC_flow_analysis(url, username, password):
 # ----------------
 
 def Meraki_all(url, token):
-    Meraki_organizations(url, username, password)
-    Meraki_organization_devices(url, username, password)
-    Meraki_organization_licenses(url, username, password)
-    Meraki_organization_adaptive_policies(url, username, password)
-    Meraki_organization_admins(url, username, password)
-    Meraki_organization_alert_profiles(url, username, password)
-    Meraki_organization_branding_policy(url, username, password)
-    Meraki_organization_clients(url, username, password)
+    Meraki_organizations(url, token)
+    Meraki_organization_devices(url, token)
+    Meraki_organization_licenses(url, token)
+    Meraki_organization_adaptive_policies(url, token)
+    Meraki_organization_admins(url, token)
+    Meraki_organization_alert_profiles(url, token)
+    Meraki_organization_branding_policy(url, token)
+    Meraki_organization_clients(url, token)
     return("All Meraki APIs Converted to Business Ready Documents")
 
 def Meraki_organizations(url, token):
@@ -4662,6 +4662,7 @@ def IOS_show_wireless_profile_policy_summary(hostname, username, password, ip):
     except Exception as e:
         logging.exception(e)
 
+# This function is broken I believe the underlying parser is broken
 def IOS_show_wireless_profile_policy_detailed(hostname, username, password, ip):
     try:
     # Create Testbed
@@ -4703,9 +4704,11 @@ def IOS_show_wireless_profile_policy_detailed(hostname, username, password, ip):
                 show_wireless_profile_policy_summary = f"{ hostname } Can't Parse"
 
         # Pass to template 
-            for policy in show_wireless_profile_policy_summary['policy_name']:
+            
+            for policy in show_wireless_profile_policy_summary['policy_name'].keys():
                 # Show WLAN all to JSON
                 try:
+                    print(f"{policy}")
                     show_wireless_profile_policy_detail = device.parse(f"show wireless profile policy detailed { policy }")
                 except:
                     show_wireless_profile_policy_detail = f"{ hostname } Can't Parse"
@@ -4729,14 +4732,14 @@ def IOS_show_wireless_profile_policy_detailed(hostname, username, password, ip):
                 # Save the files
                 # -------------------------
                         if loop_counter <= 3:
-                            with open(f"{ show_wireless_profile_policy_summary['policy_name'][policy] }/{ filename }_Show Wireless Profile Policy { show_wireless_profile_policy_summary['policy_name'][policy] } Detailed.{ filetype }", "w") as fh:
+                            with open(f"{ policy }/{ filename }_Show Wireless Profile Policy { policy } Detailed.{ filetype }", "w") as fh:
                                 fh.write(parsed_output)               
                                 fh.close()
                         else:
-                            with open(f"{ show_wireless_profile_policy_summary['policy_name'][policy] }/{ filename }_Show Wireless Profile Policy { show_wireless_profile_policy_summary['policy_name'][policy] } Detailed Mind Map.md", "w") as fh:
+                            with open(f"{ policy }/{ filename }_Show Wireless Profile Policy { policy } Detailed Mind Map.md", "w") as fh:
                                 fh.write(parsed_output)               
                                 fh.close()
-                        with open(f"{ show_wireless_profile_policy_summary['policy_name'][policy] }/{ filename }_Show Wireless Profile Policy { show_wireless_profile_policy_summary['policy_name'][policy] } Detailed.json", "w") as fh:
+                        with open(f"{ policy }/{ filename }_Show Wireless Profile Policy { policy } Detailed.json", "w") as fh:
                             json.dump(show_wireless_profile_policy_detail, fh, indent=4, sort_keys=True)
                             fh.close()                                 
         return(show_wireless_profile_policy_detail)
@@ -5808,3 +5811,1252 @@ def NXOS_learn_vrf(hostname, username, password, ip):
         return(learn_vrf)
     except Exception as e:
         logging.exception(e)
+
+# ----------------
+# NXOS SHOW SECTION
+# ----------------       
+
+def NXOS_show_all(hostname, username, password, ip):
+    NXOS_show_access_lists(hostname, username, password, ip)
+    NXOS_show_cdp_neighbors(hostname, username, password, ip)
+    NXOS_show_cdp_neighbors_detail(hostname, username, password, ip)
+    NXOS_show_environment(hostname, username, password, ip)
+    NXOS_show_interface(hostname, username, password, ip)
+    NXOS_show_interface_status(hostname, username, password, ip)
+    NXOS_show_interface_transceiver(hostname, username, password, ip)
+    NXOS_show_inventory(hostname, username, password, ip)
+    NXOS_show_ip_interface_brief(hostname, username, password, ip)
+    NXOS_show_ip_ospf(hostname, username, password, ip)
+    NXOS_show_ip_ospf_interface(hostname, username, password, ip)
+    NXOS_show_ip_ospf_neighbors_detail(hostname, username, password, ip)
+    NXOS_show_ip_route(hostname, username, password, ip)
+    NXOS_show_mac_address_table(hostname, username, password, ip)
+    NXOS_show_port_channel_summary(hostname, username, password, ip)
+    NXOS_show_version(hostname, username, password, ip)
+    NXOS_show_vlan(hostname, username, password, ip)
+    NXOS_show_vrf(hostname, username, password, ip)
+    return("Parsed All Show Commands")
+
+def NXOS_show_access_lists(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'nxos',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show Access Lists to JSON
+
+            try:
+                show_access_lists = device.parse("show access-lists")
+            except:
+                show_access_lists = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_access_lists != f"{ hostname } Can't Parse":
+            NXOS_show_access_lists_template = env.get_template('NXOS_show_access_lists_acl.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = NXOS_show_access_lists_template.render(to_parse_access_list=show_access_lists,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show Access Lists.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show Access Lists Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show Access Lists.json", "w") as fh:
+                    json.dump(show_access_lists, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_access_lists)
+    except Exception as e:
+        logging.exception(e)
+
+def NXOS_show_cdp_neighbors(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'nxos',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show CDP Neighbors to JSON
+
+            try:
+                show_cdp_neighbors = device.parse("show cdp neighbors")
+            except:
+                show_cdp_neighbors = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_cdp_neighbors != f"{ hostname } Can't Parse":
+            NXOS_show_cdp_neighbors_template = env.get_template('NXOS_show_cdp_neighbors.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = NXOS_show_cdp_neighbors_template.render(to_parse_cdp_neighbors=show_cdp_neighbors['cdp'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show CDP Neighbors.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show CDP Neighbors Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show CDP Neighbors.json", "w") as fh:
+                    json.dump(show_cdp_neighbors, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_cdp_neighbors)
+    except Exception as e:
+        logging.exception(e)
+
+def NXOS_show_cdp_neighbors_detail(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'nxos',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show CDP Neighbor Details to JSON
+
+            try:
+                show_cdp_neighbors_detail = device.parse("show cdp neighbors detail")
+            except:
+                show_cdp_neighbors_detail = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_cdp_neighbors_detail != f"{ hostname } Can't Parse":
+            NXOS_show_cdp_neighbors_detail_template = env.get_template('NXOS_show_cdp_neighbors_detail.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = NXOS_show_cdp_neighbors_detail_template.render(to_parse_cdp_neighbors=show_cdp_neighbors_detail['index'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show CDP Neighbor Details.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show CDP Neighbor Details Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show CDP Neighbor Details.json", "w") as fh:
+                    json.dump(show_cdp_neighbors_detail, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_cdp_neighbors_detail)
+    except Exception as e:
+        logging.exception(e)
+
+def NXOS_show_environment(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'nxos',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show Environment to JSON
+
+            try:
+                show_environment = device.parse("show environment")
+            except:
+                show_environment = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_environment != f"{ hostname } Can't Parse":
+            NXOS_show_environment_template = env.get_template('NXOS_show_environment.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = NXOS_show_environment_template.render(to_parse_environment=show_environment,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show Environment.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show Environment Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show Environment.json", "w") as fh:
+                    json.dump(show_environment, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_environment)
+    except Exception as e:
+        logging.exception(e)
+
+def NXOS_show_interface(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'nxos',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show Interface to JSON
+
+            try:
+                show_interface = device.parse("show interface")
+            except:
+                show_interface = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_interface != f"{ hostname } Can't Parse":
+            NXOS_show_interface_template = env.get_template('NXOS_show_interface.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = NXOS_show_interface_template.render(to_parse_interface=show_interface,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show Interface.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show Interface Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show Interface.json", "w") as fh:
+                    json.dump(show_interface, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_interface)
+    except Exception as e:
+        logging.exception(e)
+
+def NXOS_show_interface_status(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'nxos',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show Interface Status to JSON
+
+            try:
+                show_interface_status = device.parse("show interface status")
+            except:
+                show_interface_status = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_interface_status != f"{ hostname } Can't Parse":
+            NXOS_show_interface_status_template = env.get_template('NXOS_show_interface_status.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = NXOS_show_interface_status_template.render(to_parse_interface=show_interface_status,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show Interface Status.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show Interface Status Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show Interface Status.json", "w") as fh:
+                    json.dump(show_interface_status, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_interface_status)
+    except Exception as e:
+        logging.exception(e)
+
+def NXOS_show_interface_transceiver(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'nxos',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show Interface Transceiver to JSON
+
+            try:
+                show_interface_transceiver = device.parse("show interface transceiver")
+            except:
+                show_interface_transceiver = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_interface_transceiver != f"{ hostname } Can't Parse":
+            NXOS_show_interface_transceiver_template = env.get_template('NXOS_show_interface_transceiver.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = NXOS_show_interface_transceiver_template.render(to_parse_interface=show_interface_transceiver,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show Interface Transceiver.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show Interface Transceiver Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show Interface Transceiver.json", "w") as fh:
+                    json.dump(show_interface_transceiver, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_interface_transceiver)
+    except Exception as e:
+        logging.exception(e)
+
+def NXOS_show_inventory(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'nxos',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show Inventory to JSON
+
+            try:
+                show_inventory = device.parse("show inventory")
+            except:
+                show_inventory = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_inventory != f"{ hostname } Can't Parse":
+            NXOS_show_inventory_template = env.get_template('NXOS_show_inventory.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = NXOS_show_inventory_template.render(to_parse_inventory=show_inventory['name'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show Inventory.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show Inventory Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show Inventory.json", "w") as fh:
+                    json.dump(show_inventory, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_inventory)
+    except Exception as e:
+        logging.exception(e)
+
+def NXOS_show_ip_interface_brief(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'nxos',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show IP Interface Brief to JSON
+
+            try:
+                show_ip_interface_brief = device.parse("show ip interface brief vrf all")
+            except:
+                show_ip_interface_brief = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_ip_interface_brief != f"{ hostname } Can't Parse":
+            NXOS_show_ip_interface_brief_template = env.get_template('NXOS_show_ip_interface_brief.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = NXOS_show_ip_interface_brief_template.render(to_parse_interfaces=show_ip_interface_brief['interface'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show IP Interface Brief.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show IP Interface Brief Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show IP Interface Brief.json", "w") as fh:
+                    json.dump(show_ip_interface_brief, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_ip_interface_brief)
+    except Exception as e:
+        logging.exception(e)
+
+def NXOS_show_ip_ospf(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'nxos',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show IP OSPF to JSON
+
+            try:
+                show_ip_ospf = device.parse("show ip ospf")
+            except:
+                show_ip_ospf = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_ip_ospf != f"{ hostname } Can't Parse":
+            NXOS_show_ip_ospf_template = env.get_template('NXOS_show_ip_ospf.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = NXOS_show_ip_ospf_template.render(to_parse_ip_ospf=show_ip_ospf['vrf'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show IP OSPF.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show IP OSPF Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show IP OSPF.json", "w") as fh:
+                    json.dump(show_ip_ospf, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_ip_ospf)
+    except Exception as e:
+        logging.exception(e)
+
+def NXOS_show_ip_ospf_interface(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'nxos',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show IP OSPF Interface to JSON
+
+            try:
+                show_ip_ospf_interface = device.parse("show ip ospf interface")
+            except:
+                show_ip_ospf_interface = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_ip_ospf_interface != f"{ hostname } Can't Parse":
+            NXOS_show_ip_ospf_interface_template = env.get_template('NXOS_show_ip_ospf_interface.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = NXOS_show_ip_ospf_interface_template.render(to_parse_ip_ospf_interface=show_ip_ospf_interface['vrf'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show IP OSPF Interface.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show IP OSPF Interface Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show IP OSPF Interface.json", "w") as fh:
+                    json.dump(show_ip_ospf_interface, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_ip_ospf_interface)
+    except Exception as e:
+        logging.exception(e)
+
+def NXOS_show_ip_ospf_neighbors_detail(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'nxos',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show IP OSPF Neighbors Detail to JSON
+
+            try:
+                show_ip_ospf_neighbors_detail = device.parse("show ip ospf neighbors detail")
+            except:
+                show_ip_ospf_neighbors_detail = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_ip_ospf_neighbors_detail != f"{ hostname } Can't Parse":
+            NXOS_show_ip_ospf_neighbors_detail_template = env.get_template('NXOS_show_ip_ospf_neighbors_detail.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = NXOS_show_ip_ospf_neighbors_detail_template.render(to_parse_ip_ospf_neighbor=show_ip_ospf_neighbors_detail['vrf'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show IP OSPF Neighbors Detail.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show IP OSPF Neighbors Detail Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show IP OSPF Neighbors Detail.json", "w") as fh:
+                    json.dump(show_ip_ospf_neighbors_detail, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_ip_ospf_neighbors_detail)
+    except Exception as e:
+        logging.exception(e)
+
+def NXOS_show_ip_route(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'nxos',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show IP Route to JSON
+
+            try:
+                show_ip_route = device.parse("show ip route")
+            except:
+                show_ip_route = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_ip_route != f"{ hostname } Can't Parse":
+            NXOS_show_ip_route_template = env.get_template('NXOS_show_ip_route.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = NXOS_show_ip_route_template.render(to_parse_ip_route=show_ip_route['vrf'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show IP Route.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show IP Route Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show IP Route.json", "w") as fh:
+                    json.dump(show_ip_route, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_ip_route)
+    except Exception as e:
+        logging.exception(e)
+
+def NXOS_show_mac_address_table(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'nxos',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show MAC Address Table to JSON
+
+            try:
+                show_mac_address_table = device.parse("show mac address-table")
+            except:
+                show_mac_address_table = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_mac_address_table != f"{ hostname } Can't Parse":
+            NXOS_show_mac_address_table_template = env.get_template('NXOS_show_mac_address_table.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = NXOS_show_mac_address_table_template.render(to_parse_mac_address_table=show_mac_address_table['mac_table'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show MAC Address Table.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show MAC Address Table Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show MAC Address Table.json", "w") as fh:
+                    json.dump(show_mac_address_table, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_mac_address_table)
+    except Exception as e:
+        logging.exception(e)
+
+def NXOS_show_port_channel_summary(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'nxos',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show Port Channel Summary to JSON
+
+            try:
+                show_port_channel_summary = device.parse("show port-channel summary")
+            except:
+                show_port_channel_summary = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_port_channel_summary != f"{ hostname } Can't Parse":
+            NXOS_show_port_channel_summary_template = env.get_template('NXOS_show_port_channel_summary.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = NXOS_show_port_channel_summary_template.render(to_parse_etherchannel_summary=show_port_channel_summary['interfaces'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show Port Channel Summary.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show Port Channel Summary Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show Port Channel Summary.json", "w") as fh:
+                    json.dump(show_port_channel_summary, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_port_channel_summary)
+    except Exception as e:
+        logging.exception(e)
+
+def NXOS_show_version(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'nxos',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show Version to JSON
+
+            try:
+                show_version = device.parse("show version")
+            except:
+                show_version = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_version != f"{ hostname } Can't Parse":
+            NXOS_show_version_template = env.get_template('NXOS_show_version.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = NXOS_show_version_template.render(to_parse_version=show_version['platform'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show Version.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show Version Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show Version.json", "w") as fh:
+                    json.dump(show_version, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_version)
+    except Exception as e:
+        logging.exception(e)
+
+def NXOS_show_vlan(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'nxos',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show VLAN to JSON
+
+            try:
+                show_vlan = device.parse("show vlan")
+            except:
+                show_vlan = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_vlan != f"{ hostname } Can't Parse":
+            NXOS_show_vlan_template = env.get_template('NXOS_show_vlan.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = NXOS_show_vlan_template.render(to_parse_vlan=show_vlan['vlans'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show VLAN.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show VLAN Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show VLAN.json", "w") as fh:
+                    json.dump(show_vlan, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_vlan)
+    except Exception as e:
+        logging.exception(e)
+
+def NXOS_show_vrf(hostname, username, password, ip):
+    try:
+    # Create Testbed
+        filename = hostname
+        first_testbed = Testbed('dynamicallyCreatedTestbed')
+        testbed_device = Device(hostname,
+                    alias = hostname,
+                    type = 'switch',
+                    os = 'nxos',
+                    credentials = {
+                        'default': {
+                            'username': username,
+                            'password': password,
+                        }
+                    },
+                    connections = {
+                        'cli': {
+                            'protocol': 'ssh',
+                            'ip': ip,
+                            'port': 22,
+                            'arguements': {
+                                'connection_timeout': 360
+                            }
+                        }
+                    })
+        testbed_device.testbed = first_testbed
+        new_testbed = testbed.load(first_testbed)
+        # ---------------------------------------
+        # Loop over devices
+        # ---------------------------------------
+        for device in new_testbed:
+            device.connect()
+
+        # Show VLAN to JSON
+
+            try:
+                show_vrf = device.parse("show vrf")
+            except:
+                show_vrf = f"{ hostname } Can't Parse"
+
+        # Pass to template 
+
+        if show_vrf != f"{ hostname } Can't Parse":
+            NXOS_show_vrf_template = env.get_template('NXOS_show_vrf.j2')
+            loop_counter = 0
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = NXOS_show_vrf_template.render(to_parse_vrf=show_vrf['vrfs'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"{ filename }_Show VRF.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open(f"{ filename }_Show VRF Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"{ filename }_Show VRF.json", "w") as fh:
+                    json.dump(show_vrf, fh, indent=4, sort_keys=True)
+                    fh.close()                                 
+        return(show_vrf)
+    except Exception as e:
+        logging.exception(e)        
