@@ -1,0 +1,166 @@
+{% if filetype_loop == 0 %}VRF,Address Family,Route,Active,Metric,Route Preference,Source Protocol,M Best,U Best,Next Hop Index,Next Hop,Best Unicast Nexthop,Metric,Route Preference,Source Protocol,Updated{% for vrf in to_parse_ip_route %}{% for address_family in to_parse_ip_route[vrf].address_family %}{% for route in to_parse_ip_route[vrf].address_family[address_family].routes %}{% for next_hop in to_parse_ip_route[vrf].address_family[address_family].routes[route].next_hop.next_hop_list %}
+{{ vrf }},{{ address_family }},{{ route }},{{ to_parse_ip_route[vrf].address_family[address_family].routes[route].active }},{{ to_parse_ip_route[vrf].address_family[address_family].routes[route].metric }},{{ to_parse_ip_route[vrf].address_family[address_family].routes[route].route_preference }},{{ to_parse_ip_route[vrf].address_family[address_family].routes[route].source_protocol }},{{ to_parse_ip_route[vrf].address_family[address_family].routes[route].mbest }},{{ to_parse_ip_route[vrf].address_family[address_family].routes[route].ubest }},{{ next_hop }},{{ to_parse_ip_route[vrf].address_family[address_family].routes[route].next_hop.next_hop_list[next_hop].next_hop }},{{ to_parse_ip_route[vrf].address_family[address_family].routes[route].next_hop.next_hop_list[next_hop].best_ucast_nexthop }},{{ to_parse_ip_route[vrf].address_family[address_family].routes[route].next_hop.next_hop_list[next_hop].metric }},{{ to_parse_ip_route[vrf].address_family[address_family].routes[route].next_hop.next_hop_list[next_hop].route_preference }},{{ to_parse_ip_route[vrf].address_family[address_family].routes[route].next_hop.next_hop_list[next_hop].source_protocol }},{{ to_parse_ip_route[vrf].address_family[address_family].routes[route].next_hop.next_hop_list[next_hop].updated }}{% endfor %}{% endfor %}{% endfor %}{% endfor %}
+{% else %}{% if filetype_loop == 1 %}
+# Show IP Route VRF
+| VRF | Address Family | Route | Active | Metric | Route Preference | Source Protocol | M Best | U Best | Next Hop Index | Next Hop | Best Unicast Nexthop | Metric | Route Preference | Source Protocol | Updated |
+| --- | -------------- | ----- | ------ | ------ | ---------------- | --------------- | ------ | ------ | -------------- | -------- | -------------------- | ------ | ---------------- | --------------- | ------- |{% for vrf in to_parse_ip_route %}{% for address_family in to_parse_ip_route[vrf].address_family %}{% for route in to_parse_ip_route[vrf].address_family[address_family].routes %}{% for next_hop in to_parse_ip_route[vrf].address_family[address_family].routes[route].next_hop.next_hop_list %}
+| {{ vrf }} | {{ address_family }} | {{ route }} | {{ to_parse_ip_route[vrf].address_family[address_family].routes[route].active }} | {{ to_parse_ip_route[vrf].address_family[address_family].routes[route].metric }} | {{ to_parse_ip_route[vrf].address_family[address_family].routes[route].route_preference }} | {{ to_parse_ip_route[vrf].address_family[address_family].routes[route].source_protocol }} | {{ to_parse_ip_route[vrf].address_family[address_family].routes[route].mbest }} | {{ to_parse_ip_route[vrf].address_family[address_family].routes[route].ubest }} | {{ next_hop }} | {{ to_parse_ip_route[vrf].address_family[address_family].routes[route].next_hop.next_hop_list[next_hop].next_hop }} | {{ to_parse_ip_route[vrf].address_family[address_family].routes[route].next_hop.next_hop_list[next_hop].best_ucast_nexthop }} | {{ to_parse_ip_route[vrf].address_family[address_family].routes[route].next_hop.next_hop_list[next_hop].metric }} | {{ to_parse_ip_route[vrf].address_family[address_family].routes[route].next_hop.next_hop_list[next_hop].route_preference }} | {{ to_parse_ip_route[vrf].address_family[address_family].routes[route].next_hop.next_hop_list[next_hop].source_protocol }} | {{ to_parse_ip_route[vrf].address_family[address_family].routes[route].next_hop.next_hop_list[next_hop].updated }} |{% endfor %}{% endfor %}{% endfor %}{% endfor %} 
+{% else %}{% if filetype_loop == 2 %}
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/colreorder/1.5.4/js/dataTables.colReorder.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/keytable/2.6.4/js/dataTables.keyTable.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.1.9/js/dataTables.fixedHeader.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.9/css/fixedHeader.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/keytable/2.6.4/css/keyTable.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+</head>
+<body>
+<h1>Show IP Route VRF</h1>
+<table id = "route">
+  <tr>
+    <th>VRF</th>
+    <th>Address Family</th>
+    <th>Route</th>
+    <th>Active</th>
+    <th>Metric</th>
+    <th>Route Preference</th>
+    <th>Source Protocol</th>
+    <th>M Best</th>
+    <th>U Best</th>
+    <th>Next Hop Index</th>
+    <th>Next Hop</th>
+    <th>Best Unicast Nexthop</th>
+    <th>Metric</th>
+    <th>Route Preference</th>
+    <th>Source Protocol</th>
+    <th>Updated</th>
+  </tr>
+{%- for vrf in to_parse_ip_route %}{% for address_family in to_parse_ip_route[vrf].address_family %}{% for route in to_parse_ip_route[vrf].address_family[address_family].routes %}{% for next_hop in to_parse_ip_route[vrf].address_family[address_family].routes[route].next_hop.next_hop_list %}
+  <tr>
+    <td>{{ vrf }}</td>
+    <td>{{ address_family }}</td>
+    <td>{{ route }}</td>
+    <td>{{ to_parse_ip_route[vrf].address_family[address_family].routes[route].active }}</td>
+    <td>{{ to_parse_ip_route[vrf].address_family[address_family].routes[route].metric }}</td>
+    <td>{{ to_parse_ip_route[vrf].address_family[address_family].routes[route].route_preference }}</td>
+    <td>{{ to_parse_ip_route[vrf].address_family[address_family].routes[route].source_protocol }}</td>
+    <td>{{ to_parse_ip_route[vrf].address_family[address_family].routes[route].mbest }}</td>
+    <td>{{ to_parse_ip_route[vrf].address_family[address_family].routes[route].ubest }}</td>
+    <td>{{ next_hop }}</td>
+    <td>{{ to_parse_ip_route[vrf].address_family[address_family].routes[route].next_hop.next_hop_list[next_hop].next_hop }}</td>
+    <td>{{ to_parse_ip_route[vrf].address_family[address_family].routes[route].next_hop.next_hop_list[next_hop].best_ucast_nexthop }}</td>
+    <td>{{ to_parse_ip_route[vrf].address_family[address_family].routes[route].next_hop.next_hop_list[next_hop].metric }}</td>
+    <td>{{ to_parse_ip_route[vrf].address_family[address_family].routes[route].next_hop.next_hop_list[next_hop].route_preference }}</td>
+    <td>{{ to_parse_ip_route[vrf].address_family[address_family].routes[route].next_hop.next_hop_list[next_hop].source_protocol }}</td>
+    <td>{{ to_parse_ip_route[vrf].address_family[address_family].routes[route].next_hop.next_hop_list[next_hop].updated }}</td>
+  </tr>
+{%- endfor %}{% endfor %}{% endfor %}{% endfor %}
+</table>
+<script type = "text/javascript">
+  $(document).ready(function(){
+    $('#route thead tr')
+    .clone(true)
+    .addClass('filters')
+    .appendTo('#route thead');
+
+    var table = $('#route').DataTable({
+        keys: true,
+        dom: 'Bfrtip',
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],
+            [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        buttons: [
+        'pageLength','colvis','copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        colReorder: true,
+        select: true,            
+        orderCellsTop: true,
+        fixedHeader: true,
+        initComplete: function () {
+        var api = this.api();
+
+        // For each column
+        api
+            .columns()
+            .eq(0)
+            .each(function (colIdx) {
+                // Set the header cell to contain the input element
+                var cell = $('.filters th').eq(
+                    $(api.column(colIdx).header()).index()
+                );
+                var title = $(cell).text();
+                $(cell).html('<input type="text" placeholder="' + title + '" />');
+
+                // On every keypress in this input
+                $(
+                    'input',
+                    $('.filters th').eq($(api.column(colIdx).header()).index())
+                )
+                    .off('keyup change')
+                    .on('keyup change', function (e) {
+                        e.stopPropagation();
+
+                        // Get the search value
+                        $(this).attr('title', $(this).val());
+                        var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                        var cursorPosition = this.selectionStart;
+                        // Search the column for that value
+                        api
+                            .column(colIdx)
+                            .search(
+                                this.value != ''
+                                    ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                    : '',
+                                this.value != '',
+                                this.value == ''
+                            )
+                            .draw();
+
+                        $(this)
+                            .focus()[0]
+                            .setSelectionRange(cursorPosition, cursorPosition);
+                    });
+            });
+    },
+});
+});        
+</script>
+</body></html>
+{%- else %}
+# Show IP Route VRF
+{%- for vrf in to_parse_ip_route %}
+{%-     for address_family in to_parse_ip_route[vrf].address_family %}
+## VRF {{ vrf }} Address Family {{ address_family }}
+{%-         for route in to_parse_ip_route[vrf].address_family[address_family].routes %}
+### {{ route }}
+#### Active: {{ to_parse_ip_route[vrf].address_family[address_family].routes[route].active }}
+#### Metric: {{ to_parse_ip_route[vrf].address_family[address_family].routes[route].metric }}
+#### Preference: {{ to_parse_ip_route[vrf].address_family[address_family].routes[route].route_preference }}
+#### Source Protocol: {{ to_parse_ip_route[vrf].address_family[address_family].routes[route].source_protocol }}
+#### Best
+##### M: {{ to_parse_ip_route[vrf].address_family[address_family].routes[route].mbest }}
+##### U: {{ to_parse_ip_route[vrf].address_family[address_family].routes[route].ubest }}
+{%-             for next_hop in to_parse_ip_route[vrf].address_family[address_family].routes[route].next_hop.next_hop_list %}
+#### Next Hop: {{ next_hop }}
+##### Next Hop: {{ to_parse_ip_route[vrf].address_family[address_family].routes[route].next_hop.next_hop_list[next_hop].next_hop }}
+##### Best Unicast Next Hop: {{ to_parse_ip_route[vrf].address_family[address_family].routes[route].next_hop.next_hop_list[next_hop].best_ucast_nexthop }}
+##### Metric: {{ to_parse_ip_route[vrf].address_family[address_family].routes[route].next_hop.next_hop_list[next_hop].metric }}
+##### Preference: {{ to_parse_ip_route[vrf].address_family[address_family].routes[route].next_hop.next_hop_list[next_hop].route_preference }}
+##### Source Protocol: {{ to_parse_ip_route[vrf].address_family[address_family].routes[route].next_hop.next_hop_list[next_hop].source_protocol }}
+##### Updated: {{ to_parse_ip_route[vrf].address_family[address_family].routes[route].next_hop.next_hop_list[next_hop].updated }}
+{%- endfor %}{% endfor %}{% endfor %}{% endfor %}
+{%- endif %}{% endif %}{% endif %}
