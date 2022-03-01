@@ -1,0 +1,209 @@
+{% if filetype_loop == 0 %}BGP Tag,Router ID,BGP PID,BGP State,BGP Started Reason,AS Path Entries,AS Format,Memory State,Mode,Paths Per Attribute,Bytes Used,Entries Pending Delete,VRF,Cluster ID,Configured Router ID,Number of Configured Peers,Number of Established Peers,Pending Peers,VRF ID,VRF RD,VRF State,Address Family,Peer,Active Peers,Aggregates,Networks,Paths,Routes,Table ID,Table State{% for vrf in to_parse_bgp.vrf %}{% for address_family in to_parse_bgp.vrf[vrf].address_family %}{% for peer in to_parse_bgp.vrf[vrf].address_family[address_family].peers %}
+{{ to_parse_bgp.bgp_tag }},{{ to_parse_bgp.vrf[vrf].router_id }},{{ to_parse_bgp.bgp_pid }},{{ to_parse_bgp.bgp_protocol_state }},{{ to_parse_bgp.bgp_protocol_started_reason }},{{ to_parse_bgp.bgp_as_path_entries }},{{ to_parse_bgp.bgp_asformat }},{{ to_parse_bgp.bgp_memory_state }},{{ to_parse_bgp.bgp_mmode }},{{ to_parse_bgp.bgp_paths_per_hwm_attr }},{{ to_parse_bgp.bytes_used }},{{ to_parse_bgp.entries_pending_delete }},{{ vrf }},{{ to_parse_bgp.vrf[vrf].cluster_id }},{{ to_parse_bgp.vrf[vrf].conf_router_id }},{{ to_parse_bgp.vrf[vrf].num_conf_peers }},{{ to_parse_bgp.vrf[vrf].num_established_peers }},{{ to_parse_bgp.vrf[vrf].num_pending_conf_peers }},{{ to_parse_bgp.vrf[vrf].vrf_id }},{{ to_parse_bgp.vrf[vrf].vrf_rd }},{{ to_parse_bgp.vrf[vrf].vrf_state }},{{ address_family }},{{ peer }},{{ to_parse_bgp.vrf[vrf].address_family[address_family].peers[peer].active_peers }},{{ to_parse_bgp.vrf[vrf].address_family[address_family].peers[peer].aggregates }},{{ to_parse_bgp.vrf[vrf].address_family[address_family].peers[peer].networks }},{{ to_parse_bgp.vrf[vrf].address_family[address_family].peers[peer].paths }},{{ to_parse_bgp.vrf[vrf].address_family[address_family].peers[peer].routes }},{{ to_parse_bgp.vrf[vrf].address_family[address_family].table_id }},{{ to_parse_bgp.vrf[vrf].address_family[address_family].table_state }}{% endfor %}{% endfor %}{% endfor %}
+{% else %}{% if filetype_loop == 1 %}
+# Show BGP Process VRF All
+| BGP Tag | Router ID | BGP PID | BGP State | BGP Started Reason | AS Path Entries | AS Format | Memory State | Mode | Paths Per Attribute | Bytes Used | Entries Pending Delete | VRF | Cluster ID | Configured Router ID | Number of Configured Peers | Number of Established Peers | Pending Peers | VRF ID | VRF RD | VRF State | Address Family | Peer | Active Peers | Aggregates | Networks | Paths | Routes | Table ID | Table State |
+| ------- | --------- | ------- | --------- | ------------------ | --------------- | --------- | ------------ | ---- | ------------------- | --------- | ---------------------- | --- | ---------- | -------------------- | -------------------------- | --------------------------- | ------------- | ------ | ------ | --------- | -------------- | ---- | ------------ | ---------- | -------- | ----- | ------ | -------- | ----------- |{% for vrf in to_parse_bgp.vrf %}{% for address_family in to_parse_bgp.vrf[vrf].address_family %}{% for peer in to_parse_bgp.vrf[vrf].address_family[address_family].peers %}
+| {{ to_parse_bgp.bgp_tag }} | {{ to_parse_bgp.vrf[vrf].router_id }} | {{ to_parse_bgp.bgp_pid }} | {{ to_parse_bgp.bgp_protocol_state }} | {{ to_parse_bgp.bgp_protocol_started_reason }} | {{ to_parse_bgp.bgp_as_path_entries }} | {{ to_parse_bgp.bgp_asformat }} | {{ to_parse_bgp.bgp_isolate_mode }} | {{ to_parse_bgp.bgp_memory_state }} | {{ to_parse_bgp.bgp_mmode }} | {{ to_parse_bgp.bgp_paths_per_hwm_attr }} | {{ to_parse_bgp.bytes_used }} | {{ to_parse_bgp.entries_pending_delete }} | {{ vrf }} | {{ to_parse_bgp.vrf[vrf].cluster_id }} | {{ to_parse_bgp.vrf[vrf].conf_router_id }} | {{ to_parse_bgp.vrf[vrf].num_conf_peers }} | {{ to_parse_bgp.vrf[vrf].num_established_peers }} | {{ to_parse_bgp.vrf[vrf].num_pending_conf_peers }} | {{ to_parse_bgp.vrf[vrf].vrf_id }} | {{ to_parse_bgp.vrf[vrf].vrf_rd }} | {{ to_parse_bgp.vrf[vrf].vrf_state }} | {{ address_family }} | {{ peer }} | {{ to_parse_bgp.vrf[vrf].address_family[address_family].peers[peer].active_peers }} | {{ to_parse_bgp.vrf[vrf].address_family[address_family].peers[peer].aggregates }} | {{ to_parse_bgp.vrf[vrf].address_family[address_family].peers[peer].networks }} | {{ to_parse_bgp.vrf[vrf].address_family[address_family].peers[peer].paths }} | {{ to_parse_bgp.vrf[vrf].address_family[address_family].peers[peer].routes }} | {{ to_parse_bgp.vrf[vrf].address_family[address_family].table_id }} | {{ to_parse_bgp.vrf[vrf].address_family[address_family].table_state }} |{% endfor %}{% endfor %}{% endfor %} 
+{% else %}{% if filetype_loop == 2 %}
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/colreorder/1.5.4/js/dataTables.colReorder.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/keytable/2.6.4/js/dataTables.keyTable.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.1.9/js/dataTables.fixedHeader.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.9/css/fixedHeader.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/keytable/2.6.4/css/keyTable.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+</head>
+<body>
+<h1>Show BGP Process VRF All</h1>
+<table id = "bgp">
+  <tr>
+    <th>BGP Tag</th>
+    <th>Router ID</th>
+    <th>BGP PID</th>
+    <th>BGP State</th>
+    <th>BGP Started Reason</th>
+    <th>AS Path Entries</th>
+    <th>AS Format</th>
+    <th>Memory State</th>
+    <th>Mode</th>
+    <th>Paths Per Attribute</th>
+    <th>Bytes Used</th>
+    <th>Entries Pending Delete</th>
+    <th>VRF</th>
+    <th>Cluster ID</th>
+    <th>Configured Router ID</th>
+    <th>Number of Configured Peers</th>
+    <th>Number of Established Peers</th>
+    <th>Pending Peers</th>
+    <th>VRF ID</th>
+    <th>VRF RD</th>
+    <th>VRF State</th>
+    <th>Address Family</th>
+    <th>Peer</th>
+    <th>Active Peers</th>
+    <th>Aggregates</th>
+    <th>Networks</th>
+    <th>Paths</th>
+    <th>Routes</th>
+    <th>Table ID</th>
+    <th>Table State</th>
+  </tr>
+{%- for vrf in to_parse_bgp.vrf %}{% for address_family in to_parse_bgp.vrf[vrf].address_family %}{% for peer in to_parse_bgp.vrf[vrf].address_family[address_family].peers %}
+  <tr>
+    <td>{{ to_parse_bgp.bgp_tag }}</td>
+    <td>{{ to_parse_bgp.vrf[vrf].router_id }}</td>
+    <td>{{ to_parse_bgp.bgp_pid }}</td>
+    <td>{{ to_parse_bgp.bgp_protocol_state }}</td>
+    <td>{{ to_parse_bgp.bgp_protocol_started_reason }}</td>
+    <td>{{ to_parse_bgp.bgp_as_path_entries }}</td>
+    <td>{{ to_parse_bgp.bgp_asformat }}</td>
+    <td>{{ to_parse_bgp.bgp_memory_state }}</td>
+    <td>{{ to_parse_bgp.bgp_mmode }}</td>
+    <td>{{ to_parse_bgp.bgp_paths_per_hwm_attr }}</td>
+    <td>{{ to_parse_bgp.bytes_used }}</td>
+    <td>{{ to_parse_bgp.entries_pending_delete }}</td>
+    <td>{{ vrf }}</td>
+    <td>{{ to_parse_bgp.vrf[vrf].cluster_id }}</td>
+    <td>{{ to_parse_bgp.vrf[vrf].conf_router_id }}</td>
+    <td>{{ to_parse_bgp.vrf[vrf].num_conf_peers }}</td>
+    <td>{{ to_parse_bgp.vrf[vrf].num_established_peers }}</td>
+    <td>{{ to_parse_bgp.vrf[vrf].num_pending_conf_peers }}</td>
+    <td>{{ to_parse_bgp.vrf[vrf].vrf_id }}</td>
+    <td>{{ to_parse_bgp.vrf[vrf].vrf_rd }}</td>
+    <td>{{ to_parse_bgp.vrf[vrf].vrf_state }}</td>
+    <td>{{ address_family }}</td>
+    <td>{{ peer }}</td>
+    <td>{{ to_parse_bgp.vrf[vrf].address_family[address_family].peers[peer].active_peers }}</td>
+    <td>{{ to_parse_bgp.vrf[vrf].address_family[address_family].peers[peer].aggregates }}</td>
+    <td>{{ to_parse_bgp.vrf[vrf].address_family[address_family].peers[peer].networks }}</td>
+    <td>{{ to_parse_bgp.vrf[vrf].address_family[address_family].peers[peer].paths }}</td>
+    <td>{{ to_parse_bgp.vrf[vrf].address_family[address_family].peers[peer].routes }}</td>
+    <td>{{ to_parse_bgp.vrf[vrf].address_family[address_family].table_id }}</td>
+    <td>{{ to_parse_bgp.vrf[vrf].address_family[address_family].table_state }}</td>
+  </tr>{% endfor %}{% endfor %}{% endfor %}
+</table>
+<script type = "text/javascript">
+  $(document).ready(function(){
+    $('#bgp thead tr')
+    .clone(true)
+    .addClass('filters')
+    .appendTo('#bgp thead');
+
+    var table = $('#bgp').DataTable({
+        keys: true,
+        dom: 'Bfrtip',
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],
+            [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        buttons: [
+        'pageLength','colvis','copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        colReorder: true,
+        select: true,            
+        orderCellsTop: true,
+        fixedHeader: true,
+        initComplete: function () {
+        var api = this.api();
+
+        // For each column
+        api
+            .columns()
+            .eq(0)
+            .each(function (colIdx) {
+                // Set the header cell to contain the input element
+                var cell = $('.filters th').eq(
+                    $(api.column(colIdx).header()).index()
+                );
+                var title = $(cell).text();
+                $(cell).html('<input type="text" placeholder="' + title + '" />');
+
+                // On every keypress in this input
+                $(
+                    'input',
+                    $('.filters th').eq($(api.column(colIdx).header()).index())
+                )
+                    .off('keyup change')
+                    .on('keyup change', function (e) {
+                        e.stopPropagation();
+
+                        // Get the search value
+                        $(this).attr('title', $(this).val());
+                        var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                        var cursorPosition = this.selectionStart;
+                        // Search the column for that value
+                        api
+                            .column(colIdx)
+                            .search(
+                                this.value != ''
+                                    ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                    : '',
+                                this.value != '',
+                                this.value == ''
+                            )
+                            .draw();
+
+                        $(this)
+                            .focus()[0]
+                            .setSelectionRange(cursorPosition, cursorPosition);
+                    });
+            });
+    },
+});
+});        
+</script>
+</body></html>
+{%- else %}
+# Show BGP Process VRF All
+## Tag: {{ to_parse_bgp.bgp_tag }}
+### PID: {{ to_parse_bgp.bgp_pid }}
+### Protocol
+#### State: {{ to_parse_bgp.bgp_protocol_state }}
+#### Started Reason: {{ to_parse_bgp.bgp_protocol_started_reason }}
+### AS
+#### Path Entries: {{ to_parse_bgp.bgp_as_path_entries }}
+#### Format: {{ to_parse_bgp.bgp_asformat }}
+### Memory State: {{ to_parse_bgp.bgp_memory_state }}
+### M Mode: {{ to_parse_bgp.bgp_mmode }}
+### Paths Per HWM Attribute: {{ to_parse_bgp.bgp_paths_per_hwm_attr }}
+### Bytes Used: {{ to_parse_bgp.bytes_used }}
+### Entries Pending Delete: {{ to_parse_bgp.entries_pending_delete }}
+{%- for vrf in to_parse_bgp.vrf %}
+### VRF: {{ vrf }}
+#### Router ID: {{ to_parse_bgp.vrf[vrf].router_id }}
+#### Cluster ID: {{ to_parse_bgp.vrf[vrf].cluster_id }}
+#### Configured Router ID: {{ to_parse_bgp.vrf[vrf].conf_router_id }}
+#### Number Peers
+##### Configured: {{ to_parse_bgp.vrf[vrf].num_conf_peers }}
+##### Established: {{ to_parse_bgp.vrf[vrf].num_established_peers }}
+##### Pending: {{ to_parse_bgp.vrf[vrf].num_pending_conf_peers }}
+#### ID: {{ to_parse_bgp.vrf[vrf].vrf_id }}
+#### RD: {{ to_parse_bgp.vrf[vrf].vrf_rd }}
+#### State: {{ to_parse_bgp.vrf[vrf].vrf_state }}
+{%-     for address_family in to_parse_bgp.vrf[vrf].address_family %}
+#### {{ address_family }}
+##### Table
+###### ID: {{ to_parse_bgp.vrf[vrf].address_family[address_family].table_id }}
+###### State: {{ to_parse_bgp.vrf[vrf].address_family[address_family].table_state }}
+{%-         for peer in to_parse_bgp.vrf[vrf].address_family[address_family].peers %}
+##### {{ peer }}
+###### Active Peers: {{ to_parse_bgp.vrf[vrf].address_family[address_family].peers[peer].active_peers }}
+###### Aggregates: {{ to_parse_bgp.vrf[vrf].address_family[address_family].peers[peer].aggregates }}
+###### Networks: {{ to_parse_bgp.vrf[vrf].address_family[address_family].peers[peer].networks }}
+###### Paths: {{ to_parse_bgp.vrf[vrf].address_family[address_family].peers[peer].paths }}
+###### Routes: {{ to_parse_bgp.vrf[vrf].address_family[address_family].peers[peer].routes }}{% endfor %}{% endfor %}{% endfor %}
+{%- endif %}{% endif %}{% endif %}
