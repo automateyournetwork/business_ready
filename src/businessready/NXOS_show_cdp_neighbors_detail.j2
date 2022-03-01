@@ -1,0 +1,157 @@
+{% if filetype_loop == 0 %}Local Interface,Neighbor,Platform,Remote Interface,Remote Interface Address,Neighbor Management Address,Neighbor Capabilities,Duplex Mode,Hold Time,Native VLAN,Software Version,System Name,VTP Domain,Physical Location,Advertisement Version{% for neighbor in to_parse_cdp_neighbors %}
+{{ to_parse_cdp_neighbors[neighbor].local_interface }},{{ to_parse_cdp_neighbors[neighbor].device_id }},{{ to_parse_cdp_neighbors[neighbor].platform }},{{ to_parse_cdp_neighbors[neighbor].port_id }},{{ to_parse_cdp_neighbors[neighbor].interface_addresses | replace("{'","") | replace("'","") | replace(":","") | replace("{}}","") | replace(",","") }},{{ to_parse_cdp_neighbors[neighbor].management_addresses | replace("{'","") | replace("'","") | replace(":","") | replace("}","") | replace("{}","") | replace("{","") }},{{ to_parse_cdp_neighbors[neighbor].capabilities }},{{ to_parse_cdp_neighbors[neighbor].duplex_mode }},{{ to_parse_cdp_neighbors[neighbor].hold_time }},{{ to_parse_cdp_neighbors[neighbor].native_vlan }},{{ to_parse_cdp_neighbors[neighbor].software_version | replace(","," ") | replace("\n"," ") }},{{ to_parse_cdp_neighbors[neighbor].system_name | default("N/A") }},{{ to_parse_cdp_neighbors[neighbor].vtp_management_domain | default("N/A") }},{{ to_parse_cdp_neighbors[neighbor].physical_location | default("N/A") }},{{ to_parse_cdp_neighbors[neighbor].advertisement_ver }}
+{% endfor %}{% else %}{% if filetype_loop == 1 %}
+# Show CDP Neighbor Details
+| Local Interface | Neighbor | Platform | Remote Interface | Remote Interface Address | Neighbor Management Address | Neighbor Capabilities | Duplex Mode | Hold Time | Native VLAN | Software Version | System Name | VTP Domain | Physical Location | Advertisement Version |
+| --------------- | -------- | -------- | ---------------- | ------------------------ | --------------------------- | --------------------- | ----------- | --------- | ----------- | ---------------- | ----------- | ---------- | ----------------- | --------------------- |{% for neighbor in to_parse_cdp_neighbors %}
+| {{ to_parse_cdp_neighbors[neighbor].local_interface }} | {{ to_parse_cdp_neighbors[neighbor].device_id }} | {{ to_parse_cdp_neighbors[neighbor].platform }} | {{ to_parse_cdp_neighbors[neighbor].port_id }} | {{ to_parse_cdp_neighbors[neighbor].interface_addresses | replace("{'","") | replace("\': {}},{}","") }} | {{ to_parse_cdp_neighbors[neighbor].interface_addresses | replace("{'","") | replace("'","") | replace(":","") | replace("{}}","") | replace(",","") }} | {{ to_parse_cdp_neighbors[neighbor].management_addresses | replace("{'","") | replace("'","") | replace(":","") | replace("}","") | replace("{}","") | replace("{","") }} | {{ to_parse_cdp_neighbors[neighbor].capabilities }} | {{ to_parse_cdp_neighbors[neighbor].duplex_mode }} | {{ to_parse_cdp_neighbors[neighbor].hold_time }} | {{ to_parse_cdp_neighbors[neighbor].native_vlan }} | {{ to_parse_cdp_neighbors[neighbor].software_version | replace(","," ") | replace("\n"," ") }} | {{ to_parse_cdp_neighbors[neighbor].system_name | default("N/A") }} | {{ to_parse_cdp_neighbors[neighbor].vtp_management_domain | default("N/A") }} | {{ to_parse_cdp_neighbors[neighbor].physical_location | default("N/A") }} | {{ to_parse_cdp_neighbors[neighbor].advertisement_ver }} |{% endfor %}{% else %}{% if filetype_loop == 2 %}
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/colreorder/1.5.4/js/dataTables.colReorder.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/keytable/2.6.4/js/dataTables.keyTable.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.1.9/js/dataTables.fixedHeader.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.9/css/fixedHeader.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/keytable/2.6.4/css/keyTable.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+</head>
+<body>
+<h1>Show CDP Neighbors Detail</h1>
+<table id = "cdp">
+  <tr>
+    <th>Local Interface</th>
+    <th>Neighbor</th>
+    <th>Platform</th>
+    <th>Remote Interface</th>
+    <th>Remote Interface Address</th>
+    <th>Neighbor Management Address</th>
+    <th>Neighbor Capabilities</th>
+    <th>Duplex Mode</th>
+    <th>Hold Time</th>
+    <th>Native VLAN</th>
+    <th>Software Version</th>
+    <th>System Name</th>
+    <th>VTP Domain</th>
+    <th>Physical Location</th>
+    <th>Advertisement Version</th>
+  </tr>{% for neighbor in to_parse_cdp_neighbors.index %}
+  <tr>
+    <td>{{ to_parse_cdp_neighbors[neighbor].local_interface }}</td>
+    <td>{{ to_parse_cdp_neighbors[neighbor].device_id }}</td>
+    <td>{{ to_parse_cdp_neighbors[neighbor].platform }}</td>
+    <td>{{ to_parse_cdp_neighbors[neighbor].port_id }}</td>
+    <td>{{ to_parse_cdp_neighbors[neighbor].interface_addresses | replace("{'","") | replace("'","") | replace(":","") | replace("{}}","") | replace(",","") }}</td>
+    <td>{{ to_parse_cdp_neighbors[neighbor].management_addresses | replace("{'","") | replace("'","") | replace(":","") | replace("}","") | replace("{}","") | replace("{","") }}</td>
+    <td>{{ to_parse_cdp_neighbors[neighbor].capabilities }}</td>
+    <td>{{ to_parse_cdp_neighbors[neighbor].duplex_mode }}</td>
+    <td>{{ to_parse_cdp_neighbors[neighbor].hold_time }}</td>
+    <td>{{ to_parse_cdp_neighbors[neighbor].native_vlan }}</td>
+    <td>{{ to_parse_cdp_neighbors[neighbor].software_version | replace(","," ") | replace("\n"," ") }}</td>
+    <td>{{ to_parse_cdp_neighbors[neighbor].system_name | default("N/A") }}</td>
+    <td>{{ to_parse_cdp_neighbors[neighbor].vtp_management_domain | default("N/A") }}</td>
+    <td>{{ to_parse_cdp_neighbors[neighbor].physical_location | default("N/A") }}</td>
+    <td>{{ to_parse_cdp_neighbors[neighbor].advertisement_ver }}</td>
+  </tr>{% endfor %}
+</table>
+<script type = "text/javascript">
+  $(document).ready(function(){
+    $('#cdp thead tr')
+    .clone(true)
+    .addClass('filters')
+    .appendTo('#cdp thead');
+
+    var table = $('#cdp').DataTable({
+        keys: true,
+        dom: 'Bfrtip',
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],
+            [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        buttons: [
+        'pageLength','colvis','copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        colReorder: true,
+        select: true,            
+        orderCellsTop: true,
+        fixedHeader: true,
+        initComplete: function () {
+        var api = this.api();
+
+        // For each column
+        api
+            .columns()
+            .eq(0)
+            .each(function (colIdx) {
+                // Set the header cell to contain the input element
+                var cell = $('.filters th').eq(
+                    $(api.column(colIdx).header()).index()
+                );
+                var title = $(cell).text();
+                $(cell).html('<input type="text" placeholder="' + title + '" />');
+
+                // On every keypress in this input
+                $(
+                    'input',
+                    $('.filters th').eq($(api.column(colIdx).header()).index())
+                )
+                    .off('keyup change')
+                    .on('keyup change', function (e) {
+                        e.stopPropagation();
+
+                        // Get the search value
+                        $(this).attr('title', $(this).val());
+                        var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                        var cursorPosition = this.selectionStart;
+                        // Search the column for that value
+                        api
+                            .column(colIdx)
+                            .search(
+                                this.value != ''
+                                    ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                    : '',
+                                this.value != '',
+                                this.value == ''
+                            )
+                            .draw();
+
+                        $(this)
+                            .focus()[0]
+                            .setSelectionRange(cursorPosition, cursorPosition);
+                    });
+            });
+    },
+});
+});        
+</script>
+</body></html>
+{%- else %}
+# Show CDP Neighbor Details
+{% for neighbor in to_parse_cdp_neighbors %}
+## Local Interface: {{ to_parse_cdp_neighbors[neighbor].local_interface }}
+### Device ID: {{ to_parse_cdp_neighbors[neighbor].device_id }}
+### Platform: {{ to_parse_cdp_neighbors[neighbor].platform }}
+### Port ID: {{ to_parse_cdp_neighbors[neighbor].port_id }}
+### Interface Addresses: {{ to_parse_cdp_neighbors[neighbor].interface_addresses | replace("{'","") | replace("'","") | replace(":","") | replace("{}}","") | replace(",","") }}
+### Management Address: {{ to_parse_cdp_neighbors[neighbor].management_addresses | replace("{'","") | replace("'","") | replace(":","") | replace("}","") | replace("{}","") | replace("{","") }}
+### Capabilities: {{ to_parse_cdp_neighbors[neighbor].capabilities }}
+### Duplex Mode: {{ to_parse_cdp_neighbors[neighbor].duplex_mode }}
+### Hold Time: {{ to_parse_cdp_neighbors[neighbor].hold_time }}
+### Native VLAN: {{ to_parse_cdp_neighbors[neighbor].native_vlan }}
+### Software Version: {{ to_parse_cdp_neighbors[neighbor].software_version | replace(","," ") | replace("\n"," ") }}
+### System Name: {{ to_parse_cdp_neighbors[neighbor].system_name | default("N/A") }}
+### VTP Management Domain: {{ to_parse_cdp_neighbors[neighbor].vtp_management_domain | default("N/A") }}
+### Physical Location: {{ to_parse_cdp_neighbors[neighbor].physical_location | default("N/A") }}
+### Advertisement Version: {{ to_parse_cdp_neighbors[neighbor].advertisement_ver }}
+{% endfor %}
+{%- endif %}{% endif %}{% endif %}

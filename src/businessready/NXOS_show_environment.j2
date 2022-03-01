@@ -1,0 +1,272 @@
+{% if filetype_loop == 0 %}Fan,Direction,Model,Status,Air Filter,Fan Zone Speed,Power Supply,Actual Input,Actual Output,Model,Status,Capacity,Voltage,Config Mode,Operation Mode,Total Grid A,Total Grid B,Total Power Capacity,Total Power Cumulative,Total Power Input,Total Power Output,Power Supply Configured Mode,Power Supply Operational Mode,Temperature Area,Current Temp,Major Threshold,Minor Threshold,Status{% for fan in to_parse_environment.fans %}{% if (fan != "fan_air_filter") and (fan != "fan_zone_speed") %}
+{{ fan }},{{ to_parse_environment.fans[fan].direction }},{% if to_parse_environment.fans[fan].model is defined %}{{ to_parse_environment.fans[fan].model }}{% else %}N/A{% endif %},{{ to_parse_environment.fans[fan].status }},{{ to_parse_environment.fans.fan_air_filter }},{{ to_parse_environment.fans.fan_zone_speed }},N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A{% endif %}{% endfor %}{% for power_supply in to_parse_environment.power.power_supply %}
+N/A,N/A,N/A,N/A,N/A,N/A,{{ power_supply }},{{ to_parse_environment.power.power_supply[power_supply].actual_input_watts }},{{ to_parse_environment.power.power_supply[power_supply].actual_output_watts }},{{ to_parse_environment.power.power_supply[power_supply].model }},{{ to_parse_environment.power.power_supply[power_supply].status }},{{ to_parse_environment.power.power_supply[power_supply].total_capacity_watts }},{{ to_parse_environment.power.voltage }},{{ to_parse_environment.power.power_supply_mode.config_mode }},{{ to_parse_environment.power.power_supply_mode.oper_mode }},{{ to_parse_environment.power.power_usage_summary.total_grid_a_power_watts }},{{ to_parse_environment.power.power_usage_summary.total_grid_b_power_watts }},{{ to_parse_environment.power.power_usage_summary.total_power_capacity_watts }},{{ to_parse_environment.power.power_usage_summary.total_power_cumulative_watts }},{{ to_parse_environment.power.power_usage_summary.total_power_input_watts }},{{ to_parse_environment.power.power_usage_summary.total_power_output_watts }},{{ to_parse_environment.power.power_supply_mode.config_mode }},{{ to_parse_environment.power.power_supply_mode.oper_mode }},N/A,N/A,N/A,N/A,N/A{% endfor %}{% for temp_number in to_parse_environment.temperature %}{% for area in to_parse_environment.temperature[temp_number] %}
+N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,{{ area }},{{ to_parse_environment.temperature[temp_number][area].current_temp_celsius }},{{ to_parse_environment.temperature[temp_number][area].major_threshold_celsius }},{{ to_parse_environment.temperature[temp_number][area].minor_threshold_celsius }},{{ to_parse_environment.temperature[temp_number][area].status }}{% endfor %}{% endfor %}{% else %}{% if filetype_loop == 1 %}
+# Show Environment All
+| Fan | Direction | Model | Status | Air Filter | Fan Zone Speed | Power Supply | Actual Input | Actual Output | Model | Status | Capacity | Voltage | Config Mode | Operation Mode | Total Grid A | Total Grid B | Total Power Capacity | Total Power Cumulative | Total Power Input | Total Power Output | Power Supply Configured Mode | Power Supply Operational Mode | Temperature Area | Current Temp | Major Threshold | Minor Threshold | Status |
+| --- | --------- | ----- | ------ | ---------- | -------------- | ------------ | ------------ | ------------- | ----- | ------ | -------- | ------- | ----------- | -------------- | ------------ | ------------ | -------------------- | ---------------------- | ----------------- | ------------------ | ---------------------------- | ----------------------------- | ---------------- | ------------ | --------------- | --------------- | ------ |{% for fan in to_parse_environment.fans %}{% if (fan != "fan_air_filter") and (fan != "fan_zone_speed") %}
+| {{ fan }} | {{ to_parse_environment.fans[fan].direction }} | {% if to_parse_environment.fans[fan].model is defined %}{{ to_parse_environment.fans[fan].model }}{% else %}N/A{% endif %} | {{ to_parse_environment.fans[fan].status }} | {{ to_parse_environment.fans.fan_air_filter }} | {{ to_parse_environment.fans.fan_zone_speed }} | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A |{% endif %}{% endfor %}{% for power_supply in to_parse_environment.power.power_supply %}
+| N/A | N/A | N/A | N/A | N/A | N/A | {{ power_supply }} | {{ to_parse_environment.power.power_supply[power_supply].actual_input_watts }} | {{ to_parse_environment.power.power_supply[power_supply].actual_output_watts }} | {{ to_parse_environment.power.power_supply[power_supply].model }} | {{ to_parse_environment.power.power_supply[power_supply].status }} | {{ to_parse_environment.power.power_supply[power_supply].total_capacity_watts }} | {{ to_parse_environment.power.voltage }} | {{ to_parse_environment.power.power_supply_mode.config_mode }} | {{ to_parse_environment.power.power_supply_mode.oper_mode }} | {{ to_parse_environment.power.power_usage_summary.total_grid_a_power_watts }} | {{ to_parse_environment.power.power_usage_summary.total_grid_b_power_watts }} | {{ to_parse_environment.power.power_usage_summary.total_power_capacity_watts }} | {{ to_parse_environment.power.power_usage_summary.total_power_cumulative_watts }} | {{ to_parse_environment.power.power_usage_summary.total_power_input_watts }} | {{ to_parse_environment.power.power_usage_summary.total_power_output_watts }} | {{ to_parse_environment.power.power_supply_mode.config_mode }} | {{ to_parse_environment.power.power_supply_mode.oper_mode }} | N/A | N/A | N/A | N/A | N/A |{% endfor %}{% for temp_number in to_parse_environment.temperature %}{% for area in to_parse_environment.temperature[temp_number] %}
+| N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | {{ area }} | {{ to_parse_environment.temperature[temp_number][area].current_temp_celsius }} | {{ to_parse_environment.temperature[temp_number][area].major_threshold_celsius }} | {{ to_parse_environment.temperature[temp_number][area].minor_threshold_celsius }} | {{ to_parse_environment.temperature[temp_number][area].status }} |{% endfor %}{% endfor %}  |{% else %}{% if filetype_loop == 2 %}
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/colreorder/1.5.4/js/dataTables.colReorder.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/keytable/2.6.4/js/dataTables.keyTable.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.1.9/js/dataTables.fixedHeader.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.9/css/fixedHeader.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/keytable/2.6.4/css/keyTable.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+</head>
+<body>
+<h1>Show Environment</h1>
+<table id = "cdp">
+  <tr>
+    <th>Fan</th>
+    <th>Direction</th>
+    <th>Model</th>
+    <th>Status</th>
+    <th>Air Filter</th>
+    <th>Fan Zone Speed</th>
+    <th>Power Supply</th>
+    <th>Actual Input</th>
+    <th>Actual Output</th>
+    <th>Model</th>
+    <th>Status</th>
+    <th>Capacity</th>
+    <th>Voltage</th>
+    <th>Config Mode</th>
+    <th>Operation Mode</th>
+    <th>Total Grid A</th>
+    <th>Total Grid B</th>
+    <th>Total Power Capacity</th>
+    <th>Total Power Cumulative</th>
+    <th>Total Power Input</th>
+    <th>Total Power Output</th>
+    <th>Power Supply Configured Mode</th>
+    <th>Power Supply Operational Mode</th>
+    <th>Temperature Area</th>
+    <th>Current Temp</th>
+    <th>Major Threshold</th>
+    <th>Minor Threshold</th>
+    <th>Status</th>
+  </tr>{% for fan in to_parse_environment.fans %}{% if (fan != "fan_air_filter") and (fan != "fan_zone_speed") %}
+  <tr>
+    <td>{{ fan }}</td>
+    <td>{{ to_parse_environment.fans[fan].direction }}</td>
+    <td>{% if to_parse_environment.fans[fan].model is defined %}{{ to_parse_environment.fans[fan].model }}{% else %}N/A{% endif %}</td>
+    <td>{{ to_parse_environment.fans[fan].status }}</td>
+    <td>{{ to_parse_environment.fans.fan_air_filter }}</td>
+    <td>{{ to_parse_environment.fans.fan_zone_speed }}</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+  </tr>{% endif %}{% endfor %}{% for power_supply in to_parse_environment.power.power_supply %}
+  <tr>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>{{ power_supply }}</td>
+    <td>{{ to_parse_environment.power.power_supply[power_supply].actual_input_watts }}</td>
+    <td>{{ to_parse_environment.power.power_supply[power_supply].actual_output_watts }}</td>
+    <td>{{ to_parse_environment.power.power_supply[power_supply].model }}</td>
+    <td>{{ to_parse_environment.power.power_supply[power_supply].status }}</td>
+    <td>{{ to_parse_environment.power.power_supply[power_supply].total_capacity_watts }}</td>
+    <td>{{ to_parse_environment.power.voltage }}</td>
+    <td>{{ to_parse_environment.power.power_supply_mode.config_mode }}</td>
+    <td>{{ to_parse_environment.power.power_supply_mode.oper_mode }}</td>
+    <td>{{ to_parse_environment.power.power_usage_summary.total_grid_a_power_watts }}</td>
+    <td>{{ to_parse_environment.power.power_usage_summary.total_grid_b_power_watts }}</td>
+    <td>{{ to_parse_environment.power.power_usage_summary.total_power_capacity_watts }}</td>
+    <td>{{ to_parse_environment.power.power_usage_summary.total_power_cumulative_watts }}</td>
+    <td>{{ to_parse_environment.power.power_usage_summary.total_power_input_watts }}</td>
+    <td>{{ to_parse_environment.power.power_usage_summary.total_power_output_watts }}</td>
+    <td>{{ to_parse_environment.power.power_supply_mode.config_mode }}</td>
+    <td>{{ to_parse_environment.power.power_supply_mode.oper_mode }}</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+  </tr>{% endfor %}{% for temp_number in to_parse_environment.temperature %}{% for area in to_parse_environment.temperature[temp_number] %}
+  <tr>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>    
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>{{ area }}</td>
+    <td>{{ to_parse_environment.temperature[temp_number][area].current_temp_celsius }}</td>
+    <td>{{ to_parse_environment.temperature[temp_number][area].major_threshold_celsius }}</td>
+    <td>{{ to_parse_environment.temperature[temp_number][area].minor_threshold_celsius }}</td>
+    <td>{{ to_parse_environment.temperature[temp_number][area].status }}</td>
+  </tr>{% endfor %}{% endfor %}
+</table>
+<script type = "text/javascript">
+  $(document).ready(function(){
+    $('#cdp thead tr')
+    .clone(true)
+    .addClass('filters')
+    .appendTo('#cdp thead');
+
+    var table = $('#cdp').DataTable({
+        keys: true,
+        dom: 'Bfrtip',
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],
+            [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        buttons: [
+        'pageLength','colvis','copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        colReorder: true,
+        select: true,            
+        orderCellsTop: true,
+        fixedHeader: true,
+        initComplete: function () {
+        var api = this.api();
+
+        // For each column
+        api
+            .columns()
+            .eq(0)
+            .each(function (colIdx) {
+                // Set the header cell to contain the input element
+                var cell = $('.filters th').eq(
+                    $(api.column(colIdx).header()).index()
+                );
+                var title = $(cell).text();
+                $(cell).html('<input type="text" placeholder="' + title + '" />');
+
+                // On every keypress in this input
+                $(
+                    'input',
+                    $('.filters th').eq($(api.column(colIdx).header()).index())
+                )
+                    .off('keyup change')
+                    .on('keyup change', function (e) {
+                        e.stopPropagation();
+
+                        // Get the search value
+                        $(this).attr('title', $(this).val());
+                        var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                        var cursorPosition = this.selectionStart;
+                        // Search the column for that value
+                        api
+                            .column(colIdx)
+                            .search(
+                                this.value != ''
+                                    ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                    : '',
+                                this.value != '',
+                                this.value == ''
+                            )
+                            .draw();
+
+                        $(this)
+                            .focus()[0]
+                            .setSelectionRange(cursorPosition, cursorPosition);
+                    });
+            });
+    },
+});
+});        
+</script>
+</body></html>
+{%- else %}
+# Show Environment
+## Fans
+{%- for fan in to_parse_environment.fans %}{% if (fan != "fan_air_filter") and (fan != "fan_zone_speed") %}
+### {{ fan }}
+#### Direction: {{ to_parse_environment.fans[fan].direction }}
+{%- if to_parse_environment.fans[fan].model is defined %}
+#### Model: {{ to_parse_environment.fans[fan].model }}
+{%- endif %}
+#### Status: {{ to_parse_environment.fans[fan].status }}
+#### Air Filter: {{ to_parse_environment.fans.fan_air_filter }}
+#### Fan Zone Speed: {{ to_parse_environment.fans.fan_zone_speed }}
+{%- endif %}{% endfor %}
+## Power Supplies
+{%- for power_supply in to_parse_environment.power.power_supply %}
+### {{ power_supply }}
+#### Acutal
+##### Input Watts: {{ to_parse_environment.power.power_supply[power_supply].actual_input_watts }}
+##### Output Watts: {{ to_parse_environment.power.power_supply[power_supply].actual_output_watts }}
+#### Model: {{ to_parse_environment.power.power_supply[power_supply].model }}
+#### Status: {{ to_parse_environment.power.power_supply[power_supply].status }}
+#### Total Capacity Watts: {{ to_parse_environment.power.power_supply[power_supply].total_capacity_watts }}
+#### Voltage: {{ to_parse_environment.power.voltage }}
+#### Mode
+##### Config: {{ to_parse_environment.power.power_supply_mode.config_mode }}
+##### Operation: {{ to_parse_environment.power.power_supply_mode.oper_mode }}
+#### Total
+##### Grid Power Watts
+###### A: {{ to_parse_environment.power.power_usage_summary.total_grid_a_power_watts }}
+###### B: {{ to_parse_environment.power.power_usage_summary.total_grid_b_power_watts }}
+##### Power Watts
+###### Capacity: {{ to_parse_environment.power.power_usage_summary.total_power_capacity_watts }}
+###### Cumulative: {{ to_parse_environment.power.power_usage_summary.total_power_cumulative_watts }}
+###### Input: {{ to_parse_environment.power.power_usage_summary.total_power_input_watts }}
+###### Output: {{ to_parse_environment.power.power_usage_summary.total_power_output_watts }}
+{%- endfor %}
+## Areas
+{%- for temp_number in to_parse_environment.temperature %}{% for area in to_parse_environment.temperature[temp_number] %}
+### {{ area }}
+#### Current Temperature Celsius: {{ to_parse_environment.temperature[temp_number][area].current_temp_celsius }}
+#### Celsius Thresholds
+##### Major: {{ to_parse_environment.temperature[temp_number][area].major_threshold_celsius }}
+##### Minor: {{ to_parse_environment.temperature[temp_number][area].minor_threshold_celsius }}
+#### Status: {{ to_parse_environment.temperature[temp_number][area].status }}
+{%- endfor %}{% endfor %}
+{%- endif %}{% endif %}{% endif %}

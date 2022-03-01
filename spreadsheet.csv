@@ -1,0 +1,5 @@
+hostname,os,username,password,ip
+dist-rtr01,iosxe,cisco,cisco,10.10.20.175
+dist-rtr02,iosxe,cisco,cisco,10.10.20.176
+dist-sw01,nxos,cisco,cisco,10.10.20.177
+dist-sw02,nxos,cisco,cisco,10.10.20.178

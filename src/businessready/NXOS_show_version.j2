@@ -1,0 +1,178 @@
+{% if filetype_loop == 0 %}Bootflash,Chassis,CPU,Device Name,Memory,Model,Processor Board ID,RP,Slots,Kernel Uptime,Name,OS,Last Reload Reason,BIOS Compile Time,BIOS Version,Kickstart Compile Time,Kickstart Image,Kickstart Version,System Compile Time,System Image File,System Version
+{{ to_parse_version.hardware.bootflash }},{{ to_parse_version.hardware.chassis }},{{ to_parse_version.hardware.cpu }},{{ to_parse_version.hardware.device_name }},{{ to_parse_version.hardware.memory }},{{ to_parse_version.hardware.model }},{{ to_parse_version.hardware.processor_board_id }},{{ to_parse_version.hardware.rp }},{{ to_parse_version.hardware.slots }},{{ to_parse_version.kernel_uptime.days }} {{ to_parse_version.kernel_uptime.hours }} {{ to_parse_version.kernel_uptime.minutes }} {{ to_parse_version.kernel_uptime.seconds }},{{ to_parse_version.name }},{{ to_parse_version.os }},{{ to_parse_version.reason }},{{ to_parse_version.software.bios_compile_time }},{{ to_parse_version.software.bios_version }},{{ to_parse_version.software.kickstart_compile_time }},{{ to_parse_version.software.kickstart_image_file }},{{ to_parse_version.software.kickstart_version }},{{ to_parse_version.software.system_compile_time }},{{ to_parse_version.software.system_image_file }},{{ to_parse_version.software.system_version }}
+{% else %}{% if filetype_loop == 1 %}
+# Show Version
+| Bootflash | Chassis | CPU | Device Name | Memory | Model | Processor Board ID | RP | Slots | Kernel Uptime | Name | OS | Last Reload Reason | BIOS Compile Time | BIOS Version | Kickstart Compile Time | Kickstart Image | Kickstart Version | System Compile Time | System Image File | System Version |
+| --------- | ------- | --- | ----------- | ------ | ----- | ------------------ | -- | ----- | ------------- | ---- | -- | ------------------ | ----------------- | ------------ | ---------------------- | --------------- | ----------------- | ------------------- | ----------------- | -------------- |
+| {{ to_parse_version.hardware.bootflash }} | {{ to_parse_version.hardware.chassis }} | {{ to_parse_version.hardware.cpu }} | {{ to_parse_version.hardware.device_name }} | {{ to_parse_version.hardware.memory }} | {{ to_parse_version.hardware.model }} | {{ to_parse_version.hardware.processor_board_id }} | {{ to_parse_version.hardware.rp }} | {{ to_parse_version.hardware.slots }} | {{ to_parse_version.kernel_uptime.days }} {{ to_parse_version.kernel_uptime.hours }} {{ to_parse_version.kernel_uptime.minutes }} {{ to_parse_version.kernel_uptime.seconds }} | {{ to_parse_version.name }} | {{ to_parse_version.os }} | {{ to_parse_version.reason }} | {{ to_parse_version.software.bios_compile_time }} | {{ to_parse_version.software.bios_version }} | {{ to_parse_version.software.kickstart_compile_time }} | {{ to_parse_version.software.kickstart_image_file }} | {{ to_parse_version.software.kickstart_version }} | {{ to_parse_version.software.system_compile_time }} | {{ to_parse_version.software.system_image_file }} | {{ to_parse_version.software.system_version }} |
+{% else %}{% if filetype_loop == 2 %}
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/colreorder/1.5.4/js/dataTables.colReorder.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/keytable/2.6.4/js/dataTables.keyTable.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.1.9/js/dataTables.fixedHeader.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.9/css/fixedHeader.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/keytable/2.6.4/css/keyTable.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+</head>
+<body>
+<h1>Show </h1>
+<table id = "version">
+  <tr>
+    <th>Bootflash</th>
+    <th>Chassis</th>
+    <th>CPU</th>
+    <th>Device Name</th>
+    <th>Memory</th>
+    <th>Model</th>
+    <th>Processor Board ID</th>
+    <th>RP</th>
+    <th>Slots</th>
+    <th>Kernel Uptime</th>
+    <th>Name</th>
+    <th>OS</th>
+    <th>Last Reload Reason</th>
+    <th>BIOS Compile Time</th>
+    <th>BIOS Version</th>
+    <th>Kickstart Compile Time</th>
+    <th>Kickstart Image</th>
+    <th>Kickstart Version</th>
+    <th>System Compile Time</th>
+    <th>System Image File</th>
+    <th>System Version</th>
+  </tr>
+  <tr>
+    <td>{{ to_parse_version.hardware.bootflash }}</td>
+    <td>{{ to_parse_version.hardware.chassis }}</td>
+    <td>{{ to_parse_version.hardware.cpu }}</td>
+    <td>{{ to_parse_version.hardware.device_name }}</td>
+    <td>{{ to_parse_version.hardware.memory }}</td>
+    <td>{{ to_parse_version.hardware.model }}</td>
+    <td>{{ to_parse_version.hardware.processor_board_id }}</td>
+    <td>{{ to_parse_version.hardware.rp }}</td>
+    <td>{{ to_parse_version.hardware.slots }}</td>
+    <td>{{ to_parse_version.kernel_uptime.days }} {{ to_parse_version.kernel_uptime.hours }} {{ to_parse_version.kernel_uptime.minutes }} {{ to_parse_version.kernel_uptime.seconds }}</td>
+    <td>{{ to_parse_version.name }}</td>
+    <td>{{ to_parse_version.os }}</td>
+    <td>{{ to_parse_version.reason }}</td>
+    <td>{{ to_parse_version.software.bios_compile_time }}</td>
+    <td>{{ to_parse_version.software.bios_version }}</td>
+    <td>{{ to_parse_version.software.kickstart_compile_time }}</td>
+    <td>{{ to_parse_version.software.kickstart_image_file }}</td>
+    <td>{{ to_parse_version.software.kickstart_version }}</td>
+    <td>{{ to_parse_version.software.system_compile_time }}</td>
+    <td>{{ to_parse_version.software.system_image_file }}</td>
+    <td>{{ to_parse_version.software.system_version }}</td>
+  </tr>
+</table>
+<script type = "text/javascript">
+  $(document).ready(function(){
+    $('#version thead tr')
+    .clone(true)
+    .addClass('filters')
+    .appendTo('#version thead');
+
+    var table = $('#version').DataTable({
+        keys: true,
+        dom: 'Bfrtip',
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],
+            [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        buttons: [
+        'pageLength','colvis','copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        colReorder: true,
+        select: true,            
+        orderCellsTop: true,
+        fixedHeader: true,
+        initComplete: function () {
+        var api = this.api();
+
+        // For each column
+        api
+            .columns()
+            .eq(0)
+            .each(function (colIdx) {
+                // Set the header cell to contain the input element
+                var cell = $('.filters th').eq(
+                    $(api.column(colIdx).header()).index()
+                );
+                var title = $(cell).text();
+                $(cell).html('<input type="text" placeholder="' + title + '" />');
+
+                // On every keypress in this input
+                $(
+                    'input',
+                    $('.filters th').eq($(api.column(colIdx).header()).index())
+                )
+                    .off('keyup change')
+                    .on('keyup change', function (e) {
+                        e.stopPropagation();
+
+                        // Get the search value
+                        $(this).attr('title', $(this).val());
+                        var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                        var cursorPosition = this.selectionStart;
+                        // Search the column for that value
+                        api
+                            .column(colIdx)
+                            .search(
+                                this.value != ''
+                                    ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                    : '',
+                                this.value != '',
+                                this.value == ''
+                            )
+                            .draw();
+
+                        $(this)
+                            .focus()[0]
+                            .setSelectionRange(cursorPosition, cursorPosition);
+                    });
+            });
+    },
+});
+});        
+</script>
+</body></html>
+{%- else %}
+# Show Version
+## Device Name: {{ to_parse_version.hardware.device_name }}
+### Hardware
+#### Bootflash: {{ to_parse_version.hardware.bootflash }}
+#### Chassis: {{ to_parse_version.hardware.chassis }}
+#### CPU: {{ to_parse_version.hardware.cpu }}
+#### Memory: {{ to_parse_version.hardware.memory }}
+#### Model: {{ to_parse_version.hardware.model }}
+#### Processor Board ID: {{ to_parse_version.hardware.processor_board_id }}
+#### RP: {{ to_parse_version.hardware.rp }}
+#### Slots: {{ to_parse_version.hardware.slots }}
+#### Uptime: {{ to_parse_version.kernel_uptime.days }} {{ to_parse_version.kernel_uptime.hours }} {{ to_parse_version.kernel_uptime.minutes }} {{ to_parse_version.kernel_uptime.seconds }}
+#### Name: {{ to_parse_version.name }}
+#### OS: {{ to_parse_version.os }}
+#### Reboot Reason: {{ to_parse_version.reason }}
+#### BIOS
+##### Compile Time: {{ to_parse_version.software.bios_compile_time }}
+##### Version: {{ to_parse_version.software.bios_version }}
+#### Kickstart
+##### Compile Time: {{ to_parse_version.software.kickstart_compile_time }}
+##### Image File: {{ to_parse_version.software.kickstart_image_file }}
+##### Version: {{ to_parse_version.software.kickstart_version }}
+### Software System
+#### Compile Time: {{ to_parse_version.software.system_compile_time }}
+#### Image File: {{ to_parse_version.software.system_image_file }}
+#### Version: {{ to_parse_version.software.system_version }}
+{%- endif %}{% endif %}{% endif %}
