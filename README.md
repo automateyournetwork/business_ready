@@ -1,3 +1,5 @@
+[![published](https://static.production.devnetcloud.com/codeexchange/assets/images/devnet-published.svg)](https://developer.cisco.com/codeexchange/github/repo/automateyournetwork/business_ready)
+
 # business_ready
 ## A Python CLI that transforms Cisco CLIs and REST APIs into "Business Ready" Documents
 
