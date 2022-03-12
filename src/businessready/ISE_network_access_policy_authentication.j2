@@ -1,0 +1,185 @@
+{% if filetype_loop == 0 %}Name,ID,Default,Hit Counts,Rank,State,Link,Condition Type,Is Negate,Child Link,Child Condition Type,Child Is Negate,Child Name,Child ID,Child Description,Identity Source Name,If Auth Fail,If User Not Found,If Process Fail
+{%- for policy in networkAccessPolicySet %}
+{%-     for child in policy.rule.condition.children %}
+{{ policy.rule.name }},{{ policy.rule.id }},{{ policy.rule.default }},{{ policy.rule.hitCounts }},{{ policy.rule.rank }},{{ policy.rule.state }},{{ policy.rule.condition.link }},{{ policy.rule.condition.conditionType }},{{ policy.rule.condition.isNegate }},{{ child.link }},{{ child.conditionType }},{{ child.isNegate }},{{ child.name }},{{ child.id }},{{ child.description | replace(","," ") }},{{ policy.identitySourceName }},{{ policy.ifAuthFail }},{{ policy.ifUserNotFound }},{{ policy.ifProcessFail }}
+{%-     endfor %}
+{%- endfor %}
+{% else %}{% if filetype_loop == 1 %}
+# ISE Network Access Policy Set Authentication
+| Name | ID | Default | Hit Counts | Rank | State | Link | Condition Type | Is Negate | Child Link | Child Condition Type | Child Is Negate | Child Name | Child ID | Child Description | Identity Source Name | If Auth Fail | If User Not Found | If Process Fail |
+| ---- | -- | ------- | ---------- | ---- | ----- | ---- | -------------- | --------- | ---------- | -------------------- | --------------- | ---------- | -------- | ----------------- | -------------------- | ------------ | ----------------- | --------------- |
+{%- for policy in networkAccessPolicySet %}
+{%-     for child in policy.rule.condition.children %}
+| {{ policy.rule.name }} | {{ policy.rule.id }} | {{ policy.rule.default }} | {{ policy.rule.hitCounts }} | {{ policy.rule.rank }} | {{ policy.rule.state }} | {{ policy.rule.condition.link }} | {{ policy.rule.condition.conditionType }} | {{ policy.rule.condition.isNegate }} | {{ child.link }} | {{ child.conditionType }} | {{ child.isNegate }} | {{ child.name }} | {{ child.id }} | {{ child.description | replace(","," ") }} | {{ policy.identitySourceName }} | {{ policy.ifAuthFail }} | {{ policy.ifUserNotFound }} | {{ policy.ifProcessFail }} |
+{%-     endfor %}
+{%- endfor %}
+{% else %}{% if filetype_loop == 2 %}
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/colreorder/1.5.4/js/dataTables.colReorder.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/keytable/2.6.4/js/dataTables.keyTable.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.1.9/js/dataTables.fixedHeader.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.9/css/fixedHeader.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/keytable/2.6.4/css/keyTable.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+</head>
+<body>
+<h1>ISE Network Access Policy Set Authentication</h1>
+<table id = "ise">
+  <tr>
+    <th>Name</th>
+    <th>ID</th>
+    <th>Default</th>
+    <th>Hit Counts</th>
+    <th>Rank</th>
+    <th>State</th>
+    <th>Link</th>
+    <th>Condition Type</th>
+    <th>Is Negate</th>
+    <th>Child Link</th>
+    <th>Child Condition Type</th>
+    <th>Child Is Negate</th>
+    <th>Child Name</th>
+    <th>Child ID</th>
+    <th>Child Description</th>
+    <th>Identity Source Name</th>
+    <th>If Auth Fail</th>
+    <th>If User Not Found</th>
+    <th>If Process Fail</th>
+  </tr>
+{%- for policy in networkAccessPolicySet %}
+{%-     for child in policy.rule.condition.children %}  
+  <tr>
+    <td>{{ policy.rule.name }}</td>
+    <td>{{ policy.rule.id }}</td>
+    <td>{{ policy.rule.default }}</td>
+    <td>{{ policy.rule.hitCounts }}</td>
+    <td>{{ policy.rule.rank }}</td>
+    <td>{{ policy.rule.state }}</td>
+    <td>{{ policy.rule.condition.link }}</td>
+    <td>{{ policy.rule.condition.conditionType }}</td>
+    <td>{{ policy.rule.condition.isNegate }}</td>
+    <td>{{ child.link }}</td>
+    <td>{{ child.conditionType }}</td>
+    <td>{{ child.isNegate }}</td>
+    <td>{{ child.name }}</td>
+    <td>{{ child.id }}</td>
+    <td>{{ child.description | replace(","," ") }}</td>
+    <td>{{ policy.identitySourceName }}</td>
+    <td>{{ policy.ifAuthFail }}</td>
+    <td>{{ policy.ifUserNotFound }}</td>
+    <td>{{ policy.ifProcessFail }}</td>
+  </tr>
+{%-     endfor %}
+{%- endfor %}  
+</table>
+<script type = "text/javascript">
+  $(document).ready(function(){
+    $('#ise thead tr')
+    .clone(true)
+    .addClass('filters')
+    .appendTo('#ise thead');
+
+    var table = $('#ise').DataTable({
+        keys: true,
+        dom: 'Bfrtip',
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],
+            [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        buttons: [
+        'pageLength','colvis','copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        colReorder: true,
+        select: true,            
+        orderCellsTop: true,
+        fixedHeader: true,
+        initComplete: function () {
+        var api = this.api();
+
+        // For each column
+        api
+            .columns()
+            .eq(0)
+            .each(function (colIdx) {
+                // Set the header cell to contain the input element
+                var cell = $('.filters th').eq(
+                    $(api.column(colIdx).header()).index()
+                );
+                var title = $(cell).text();
+                $(cell).html('<input type="text" placeholder="' + title + '" />');
+
+                // On every keypress in this input
+                $(
+                    'input',
+                    $('.filters th').eq($(api.column(colIdx).header()).index())
+                )
+                    .off('keyup change')
+                    .on('keyup change', function (e) {
+                        e.stopPropagation();
+
+                        // Get the search value
+                        $(this).attr('title', $(this).val());
+                        var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                        var cursorPosition = this.selectionStart;
+                        // Search the column for that value
+                        api
+                            .column(colIdx)
+                            .search(
+                                this.value != ''
+                                    ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                    : '',
+                                this.value != '',
+                                this.value == ''
+                            )
+                            .draw();
+
+                        $(this)
+                            .focus()[0]
+                            .setSelectionRange(cursorPosition, cursorPosition);
+                    });
+            });
+    },
+});
+});        
+</script>
+</body></html>
+{%- else %}
+# ISE Network Access Policy Set Authentication
+{%- for policy in networkAccessPolicySet %}
+## {{ policy.rule.name }}
+### ID: {{ policy.rule.id }}
+### Default: {{ policy.rule.default }}
+### Hit Count: {{ policy.rule.hitCounts }}
+### Rank: {{ policy.rule.rank }}
+### State: {{ policy.rule.state }}
+### Link: {{ policy.rule.condition.link }}
+### Condition Type: {{ policy.rule.condition.conditionType }}
+### Is Negate: {{ policy.rule.condition.isNegate }}
+### Children
+{%-     for child in policy.rule.condition.children %}  
+#### {{ child.name }}
+##### Link: {{ child.link }}
+##### Condition Type: {{ child.conditionType }}
+##### Is Negate: {{ child.isNegate }}
+##### ID: {{ child.id }}
+##### Description: {{ child.description | replace(","," ") }}
+##### Identity Source Name: {{ policy.identitySourceName }}
+##### If Auth Fail: {{ policy.ifAuthFail }}
+##### If User Not Found: {{ policy.ifUserNotFound }}
+##### If Process Fail: {{ policy.ifProcessFail }}
+{%-     endfor %}
+{%- endfor %}
+{%- endif %}{% endif %}{% endif %}

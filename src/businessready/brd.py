@@ -10,10 +10,13 @@ import logging
 import requests
 import json
 import base64
+import xmltodict
+import urllib3
 from pyats.topology import Testbed, Device
 from genie import testbed
 from jinja2 import Environment, FileSystemLoader
 
+urllib3.disable_warnings()
 # ----------------
 # Jinja2 Setup and Templates
 # ----------------
@@ -1491,6 +1494,3291 @@ def DNAC_flow_analysis(url, username, password):
         logging.exception(e)
 
 # -------------------------
+# ISE REST APIs
+# -------------------------
+
+# ----------------
+# ISE ALL
+# ----------------
+
+def ISE_all(url, username, password):
+    ISE_ers_all(url, username, password)
+    ISE_open_api_all(url, username, password)
+    ISE_mnt_all(url, username, password)
+    return("All ISE APIs Converted to Business Ready Documents")
+
+# ----------------
+# ISE ERS
+# ----------------
+
+def ISE_ers_all(url, username, password):
+    ISE_allowed_protocols(url, username, password)
+    ISE_admin_users(url, username, password)
+    ISE_active_directory(url, username, password)
+    ISE_authorization_profile(url, username, password)
+    ISE_dacl(url, username, password)
+    ISE_endpoint(url, username, password)
+    ISE_endpoint_groups(url, username, password)
+    ISE_identity_groups(url, username, password)
+    ISE_identity_store_sequence(url, username, password)
+    ISE_internal_users(url, username, password)
+    ISE_network_devices(url, username, password)
+    ISE_network_device_groups(url, username, password)
+    ISE_nodes(url, username, password)
+    ISE_portals(url, username, password)
+    ISE_profiler(url, username, password)
+    ISE_deployment_info(url, username, password)
+    ISE_sgt(url, username, password)
+    ISE_sgt_acl(url, username, password)
+    ISE_self_registration_portal(url, username, password)
+    ISE_sponsor_groups(url, username, password)
+    ISE_sponsor_portal(url, username, password)
+    ISE_sponsored_guest_portal(url, username, password)
+    return("All ISE ERS REST APIs Converted to Business Ready Documents")
+
+# ----------------
+# ISE Open API
+# ----------------
+
+def ISE_open_api_all(url, username, password):
+    ISE_last_backup(url, username, password)
+    ISE_csr(url, username, password)
+    ISE_system_certificates(url, username, password)
+    ISE_trusted_certificates(url, username, password)
+    ISE_deployment_node(url, username, password)
+    ISE_pan_ha(url, username, password)
+    ISE_node_interfaces(url, username, password)
+    ISE_node_profile(url, username, password)
+    ISE_license_connection_type(url, username, password)
+    ISE_eval_license(url, username, password)
+    ISE_license_feature_map(url, username, password)
+    ISE_license_register(url, username, password)
+    ISE_license_smart_state(url, username, password)
+    ISE_license_tier_state(url, username, password)
+    ISE_patch(url, username, password)
+    ISE_hot_patch(url, username, password)
+    ISE_repository(url, username, password)
+    ISE_proxy(url, username, password)
+    ISE_transport_gateway(url, username, password)
+    ISE_nbar_app(url, username, password)
+    ISE_command_set(url, username, password)
+    ISE_condition(url, username, password)
+    ISE_authentication_dictionary(url, username, password)
+    ISE_authorization_dictionary(url, username, password)
+    ISE_policy_set_dictionary(url, username, password)
+    ISE_identity_stores(url, username, password)
+    ISE_policy_sets(url, username, password)
+    ISE_authentication_policy_sets(url, username, password)
+    ISE_authorization_policy_sets(url, username, password)
+    ISE_service_names(url, username, password)
+    ISE_shell_profiles(url, username, password)
+    ISE_network_authorization_profiles(url, username, password)
+    ISE_network_access_condition(url, username, password)
+    ISE_network_access_condition_authentication(url, username, password)
+    ISE_network_access_condition_authorization(url, username, password)
+    ISE_network_access_condition_policy_set(url, username, password)
+    ISE_network_access_dictionaries(url, username, password)
+    ISE_network_access_dictionaries_authentication(url, username, password)
+    ISE_network_access_dictionaries_authorization(url, username, password)
+    ISE_network_access_dictionaries_policy_set(url, username, password)
+    ISE_network_access_identity_stores(url, username, password)
+    ISE_network_access_policy_set(url, username, password)
+    ISE_network_access_policy_authentication(url, username, password)
+    ISE_network_access_policy_authorization(url, username, password)
+    ISE_network_access_security_groups(url, username, password)
+    ISE_network_access_service_names(url, username, password)
+    return("All ISE OPEN REST APIs Converted to Business Ready Documents")
+
+# ----------------
+# ISE MNT
+# ----------------
+
+def ISE_mnt_all(url, username, password):
+    ISE_active_sessions(url, username, password)
+    ISE_posture_count(url, username, password)
+    ISE_profiler_count(url, username, password)
+    ISE_version(url, username, password)
+    ISE_failure_codes(url, username, password)
+    return("All ISE MnT REST APIs Converted to Business Ready Documents")
+
+# ----------------
+# ISE ERS
+# ----------------
+
+def ISE_allowed_protocols(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+    
+        allowedProtocols = requests.request("GET", f"{ url }/ers/config/allowedprotocols", headers=headers, auth=(username, password), verify=False)
+        allowedProtocolsJSON = allowedProtocols.json()
+
+        # Pass to template 
+
+        if allowedProtocolsJSON is not None:
+            allowedProtocols_template = env.get_template('ISE_allowed_protocols.j2')
+            loop_counter = 0
+            allowedProtocolsDetails = []
+            for href in allowedProtocolsJSON['SearchResult']['resources']:
+                allowedProtocolHref = requests.request("GET", href['link']['href'], headers=headers, auth=(username, password), verify=False)
+                allowedProtocolHrefJSON = allowedProtocolHref.json()
+                allowedProtocolsDetails.append(allowedProtocolHrefJSON)            
+            
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = allowedProtocols_template.render(allowedProtocolsDetails = allowedProtocolsDetails,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Allowed Protocols.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Allowed Protocols Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Allowed Protocols.json", "w") as fh:
+                    json.dump(allowedProtocolsDetails, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(allowedProtocolsDetails)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_admin_users(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+    
+        adminUsers = requests.request("GET", f"{ url }/ers/config/adminuser", headers=headers, auth=(username, password), verify=False)
+        adminUsersJSON = adminUsers.json()
+
+        # Pass to template 
+
+        if adminUsersJSON is not None:
+            adminUsers_template = env.get_template('ISE_admin_users.j2')
+            loop_counter = 0
+            adminUsersDetails = []
+            for href in adminUsersJSON['SearchResult']['resources']:
+                adminUserHref = requests.request("GET", href['link']['href'], headers=headers, auth=(username, password), verify=False)
+                adminUserHrefJSON = adminUserHref.json()
+                adminUsersDetails.append(adminUserHrefJSON)          
+            
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = adminUsers_template.render(adminUsersDetails = adminUsersDetails,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Admin Users.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Admin Users Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Admin Users.json", "w") as fh:
+                    json.dump(adminUsersDetails, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(adminUsersDetails)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_active_directory(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+    
+        activeDirectoryAll = requests.request("GET", f"{ url }/ers/config/activedirectory", headers=headers, auth=(username, password), verify=False)
+        activeDirectoryAllJSON = activeDirectoryAll.json()
+
+        # Pass to template 
+
+        if activeDirectoryAllJSON is not None:
+            activeDirectory_template = env.get_template('ISE_active_directory.j2')
+            loop_counter = 0
+            activeDirectory = []
+            for href in activeDirectoryAllJSON['SearchResult']['resources']:
+                activeDirectoryHref = requests.request("GET", href['link']['href'], headers=headers, auth=(username, password), verify=False)
+                activeDirectoryJSON = activeDirectoryHref.json()
+                activeDirectory.append(activeDirectoryJSON)          
+            
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = activeDirectory_template.render(activeDirectory = activeDirectory,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Active Directory.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Active Directory Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Active Directory.json", "w") as fh:
+                    json.dump(activeDirectory, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(activeDirectory)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_authorization_profile(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+    
+        authorizationProfileAll = requests.request("GET", f"{ url }/ers/config/authorizationprofile", headers=headers, auth=(username, password), verify=False)
+        authorizationProfileAllJSON = authorizationProfileAll.json()
+
+        # Pass to template 
+
+        if authorizationProfileAllJSON is not None:
+            authorizationProfile_template = env.get_template('ISE_authorization_profile.j2')
+            loop_counter = 0
+            authorizationProfile = []
+            for href in authorizationProfileAllJSON['SearchResult']['resources']:
+                authorizationProfileHref = requests.request("GET", href['link']['href'], headers=headers, auth=(username, password), verify=False)
+                authorizationProfileJSON = authorizationProfileHref.json()
+                authorizationProfile.append(authorizationProfileJSON)          
+            
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = authorizationProfile_template.render(authorizationProfile = authorizationProfile,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Authorization Profile.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Authorization Profile Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Authorization Profile.json", "w") as fh:
+                    json.dump(authorizationProfile, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(authorizationProfile)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_dacl(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+    
+        daclAll = requests.request("GET", f"{ url }/ers/config/downloadableacl", headers=headers, auth=(username, password), verify=False)
+        daclAllJSON = daclAll.json()
+
+        # Pass to template 
+
+        if daclAllJSON is not None:
+            dacl_template = env.get_template('ISE_dacl.j2')
+            loop_counter = 0
+            dacl = []
+            for href in daclAllJSON['SearchResult']['resources']:
+                daclHref = requests.request("GET", href['link']['href'], headers=headers, auth=(username, password), verify=False)
+                daclHrefJSON = daclHref.json()
+                dacl.append(daclHrefJSON)          
+            
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = dacl_template.render(dacl = dacl,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Downloadable ACLs.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Downloadable ACLs Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Downloadable ACLs.json", "w") as fh:
+                    json.dump(dacl, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(dacl)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_endpoint(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+    
+        endpointAll = requests.request("GET", f"{ url }/ers/config/endpoint", headers=headers, auth=(username, password), verify=False)
+        endpointAllJSON = endpointAll.json()
+
+        # Pass to template 
+
+        if endpointAllJSON is not None:
+            endpoint_template = env.get_template('ISE_endpoints.j2')
+            loop_counter = 0
+            endpoint = []
+            for href in endpointAllJSON['SearchResult']['resources']:
+                endpointHref = requests.request("GET", href['link']['href'], headers=headers, auth=(username, password), verify=False)
+                endpointHrefJSON = endpointHref.json()
+                endpoint.append(endpointHrefJSON)          
+            
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = endpoint_template.render(endpoint = endpoint,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Endpoints.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Endpoints Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Endpoints.json", "w") as fh:
+                    json.dump(endpoint, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(endpoint)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_endpoint_groups(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+    
+        endpointGroupsAll = requests.request("GET", f"{ url }/ers/config/endpointgroup", headers=headers, auth=(username, password), verify=False)
+        endpointGroupsAllJSON = endpointGroupsAll.json()
+
+        # Pass to template 
+
+        if endpointGroupsAllJSON is not None:
+            endpointGroup_template = env.get_template('ISE_endpoint_groups.j2')
+            loop_counter = 0
+            endpointGroup = []
+            for href in endpointGroupsAllJSON['SearchResult']['resources']:
+                endpointGroupHref = requests.request("GET", href['link']['href'], headers=headers, auth=(username, password), verify=False)
+                endpointGroupHrefJSON = endpointGroupHref.json()
+                endpointGroup.append(endpointGroupHrefJSON)          
+            
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = endpointGroup_template.render(endpointGroup = endpointGroup,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Endpoint Groups.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Endpoint Groups Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Endpoint Groups.json", "w") as fh:
+                    json.dump(endpointGroup, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(endpointGroup)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_identity_groups(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+    
+        identityGroupsAll = requests.request("GET", f"{ url }/ers/config/identitygroup", headers=headers, auth=(username, password), verify=False)
+        identityGroupsAllJSON = identityGroupsAll.json()
+
+        # Pass to template 
+
+        if identityGroupsAllJSON is not None:
+            identityGroup_template = env.get_template('ISE_identity_groups.j2')
+            loop_counter = 0
+            identityGroup = []
+            for href in identityGroupsAllJSON['SearchResult']['resources']:
+                identityGroupHref = requests.request("GET", href['link']['href'], headers=headers, auth=(username, password), verify=False)
+                identityGroupHrefJSON = identityGroupHref.json()
+                identityGroup.append(identityGroupHrefJSON)          
+            
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = identityGroup_template.render(identityGroup = identityGroup,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Identity Groups.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Identity Groups Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Identity Groups.json", "w") as fh:
+                    json.dump(identityGroup, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(identityGroup)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_identity_store_sequence(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+    
+        idStoreSequenceAll = requests.request("GET", f"{ url }/ers/config/idstoresequence", headers=headers, auth=(username, password), verify=False)
+        idStoreSequenceAllJSON = idStoreSequenceAll.json()
+
+        # Pass to template 
+
+        if idStoreSequenceAllJSON is not None:
+            idStoreSequence_template = env.get_template('ISE_identity_store_sequence.j2')
+            loop_counter = 0
+            identityStoreSequence = []
+            for href in idStoreSequenceAllJSON['SearchResult']['resources']:
+                identityStoreHref = requests.request("GET", href['link']['href'], headers=headers, auth=(username, password), verify=False)
+                identityStoreHrefJSON = identityStoreHref.json()
+                identityStoreSequence.append(identityStoreHrefJSON)          
+            
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = idStoreSequence_template.render(identityStoreSequence = identityStoreSequence,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Identity Store Sequence.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Identity Store Sequence Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Identity Store Sequence.json", "w") as fh:
+                    json.dump(identityStoreSequence, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(identityStoreSequence)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_internal_users(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+    
+        internalUserAll = requests.request("GET", f"{ url }/ers/config/internaluser", headers=headers, auth=(username, password), verify=False)
+        internalUserAllJSON = internalUserAll.json()
+
+        # Pass to template 
+
+        if internalUserAllJSON is not None:
+            internalUser_template = env.get_template('ISE_internal_users.j2')
+            loop_counter = 0
+            internalUser = []
+            for href in internalUserAllJSON['SearchResult']['resources']:
+                internalUserHref = requests.request("GET", href['link']['href'], headers=headers, auth=(username, password), verify=False)
+                internalUserHrefJSON = internalUserHref.json()
+                internalUser.append(internalUserHrefJSON)          
+            
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = internalUser_template.render(internalUser = internalUser,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Internal Users.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Internal Users Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Internal Users.json", "w") as fh:
+                    json.dump(internalUser, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(internalUser)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_network_devices(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+    
+        networkDeviceAll = requests.request("GET", f"{ url }/ers/config/networkdevice", headers=headers, auth=(username, password), verify=False)
+        networkDeviceAllJSON = networkDeviceAll.json()
+
+        # Pass to template 
+
+        if networkDeviceAllJSON is not None:
+            networkDevices_template = env.get_template('ISE_network_devices.j2')
+            loop_counter = 0
+            networkDevice = []
+            for href in networkDeviceAllJSON['SearchResult']['resources']:
+                networkDeviceHref = requests.request("GET", href['link']['href'], headers=headers, auth=(username, password), verify=False)
+                networkDeviceHrefJSON = networkDeviceHref.json()
+                networkDevice.append(networkDeviceHrefJSON)          
+            
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = networkDevices_template.render(networkDevice = networkDevice,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Network Devices.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Network Devices Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Network Devices.json", "w") as fh:
+                    json.dump(networkDevice, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(networkDevice)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_network_device_groups(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+    
+        networkDeviceGroupAll = requests.request("GET", f"{ url }/ers/config/networkdevicegroup", headers=headers, auth=(username, password), verify=False)
+        networkDeviceGroupAllJSON = networkDeviceGroupAll.json()
+
+        # Pass to template 
+
+        if networkDeviceGroupAllJSON is not None:
+            networkDeviceGroups_template = env.get_template('ISE_network_device_groups.j2')
+            loop_counter = 0
+            networkDeviceGroup = []
+            for href in networkDeviceGroupAllJSON['SearchResult']['resources']:
+                networkDeviceGroupHref = requests.request("GET", href['link']['href'], headers=headers, auth=(username, password), verify=False)
+                networkDeviceGroupHrefJSON = networkDeviceGroupHref.json()
+                networkDeviceGroup.append(networkDeviceGroupHrefJSON)          
+            
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = networkDeviceGroups_template.render(networkDeviceGroup = networkDeviceGroup,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Network Device Groups.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Network Device Groups Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Network Device Groups.json", "w") as fh:
+                    json.dump(networkDeviceGroup, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(networkDeviceGroup)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_nodes(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+    
+        nodeAll = requests.request("GET", f"{ url }/ers/config/node", headers=headers, auth=(username, password), verify=False)
+        nodeAllJSON = nodeAll.json()
+
+        # Pass to template 
+
+        if nodeAllJSON is not None:
+            nodes_template = env.get_template('ISE_nodes.j2')
+            loop_counter = 0
+            node = []
+            for href in nodeAllJSON['SearchResult']['resources']:
+                nodeHref = requests.request("GET", href['link']['href'], headers=headers, auth=(username, password), verify=False)
+                nodeHrefJSON = nodeHref.json()
+                node.append(nodeHrefJSON)          
+            
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = nodes_template.render(node = node,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Nodes.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Nodes Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Nodes.json", "w") as fh:
+                    json.dump(node, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(node)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_portals(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+    
+        portalAll = requests.request("GET", f"{ url }/ers/config/portal", headers=headers, auth=(username, password), verify=False)
+        portalAllJSON = portalAll.json()
+
+        # Pass to template 
+
+        if portalAllJSON is not None:
+            portals_template = env.get_template('ISE_portals.j2')
+            loop_counter = 0
+            portal = []
+            for href in portalAllJSON['SearchResult']['resources']:
+                portalHref = requests.request("GET", href['link']['href'], headers=headers, auth=(username, password), verify=False)
+                portalHrefJSON = portalHref.json()
+                portal.append(portalHrefJSON)          
+            
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = portals_template.render(portal = portal,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Portals.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Portals Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Portals.json", "w") as fh:
+                    json.dump(portal, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(portal)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_profiler(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+    
+        profilerAll = requests.request("GET", f"{ url }/ers/config/profilerprofile", headers=headers, auth=(username, password), verify=False)
+        profilerAllJSON = profilerAll.json()
+
+        # Pass to template 
+
+        if profilerAllJSON is not None:
+            profiles_template = env.get_template('ISE_profiler.j2')
+            loop_counter = 0
+            profiler = []
+            for href in profilerAllJSON['SearchResult']['resources']:
+                profilerHref = requests.request("GET", href['link']['href'], headers=headers, auth=(username, password), verify=False)
+                profilerHrefJSON = profilerHref.json()
+                profiler.append(profilerHrefJSON)          
+            
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = profiles_template.render(profiler = profiler,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Profiler Profiles.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Profiler Profiles Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Profiler Profiles.json", "w") as fh:
+                    json.dump(profiler, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(profiler)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_deployment_info(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+    
+        deploymentInfo = requests.request("GET", f"{ url }/ers/config/deploymentinfo/getAllInfo", headers=headers, auth=(username, password), verify=False)
+        deploymentInfoJSON = deploymentInfo.json()
+
+        # Pass to template 
+
+        if deploymentInfoJSON is not None:
+            deployment_template = env.get_template('ISE_deployment_info.j2')
+            ise_cloud_info_template = env.get_template('ISE_deployment_cloud_info.j2')
+            kong_info_template = env.get_template('ISE_deployment_kong_info.j2')
+            license_info_template = env.get_template('ISE_deployment_license_info.j2')
+            mdm_info_template = env.get_template('ISE_deployment_mdm_info.j2')
+            nad_info_template = env.get_template('ISE_deployment_nad_info.j2')
+            network_access_info_template = env.get_template('ISE_deployment_network_access_info.j2')
+            posture_info_template = env.get_template('ISE_deployment_posture_info.j2')
+            profiler_info_template = env.get_template('ISE_deployment_profiler_info.j2')
+            loop_counter = 0      
+            
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = deployment_template.render(deploymentInfoJSON = deploymentInfoJSON['ERSDeploymentInfo']['deploymentInfo'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+        # -------------------------
+        # Save the files
+        # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Deployment Info.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Deployment Info Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Deployment Info.json", "w") as fh:
+                    json.dump(deploymentInfoJSON['ERSDeploymentInfo']['deploymentInfo'], fh, indent=4, sort_keys=True)
+                    fh.close()
+         
+            loop_counter = 0
+            for filetype in filetype_loop:
+                parsed_output = ise_cloud_info_template.render(deploymentInfoJSON = deploymentInfoJSON['ERSDeploymentInfo']['iseCloudInfo'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+        # -------------------------
+        # Save the files
+        # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Deployment ISE Cloud Info.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Deployment ISE Cloud Info Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Deployment ISE Cloud Info.json", "w") as fh:
+                    json.dump(deploymentInfoJSON['ERSDeploymentInfo']['iseCloudInfo'], fh, indent=4, sort_keys=True)
+                    fh.close()
+
+            loop_counter = 0
+            for filetype in filetype_loop:
+                parsed_output = kong_info_template.render(deploymentInfoJSON = deploymentInfoJSON['ERSDeploymentInfo']['kongInfo'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+        # -------------------------
+        # Save the files
+        # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Deployment Kong Info.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Deployment Kong Info Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Deployment Kong Info.json", "w") as fh:
+                    json.dump(deploymentInfoJSON['ERSDeploymentInfo']['kongInfo'], fh, indent=4, sort_keys=True)
+                    fh.close()
+
+            loop_counter = 0
+            for filetype in filetype_loop:
+                parsed_output = license_info_template.render(deploymentInfoJSON = deploymentInfoJSON['ERSDeploymentInfo']['licensesInfo'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+        # -------------------------
+        # Save the files
+        # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Deployment License Info.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Deployment License Info Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Deployment License Info.json", "w") as fh:
+                    json.dump(deploymentInfoJSON['ERSDeploymentInfo']['licensesInfo'], fh, indent=4, sort_keys=True)
+                    fh.close()
+
+            loop_counter = 0
+            for filetype in filetype_loop:
+                parsed_output = mdm_info_template.render(deploymentInfoJSON = deploymentInfoJSON['ERSDeploymentInfo']['mdmInfo'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+        # -------------------------
+        # Save the files
+        # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Deployment MDM Info.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Deployment MDM Info Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Deployment MDM Info.json", "w") as fh:
+                    json.dump(deploymentInfoJSON['ERSDeploymentInfo']['mdmInfo'], fh, indent=4, sort_keys=True)
+                    fh.close()
+
+            loop_counter = 0
+            for filetype in filetype_loop:
+                parsed_output = nad_info_template.render(deploymentInfoJSON = deploymentInfoJSON['ERSDeploymentInfo']['nadInfo'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+        # -------------------------
+        # Save the files
+        # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Deployment NAD Info.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Deployment NAD Info Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Deployment NAD Info.json", "w") as fh:
+                    json.dump(deploymentInfoJSON['ERSDeploymentInfo']['nadInfo'], fh, indent=4, sort_keys=True)
+                    fh.close()
+
+            loop_counter = 0
+            for filetype in filetype_loop:
+                parsed_output = network_access_info_template.render(deploymentInfoJSON = deploymentInfoJSON['ERSDeploymentInfo']['networkAccessInfo'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+        # -------------------------
+        # Save the files
+        # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Deployment Network Access Info.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Deployment Network Access Info Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Deployment Network Access Info.json", "w") as fh:
+                    json.dump(deploymentInfoJSON['ERSDeploymentInfo']['networkAccessInfo'], fh, indent=4, sort_keys=True)
+                    fh.close()
+
+            loop_counter = 0
+            for filetype in filetype_loop:
+                parsed_output = posture_info_template.render(deploymentInfoJSON = deploymentInfoJSON['ERSDeploymentInfo']['postureInfo'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+        # -------------------------
+        # Save the files
+        # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Deployment Posture Info.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Deployment Posture Info Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Deployment Posture Info.json", "w") as fh:
+                    json.dump(deploymentInfoJSON['ERSDeploymentInfo']['postureInfo'], fh, indent=4, sort_keys=True)
+                    fh.close()
+
+            loop_counter = 0
+            for filetype in filetype_loop:
+                parsed_output = profiler_info_template.render(deploymentInfoJSON = deploymentInfoJSON['ERSDeploymentInfo']['profilerInfo'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+        # -------------------------
+        # Save the files
+        # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Deployment Profiler Info.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Deployment Profiler Info Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Deployment Profiler Info.json", "w") as fh:
+                    json.dump(deploymentInfoJSON['ERSDeploymentInfo']['profilerInfo'], fh, indent=4, sort_keys=True)
+                    fh.close()
+
+        return(deploymentInfoJSON)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_sgt(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+    
+        sgtAll = requests.request("GET", f"{ url }/ers/config/sgt", headers=headers, auth=(username, password), verify=False)
+        sgtAllJSON = sgtAll.json()
+
+        # Pass to template 
+
+        if sgtAllJSON is not None:
+            sgt_template = env.get_template('ISE_sgt.j2')
+            loop_counter = 0
+            sgt = []
+            for href in sgtAllJSON['SearchResult']['resources']:
+                sgtHref = requests.request("GET", href['link']['href'], headers=headers, auth=(username, password), verify=False)
+                sgtHrefJSON = sgtHref.json()
+                sgt.append(sgtHrefJSON)          
+            
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = sgt_template.render(sgt = sgt,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Secure Group Tags.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Secure Group Tags Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Secure Group Tags.json", "w") as fh:
+                    json.dump(sgt, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(sgt)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_sgt_acl(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+    
+        sgtACLAll = requests.request("GET", f"{ url }/ers/config/sgacl", headers=headers, auth=(username, password), verify=False)
+        sgtACLAllJSON = sgtACLAll.json()
+
+        # Pass to template 
+
+        if sgtACLAllJSON is not None:
+            sgtACL_template = env.get_template('ISE_sgt_acls.j2')
+            loop_counter = 0
+            sgtacl = []
+            for href in sgtACLAllJSON['SearchResult']['resources']:
+                sgtACLHref = requests.request("GET", href['link']['href'], headers=headers, auth=(username, password), verify=False)
+                sgtACLHrefJSON = sgtACLHref.json()
+                sgtacl.append(sgtACLHrefJSON)          
+            
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = sgtACL_template.render(sgtacl = sgtacl,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Secure Group Tags Access Control Lists.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Secure Group Tags Access Control Lists Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Secure Group Tags Access Control Lists.json", "w") as fh:
+                    json.dump(sgtacl, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(sgtacl)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_self_registration_portal(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+    
+        selfRegPortalAll = requests.request("GET", f"{ url }/ers/config/selfregportal", headers=headers, auth=(username, password), verify=False)
+        selfRegPortalAllJSON = selfRegPortalAll.json()
+
+        # Pass to template 
+
+        if selfRegPortalAllJSON is not None:
+            self_reg_portal_template = env.get_template('ISE_self_registration_portal.j2')
+            loop_counter = 0
+            selfRegPortal = []
+            for href in selfRegPortalAllJSON['SearchResult']['resources']:
+                selfRegPortalHref = requests.request("GET", href['link']['href'], headers=headers, auth=(username, password), verify=False)
+                selfRegPortalHrefJSON = selfRegPortalHref.json()
+                selfRegPortal.append(selfRegPortalHrefJSON)          
+            
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = self_reg_portal_template.render(selfRegPortal = selfRegPortal,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Self Registration Portal.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Self Registration Portal Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Self Registration Portal.json", "w") as fh:
+                    json.dump(selfRegPortal, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(selfRegPortal)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_sponsor_groups(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+    
+        sponsorGroupAll = requests.request("GET", f"{ url }/ers/config/sponsorgroup", headers=headers, auth=(username, password), verify=False)
+        sponsorGroupAllJSON = sponsorGroupAll.json()
+
+        # Pass to template 
+
+        if sponsorGroupAllJSON is not None:
+            sponsorGroups_template = env.get_template('ISE_sponsor_groups.j2')
+            loop_counter = 0
+            sponsorGroup = []
+            for href in sponsorGroupAllJSON['SearchResult']['resources']:
+                sponsorGroupHref = requests.request("GET", href['link']['href'], headers=headers, auth=(username, password), verify=False)
+                sponsorGroupHrefJSON = sponsorGroupHref.json()
+                sponsorGroup.append(sponsorGroupHrefJSON)          
+            
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = sponsorGroups_template.render(sponsorGroup = sponsorGroup,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Sponsor Groups.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Sponsor Groups Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Sponsor Groups.json", "w") as fh:
+                    json.dump(sponsorGroup, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(sponsorGroup)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_sponsor_portal(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+    
+        sponsorPortalAll = requests.request("GET", f"{ url }/ers/config/sponsorportal", headers=headers, auth=(username, password), verify=False)
+        sponsorPortalAllJSON = sponsorPortalAll.json()
+
+        # Pass to template 
+
+        if sponsorPortalAllJSON is not None:
+            sponsor_portal_template = env.get_template('ISE_sponsor_portal.j2')
+            loop_counter = 0
+            sponsorPortal = []
+            for href in sponsorPortalAllJSON['SearchResult']['resources']:
+                sponsorPortalHref = requests.request("GET", href['link']['href'], headers=headers, auth=(username, password), verify=False)
+                sponsorPortalHrefJSON = sponsorPortalHref.json()
+                sponsorPortal.append(sponsorPortalHrefJSON)          
+            
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = sponsor_portal_template.render(sponsorPortal = sponsorPortal,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Sponsor Portal.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Sponsor Portal Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Sponsor Portal.json", "w") as fh:
+                    json.dump(sponsorPortal, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(sponsorPortal)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_sponsored_guest_portal(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+    
+        sponsorGuestPortalAll = requests.request("GET", f"{ url }/ers/config/sponsoredguestportal", headers=headers, auth=(username, password), verify=False)
+        sponsorGuestPortalAllJSON = sponsorGuestPortalAll.json()
+
+        # Pass to template 
+
+        if sponsorGuestPortalAllJSON is not None:
+            sponsor_guest_portal_template = env.get_template('ISE_sponsor_guest_portal.j2')
+            loop_counter = 0
+            sponsorGuestPortal = []
+            for href in sponsorGuestPortalAllJSON['SearchResult']['resources']:
+                sponsorGuestPortalHref = requests.request("GET", href['link']['href'], headers=headers, auth=(username, password), verify=False)
+                sponsorGuestPortalHrefJSON = sponsorGuestPortalHref.json()
+                sponsorGuestPortal.append(sponsorGuestPortalHrefJSON)          
+            
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = sponsor_guest_portal_template.render(sponsorGuestPortal = sponsorGuestPortal,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Sponsored Guest Portal.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Sponsored Guest Portal Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Sponsored Guest Portal.json", "w") as fh:
+                    json.dump(sponsorGuestPortal, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(sponsorGuestPortal)
+    except Exception as e:
+        logging.exception(e)
+
+# ----------------
+# ISE Open APIs
+# ----------------
+
+def ISE_last_backup(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+    
+        lastBackup = requests.request("GET", f"{ url }/api/v1/backup-restore/config/last-backup-status", headers=headers, auth=(username, password), verify=False)
+        lastBackupJSON = lastBackup.json()
+
+        # Pass to template 
+
+        if lastBackupJSON is not None:
+            last_backup_template = env.get_template('ISE_last_backup.j2')
+            loop_counter = 0          
+            
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = last_backup_template.render(lastBackup = lastBackupJSON['response'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Last Backup.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Last Backup Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Last Backup.json", "w") as fh:
+                    json.dump(lastBackupJSON['response'], fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(lastBackupJSON['response'])
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_csr(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+    
+        csrAll = requests.request("GET", f"{ url }/api/v1/certs/certificate-signing-request", headers=headers, auth=(username, password), verify=False)
+        csrAllJSON = csrAll.json()
+
+        # Pass to template 
+
+        if csrAllJSON is not None:
+            csr_template = env.get_template('ISE_csr.j2')
+            loop_counter = 0
+            csr = []
+            if csrAllJSON['nextPage'] is not None: 
+                for href in csrAllJSON:
+                    csrHref = requests.request("GET", href['nextPage']['href'], headers=headers, auth=(username, password), verify=False)
+                    csrHrefJSON = csrHref.json()
+                    csr.append(csrHrefJSON['response'])          
+            else:
+                csr.append(csrAllJSON['response'])
+        # Render Templates
+                for filetype in filetype_loop:
+                    parsed_output = csr_template.render(csr = csr,filetype_loop=loop_counter)
+                    loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                    if loop_counter <= 3:
+                        with open(f"ISE Certificate Signing Requests.{ filetype }", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()
+                    else:
+                        with open("ISE Certificate Signing Requests Mind Map.md", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()
+                    with open(f"ISE Certificate Signing Requests.json", "w") as fh:
+                        json.dump(csr, fh, indent=4, sort_keys=True)
+                        fh.close()                            
+        return(csr)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_system_certificates(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        nohttpurl = url.replace("https://","")
+        certsAll = requests.request("GET", f"{ url }/api/v1/certs/system-certificate/{ nohttpurl }", headers=headers, auth=(username, password), verify=False)
+        certsAllJSON = certsAll.json()
+
+        # Pass to template 
+
+        if certsAllJSON is not None:
+            certs_template = env.get_template('ISE_system_certificates.j2')
+            loop_counter = 0
+            certs = []
+            if certsAllJSON['nextPage'] is not None: 
+                for href in certsAllJSON:
+                    certsHref = requests.request("GET", href['nextPage']['href'], headers=headers, auth=(username, password), verify=False)
+                    certsHrefJSON = certsHref.json()
+                    certs.append(certsHrefJSON['response'])          
+            else:
+                certs.append(certsAllJSON['response'])
+        # Render Templates
+                for filetype in filetype_loop:
+                    parsed_output = certs_template.render(certs = certs,filetype_loop=loop_counter)
+                    loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                    if loop_counter <= 3:
+                        with open(f"ISE System Certificates.{ filetype }", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()
+                    else:
+                        with open("ISE System Certificates Mind Map.md", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()
+                    with open(f"ISE System Certificates.json", "w") as fh:
+                        json.dump(certs, fh, indent=4, sort_keys=True)
+                        fh.close()                            
+        return(certs)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_trusted_certificates(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        trustedcertsAll = requests.request("GET", f"{ url }/api/v1/certs/trusted-certificate", headers=headers, auth=(username, password), verify=False)
+        trustedcertsAllJSON = trustedcertsAll.json()
+
+        # Pass to template 
+
+        if trustedcertsAllJSON is not None:
+            trusted_certs_template = env.get_template('ISE_trusted_certificates.j2')
+            loop_counter = 0
+            trustedcerts = []
+            if trustedcertsAllJSON['nextPage'] is not None: 
+                for href in certsAllJSON:
+                    trustedcertsHref = requests.request("GET", href['nextPage']['href'], headers=headers, auth=(username, password), verify=False)
+                    trustedcertsHrefJSON = trustedcertsHref.json()
+                    trustedcerts.append(trustedcertsHrefJSON['response'])          
+            else:
+                trustedcerts.append(trustedcertsAllJSON['response'])
+        # Render Templates
+                for filetype in filetype_loop:
+                    parsed_output = trusted_certs_template.render(trustedcerts = trustedcerts,filetype_loop=loop_counter)
+                    loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                    if loop_counter <= 3:
+                        with open(f"ISE Trusted Certificates.{ filetype }", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()
+                    else:
+                        with open("ISE Trusted Certificates Mind Map.md", "w") as fh:
+                            fh.write(parsed_output)               
+                            fh.close()
+                    with open(f"ISE Trusted Certificates.json", "w") as fh:
+                        json.dump(trustedcerts, fh, indent=4, sort_keys=True)
+                        fh.close()                            
+        return(trustedcerts)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_deployment_node(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        deploymentNodeAll = requests.request("GET", f"{ url }/api/v1/deployment/node", headers=headers, auth=(username, password), verify=False)
+        deploymentNodeAllJSON = deploymentNodeAll.json()
+
+        # Pass to template 
+
+        if deploymentNodeAllJSON is not None:
+            deployment_node_template = env.get_template('ISE_deployment_node.j2')
+            loop_counter = 0
+
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = deployment_node_template.render(nodes = deploymentNodeAllJSON['response'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Deployment Node.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Deployment Node Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Deployment Node.json", "w") as fh:
+                    json.dump(deploymentNodeAllJSON['response'], fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(deploymentNodeAllJSON['response'])
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_pan_ha(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        panHA = requests.request("GET", f"{ url }/api/v1/deployment/pan-ha", headers=headers, auth=(username, password), verify=False)
+        panHAJSON = panHA.json()
+
+        # Pass to template 
+
+        if panHAJSON is not None:
+            panha_template = env.get_template('ISE_pan_ha.j2')
+            loop_counter = 0
+
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = panha_template.render(panha = panHAJSON['response'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE PAN High Availability.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE PAN High Availability Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE PAN High Availability.json", "w") as fh:
+                    json.dump(panHAJSON['response'], fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(panHAJSON['response'])
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_node_interfaces(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        nohttpurl = url.replace("https://","")
+        nodeInterfaces = requests.request("GET", f"{ url }/api/v1/node/{ nohttpurl }/interface", headers=headers, auth=(username, password), verify=False)
+        nodeInterfacesJSON = nodeInterfaces.json()
+
+        # Pass to template 
+
+        if nodeInterfacesJSON is not None:
+            nodeInterface_template = env.get_template('ISE_node_interfaces.j2')
+            loop_counter = 0
+
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = nodeInterface_template.render(nodeInterfaces = nodeInterfacesJSON['response'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Node Interfaces.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Node Interfaces Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Node Interfaces.json", "w") as fh:
+                    json.dump(nodeInterfacesJSON['response'], fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(nodeInterfacesJSON['response'])
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_node_profile(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        nohttpurl = url.replace("https://","")
+        nodeProfile = requests.request("GET", f"{ url }/api/v1/profile/{ nohttpurl }", headers=headers, auth=(username, password), verify=False)
+        nodeProfileJSON = nodeProfile.json()
+
+        # Pass to template 
+
+        if nodeProfileJSON is not None:
+            nodeProfile_template = env.get_template('ISE_node_profile.j2')
+            loop_counter = 0
+
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = nodeProfile_template.render(nodeProfile = nodeProfileJSON['response'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Node Profile.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Node Profile Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Node Profile.json", "w") as fh:
+                    json.dump(nodeProfileJSON['response'], fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(nodeProfileJSON['response'])
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_license_connection_type(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        licenseCon = requests.request("GET", f"{ url }/api/v1/license/system/connection-type", headers=headers, auth=(username, password), verify=False)
+        licenseConJSON = licenseCon.json()
+
+        # Pass to template 
+
+        if licenseConJSON is not None:
+            licenseCon_template = env.get_template('ISE_license_connection_type.j2')
+            loop_counter = 0
+
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = licenseCon_template.render(licenseCon = licenseConJSON,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE License Connection Type.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE License Connection Type Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE License Connection Type.json", "w") as fh:
+                    json.dump(licenseConJSON, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(licenseConJSON)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_eval_license(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        evalLic = requests.request("GET", f"{ url }/api/v1/license/system/eval-license", headers=headers, auth=(username, password), verify=False)
+        evalLicJSON = evalLic.json()
+
+        # Pass to template 
+
+        if evalLicJSON is not None:
+            evalLic_template = env.get_template('ISE_eval_license.j2')
+            loop_counter = 0
+
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = evalLic_template.render(evalLic = evalLicJSON,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Evaluation License.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Evaluation License Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Evaluation License Type.json", "w") as fh:
+                    json.dump(evalLicJSON, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(evalLicJSON)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_license_feature_map(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        licFeature = requests.request("GET", f"{ url }/api/v1/license/system/feature-to-tier-mapping", headers=headers, auth=(username, password), verify=False)
+        licFeatureJSON = licFeature.json()
+
+        # Pass to template 
+
+        if licFeatureJSON is not None:
+            licFeature_template = env.get_template('ISE_license_feature.j2')
+            loop_counter = 0
+
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = licFeature_template.render(licFeature = licFeatureJSON,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE License Tier Feature Mapping.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE License Tier Feature Mapping Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE License Tier Feature Mapping Type.json", "w") as fh:
+                    json.dump(licFeatureJSON, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(licFeatureJSON)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_license_register(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        licRegister = requests.request("GET", f"{ url }/api/v1/license/system/register", headers=headers, auth=(username, password), verify=False)
+        licRegisterJSON = licRegister.json()
+
+        # Pass to template 
+
+        if licRegisterJSON is not None:
+            licRegister_template = env.get_template('ISE_license_register.j2')
+            loop_counter = 0
+
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = licRegister_template.render(licRegister = licRegisterJSON['response'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE License Register.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE License Register Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE License Register.json", "w") as fh:
+                    json.dump(licRegisterJSON['response'], fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(licRegisterJSON['response'])
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_license_smart_state(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        licSmart = requests.request("GET", f"{ url }/api/v1/license/system/smart-state", headers=headers, auth=(username, password), verify=False)
+        licSmartJSON = licSmart.json()
+
+        # Pass to template 
+
+        if licSmartJSON is not None:
+            licSmart_template = env.get_template('ISE_license_smart_state.j2')
+            loop_counter = 0
+
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = licSmart_template.render(licSmart = licSmartJSON['response'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE License Smart State.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE License Smart State Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE License Smart State.json", "w") as fh:
+                    json.dump(licSmartJSON['response'], fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(licSmartJSON['response'])
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_license_tier_state(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        licTier = requests.request("GET", f"{ url }/api/v1/license/system/tier-state", headers=headers, auth=(username, password), verify=False)
+        licTierJSON = licTier.json()
+
+        # Pass to template 
+
+        if licTierJSON is not None:
+            licTier_template = env.get_template('ISE_license_tier_state.j2')
+            loop_counter = 0
+
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = licTier_template.render(licTier = licTierJSON,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE License Tier State.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE License Tier State Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE License Tier State.json", "w") as fh:
+                    json.dump(licTierJSON, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(licTierJSON)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_patch(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        patch = requests.request("GET", f"{ url }/api/v1/patch", headers=headers, auth=(username, password), verify=False)
+        patchJSON = patch.json()
+
+        # Pass to template 
+
+        if patchJSON is not None:
+            patch_template = env.get_template('ISE_patch.j2')
+            loop_counter = 0
+
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = patch_template.render(patch = patchJSON,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Patches.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Patches Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Patches.json", "w") as fh:
+                    json.dump(patchJSON, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(patchJSON)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_hot_patch(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        hotPatch = requests.request("GET", f"{ url }/api/v1/hotpatch", headers=headers, auth=(username, password), verify=False)
+        hotPatchJSON = hotPatch.json()
+
+        # Pass to template 
+
+        if hotPatchJSON is not None:
+            hotPatch_template = env.get_template('ISE_hot_patch.j2')
+            loop_counter = 0
+
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = hotPatch_template.render(hotPatch = hotPatchJSON['response'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Hot Patches.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Hot Patches Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Hot Patches.json", "w") as fh:
+                    json.dump(hotPatchJSON['response'], fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(hotPatchJSON['response'])
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_repository(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        repository = requests.request("GET", f"{ url }/api/v1/repository", headers=headers, auth=(username, password), verify=False)
+        repositoryJSON = repository.json()
+
+        # Pass to template 
+
+        if repositoryJSON is not None:
+            repository_template = env.get_template('ISE_repository.j2')
+            loop_counter = 0
+
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = repository_template.render(repository = repositoryJSON['response'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Repositories.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Repositories Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Repositories.json", "w") as fh:
+                    json.dump(repositoryJSON['response'], fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(repositoryJSON['response'])
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_proxy(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        proxy = requests.request("GET", f"{ url }/api/v1/system-settings/proxy", headers=headers, auth=(username, password), verify=False)
+        proxyJSON = proxy.json()
+
+        # Pass to template 
+
+        if proxyJSON is not None:
+            proxy_template = env.get_template('ISE_proxy.j2')
+            loop_counter = 0
+
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = proxy_template.render(proxy = proxyJSON['response'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Proxy.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Proxy Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Proxy.json", "w") as fh:
+                    json.dump(proxyJSON['response'], fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(proxyJSON['response'])
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_transport_gateway(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        transportGateway = requests.request("GET", f"{ url }/api/v1/system-settings/telemetry/transport-gateway", headers=headers, auth=(username, password), verify=False)
+        transportGatewayJSON = transportGateway.json()
+
+        # Pass to template 
+
+        if transportGatewayJSON is not None:
+            transportGateway_template = env.get_template('ISE_transport_gateway.j2')
+            loop_counter = 0
+
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = transportGateway_template.render(transportGateway = transportGatewayJSON['response'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Proxy.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Proxy Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Proxy.json", "w") as fh:
+                    json.dump(transportGatewayJSON['response'], fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(transportGatewayJSON['response'])
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_nbar_app(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        nbarApp = requests.request("GET", f"{ url }/api/v1/trustsec/sgacl/nbarapp/", headers=headers, auth=(username, password), verify=False)
+        nbarAppJSON = nbarApp.json()
+
+        # Pass to template 
+
+        if nbarAppJSON is not None:
+            nbarApp_template = env.get_template('ISE_nbar_apps.j2')
+            loop_counter = 0
+
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = nbarApp_template.render(nbarApp = nbarAppJSON['response'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE NBAR Applications.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE NBAR Applications Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE NBAR Applications.json", "w") as fh:
+                    json.dump(nbarAppJSON['response'], fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(nbarAppJSON['response'])
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_command_set(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        commandSet = requests.request("GET", f"{ url }/api/v1/policy/device-admin/command-sets", headers=headers, auth=(username, password), verify=False)
+        commandSetJSON = commandSet.json()
+
+        # Pass to template 
+
+        if commandSetJSON is not None:
+            commandSet_template = env.get_template('ISE_command_set.j2')
+            loop_counter = 0
+
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = commandSet_template.render(commandSet = commandSetJSON,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Command Set.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Command Set Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Command Set.json", "w") as fh:
+                    json.dump(commandSetJSON, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(commandSetJSON)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_condition(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        condition = requests.request("GET", f"{ url }/api/v1/policy/device-admin/condition", headers=headers, auth=(username, password), verify=False)
+        conditionJSON = condition.json()
+
+        # Pass to template 
+
+        if conditionJSON is not None:
+            condition_template = env.get_template('ISE_condition.j2')
+            loop_counter = 0
+
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = condition_template.render(condition = conditionJSON['response'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Conditions.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Conditions Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Conditions.json", "w") as fh:
+                    json.dump(conditionJSON['response'], fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(conditionJSON['response'])
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_authentication_dictionary(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        authDictionary = requests.request("GET", f"{ url }/api/v1/policy/device-admin/dictionaries/authentication", headers=headers, auth=(username, password), verify=False)
+        authDictionaryJSON = authDictionary.json()
+
+        # Pass to template 
+
+        if authDictionaryJSON is not None:
+            authDictionary_template = env.get_template('ISE_authentication_dictionary.j2')
+            loop_counter = 0
+
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = authDictionary_template.render(authDictionary = authDictionaryJSON['response'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Dictionary Authentication.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Dictionary Authentication Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Dictionary Authentication.json", "w") as fh:
+                    json.dump(authDictionaryJSON['response'], fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(authDictionaryJSON['response'])
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_authorization_dictionary(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        authDictionary = requests.request("GET", f"{ url }/api/v1/policy/device-admin/dictionaries/authorization", headers=headers, auth=(username, password), verify=False)
+        authDictionaryJSON = authDictionary.json()
+
+        # Pass to template 
+
+        if authDictionaryJSON is not None:
+            authDictionary_template = env.get_template('ISE_authorization_dictionary.j2')
+            loop_counter = 0
+
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = authDictionary_template.render(authDictionary = authDictionaryJSON['response'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Dictionary Authorization.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Dictionary Authorization Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Dictionary Authorization.json", "w") as fh:
+                    json.dump(authDictionaryJSON['response'], fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(authDictionaryJSON['response'])
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_policy_set_dictionary(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        authDictionary = requests.request("GET", f"{ url }/api/v1/policy/device-admin/dictionaries/policyset", headers=headers, auth=(username, password), verify=False)
+        authDictionaryJSON = authDictionary.json()
+
+        # Pass to template 
+
+        if authDictionaryJSON is not None:
+            authDictionary_template = env.get_template('ISE_policy_set_dictionary.j2')
+            loop_counter = 0
+
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = authDictionary_template.render(authDictionary = authDictionaryJSON['response'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Dictionary Policy Set.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Dictionary Policy Set Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Dictionary Policy Set.json", "w") as fh:
+                    json.dump(authDictionaryJSON['response'], fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(authDictionaryJSON['response'])
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_identity_stores(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        identityStores = requests.request("GET", f"{ url }/api/v1/policy/device-admin/identity-stores", headers=headers, auth=(username, password), verify=False)
+        identityStoresJSON = identityStores.json()
+
+        # Pass to template 
+
+        if identityStoresJSON is not None:
+            identityStores_template = env.get_template('ISE_identity_stores.j2')
+            loop_counter = 0
+
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = identityStores_template.render(identityStores = identityStoresJSON,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Identity Stores.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Identity Stores Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Identity Stores.json", "w") as fh:
+                    json.dump(identityStoresJSON, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(identityStoresJSON)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_policy_sets(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        policySets = requests.request("GET", f"{ url }/api/v1/policy/device-admin/policy-set", headers=headers, auth=(username, password), verify=False)
+        policySetsJSON = policySets.json()
+
+        # Pass to template 
+
+        if policySetsJSON is not None:
+            policySets_template = env.get_template('ISE_policy_sets.j2')
+            loop_counter = 0
+
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = policySets_template.render(policySets = policySetsJSON['response'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Policy Sets.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Policy Sets Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Policy Sets.json", "w") as fh:
+                    json.dump(policySetsJSON['response'], fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(policySetsJSON['response'])
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_authentication_policy_sets(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        policySets = requests.request("GET", f"{ url }/api/v1/policy/device-admin/policy-set", headers=headers, auth=(username, password), verify=False)
+        policySetsJSON = policySets.json()
+
+        # Pass to template 
+
+        if policySetsJSON is not None:
+            for policy in policySetsJSON['response']:
+                policy = requests.request("GET", f"{ url }/api/v1/policy/device-admin/policy-set/{ policy['id']}/authentication", headers=headers, auth=(username, password), verify=False)
+                policyJSON = policy.json()                
+
+                if policySetsJSON is not None:
+                    policy_template = env.get_template('ISE_authentication_policy_set.j2')
+                    loop_counter = 0
+
+        # Render Templates
+                    for filetype in filetype_loop:
+                        parsed_output = policy_template.render(policy = policyJSON['response'],filetype_loop=loop_counter)
+                        loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                        if loop_counter <= 3:
+                            with open(f"ISE Authentication Policy Sets.{ filetype }", "w") as fh:
+                                fh.write(parsed_output)               
+                                fh.close()
+                        else:
+                            with open("ISE Authentication Policy Sets Mind Map.md", "w") as fh:
+                                fh.write(parsed_output)               
+                                fh.close()
+                        with open(f"ISE Authentication Policy Sets.json", "w") as fh:
+                            json.dump(policyJSON['response'], fh, indent=4, sort_keys=True)
+                            fh.close()                            
+        return(policyJSON['response'])
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_authorization_policy_sets(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        policySets = requests.request("GET", f"{ url }/api/v1/policy/device-admin/policy-set", headers=headers, auth=(username, password), verify=False)
+        policySetsJSON = policySets.json()
+
+        # Pass to template 
+
+        if policySetsJSON is not None:
+            for policy in policySetsJSON['response']:
+                policy = requests.request("GET", f"{ url }/api/v1/policy/device-admin/policy-set/{ policy['id']}/authorization", headers=headers, auth=(username, password), verify=False)
+                policyJSON = policy.json()                
+
+                if policySetsJSON is not None:
+                    policy_template = env.get_template('ISE_authorization_policy_set.j2')
+                    loop_counter = 0
+
+        # Render Templates
+                    for filetype in filetype_loop:
+                        parsed_output = policy_template.render(policy = policyJSON['response'],filetype_loop=loop_counter)
+                        loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                        if loop_counter <= 3:
+                            with open(f"ISE Authorization Policy Sets.{ filetype }", "w") as fh:
+                                fh.write(parsed_output)               
+                                fh.close()
+                        else:
+                            with open("ISE Authorization Policy Sets Mind Map.md", "w") as fh:
+                                fh.write(parsed_output)               
+                                fh.close()
+                        with open(f"ISE Authorization Policy Sets.json", "w") as fh:
+                            json.dump(policyJSON['response'], fh, indent=4, sort_keys=True)
+                            fh.close()                            
+        return(policyJSON['response'])
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_service_names(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        serviceNames = requests.request("GET", f"{ url }/api/v1/policy/device-admin/service-names", headers=headers, auth=(username, password), verify=False)
+        serviceNamesJSON = serviceNames.json()
+
+        # Pass to template 
+
+        if serviceNamesJSON is not None:
+            serviceNames_template = env.get_template('ISE_service_names.j2')
+            loop_counter = 0
+
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = serviceNames_template.render(serviceNames = serviceNamesJSON,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Service Names.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Service Names Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Service Names.json", "w") as fh:
+                    json.dump(serviceNamesJSON, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(serviceNamesJSON)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_shell_profiles(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        shellProfiles = requests.request("GET", f"{ url }/api/v1/policy/device-admin/shell-profiles", headers=headers, auth=(username, password), verify=False)
+        shellProfilesJSON = shellProfiles.json()
+
+        # Pass to template 
+
+        if shellProfilesJSON is not None:
+            shellProfiles_template = env.get_template('ISE_shell_profiles.j2')
+            loop_counter = 0
+
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = shellProfiles_template.render(shellProfiles = shellProfilesJSON,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Shell Profiles.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Shell Profiles Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Shell Profiles.json", "w") as fh:
+                    json.dump(shellProfilesJSON, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(shellProfilesJSON)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_network_authorization_profiles(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        authProfiles = requests.request("GET", f"{ url }/api/v1/policy/network-access/authorization-profiles", headers=headers, auth=(username, password), verify=False)
+        authProfilesJSON = authProfiles.json()
+
+        # Pass to template 
+
+        if authProfilesJSON is not None:
+            authProfiles_template = env.get_template('ISE_network_authorization_profiles.j2')
+            loop_counter = 0
+
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = authProfiles_template.render(authProfiles = authProfilesJSON,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Network Authorization Profiles.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Network Authorization Profiles Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Network Authorization Profiles.json", "w") as fh:
+                    json.dump(authProfilesJSON, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(authProfilesJSON)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_network_access_condition(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        networkCondition = requests.request("GET", f"{ url }/api/v1/policy/network-access/condition", headers=headers, auth=(username, password), verify=False)
+        networkConditionJSON = networkCondition.json()
+
+        # Pass to template 
+
+        if networkConditionJSON is not None:
+            networkCondition_template = env.get_template('ISE_network_condition.j2')
+            loop_counter = 0
+
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = networkCondition_template.render(networkCondition = networkConditionJSON['response'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Network Access Conditions.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Network Access Conditions Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Network Access Conditions.json", "w") as fh:
+                    json.dump(networkConditionJSON['response'], fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(networkConditionJSON['response'])
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_network_access_condition_authentication(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        networkCondition = requests.request("GET", f"{ url }/api/v1/policy/network-access/condition/authentication", headers=headers, auth=(username, password), verify=False)
+        networkConditionJSON = networkCondition.json()
+
+        # Pass to template 
+
+        if networkConditionJSON is not None:
+            networkCondition_template = env.get_template('ISE_network_condition.j2')
+            loop_counter = 0
+
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = networkCondition_template.render(networkCondition = networkConditionJSON['response'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Network Access Conditions Authentication.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Network Access Conditions Authentication Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Network Access Conditions Authentication.json", "w") as fh:
+                    json.dump(networkConditionJSON['response'], fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(networkConditionJSON['response'])
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_network_access_condition_authorization(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        networkCondition = requests.request("GET", f"{ url }/api/v1/policy/network-access/condition/authorization", headers=headers, auth=(username, password), verify=False)
+        networkConditionJSON = networkCondition.json()
+
+        # Pass to template 
+
+        if networkConditionJSON is not None:
+            networkCondition_template = env.get_template('ISE_network_condition.j2')
+            loop_counter = 0
+
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = networkCondition_template.render(networkCondition = networkConditionJSON['response'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Network Access Conditions Authorization.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Network Access Conditions Authorization Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Network Access Conditions Authorization.json", "w") as fh:
+                    json.dump(networkConditionJSON['response'], fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(networkConditionJSON['response'])
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_network_access_condition_policy_set(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        networkCondition = requests.request("GET", f"{ url }/api/v1/policy/network-access/condition/policyset", headers=headers, auth=(username, password), verify=False)
+        networkConditionJSON = networkCondition.json()
+
+        # Pass to template 
+
+        if networkConditionJSON is not None:
+            networkCondition_template = env.get_template('ISE_network_condition.j2')
+            loop_counter = 0
+
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = networkCondition_template.render(networkCondition = networkConditionJSON['response'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Network Access Conditions Policy Set.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Network Access Conditions Policy Set Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Network Access Conditions Policy Set.json", "w") as fh:
+                    json.dump(networkConditionJSON['response'], fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(networkConditionJSON['response'])
+    except Exception as e:
+        logging.exception(e)                
+
+def ISE_network_access_dictionaries(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        networkDictionaries = requests.request("GET", f"{ url }/api/v1/policy/network-access/dictionaries", headers=headers, auth=(username, password), verify=False)
+        networkDictionariesJSON = networkDictionaries.json()
+
+        # Pass to template 
+
+        if networkDictionariesJSON is not None:
+            networkDictionaries_template = env.get_template('ISE_network_dictionaries.j2')
+            loop_counter = 0
+
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = networkDictionaries_template.render(networkDictionaries = networkDictionariesJSON['response'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Network Access Dictionaries.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Network Access Dictionaries Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Network Access Dictionaries.json", "w") as fh:
+                    json.dump(networkDictionariesJSON['response'], fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(networkDictionariesJSON['response'])
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_network_access_dictionaries_authentication(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        networkDictionariesAuthentication = requests.request("GET", f"{ url }/api/v1/policy/network-access/dictionaries/authentication", headers=headers, auth=(username, password), verify=False)
+        networkDictionariesAuthenticationJSON = networkDictionariesAuthentication.json()
+
+        # Pass to template 
+
+        if networkDictionariesAuthenticationJSON is not None:
+            networkDictionariesAuthentication_template = env.get_template('ISE_network_dictionaries_authentication.j2')
+            loop_counter = 0
+
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = networkDictionariesAuthentication_template.render(networkDictionaries = networkDictionariesAuthenticationJSON['response'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Network Access Dictionaries Authentication.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Network Access Dictionaries Authentication Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Network Access Dictionaries Authentication.json", "w") as fh:
+                    json.dump(networkDictionariesAuthenticationJSON['response'], fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(networkDictionariesAuthenticationJSON['response'])
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_network_access_dictionaries_authorization(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        networkDictionariesAuthorization = requests.request("GET", f"{ url }/api/v1/policy/network-access/dictionaries/authorization", headers=headers, auth=(username, password), verify=False)
+        networkDictionariesAuthorizationJSON = networkDictionariesAuthorization.json()
+
+        # Pass to template 
+
+        if networkDictionariesAuthorizationJSON is not None:
+            networkDictionariesAuthorization_template = env.get_template('ISE_network_dictionaries_authentication.j2')
+            loop_counter = 0
+
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = networkDictionariesAuthorization_template.render(networkDictionaries = networkDictionariesAuthorizationJSON['response'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Network Access Dictionaries Authorization.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Network Access Dictionaries Authorization Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Network Access Dictionaries Authorization.json", "w") as fh:
+                    json.dump(networkDictionariesAuthorizationJSON['response'], fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(networkDictionariesAuthorizationJSON['response'])
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_network_access_dictionaries_policy_set(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        networkDictionariesPolicy = requests.request("GET", f"{ url }/api/v1/policy/network-access/dictionaries/policyset", headers=headers, auth=(username, password), verify=False)
+        networkDictionariesPolicyJSON = networkDictionariesPolicy.json()
+
+        # Pass to template 
+
+        if networkDictionariesPolicyJSON is not None:
+            networkDictionariesPolicy_template = env.get_template('ISE_network_dictionaries_authentication.j2')
+            loop_counter = 0
+
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = networkDictionariesPolicy_template.render(networkDictionaries = networkDictionariesPolicyJSON['response'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Network Access Dictionaries Policy Set.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Network Access Dictionaries Policy Set Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Network Access Dictionaries Policy Set.json", "w") as fh:
+                    json.dump(networkDictionariesPolicyJSON['response'], fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(networkDictionariesPolicyJSON['response'])
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_network_access_identity_stores(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        networkIdentity = requests.request("GET", f"{ url }/api/v1/policy/network-access/identity-stores", headers=headers, auth=(username, password), verify=False)
+        networkIdentityJSON = networkIdentity.json()
+
+        # Pass to template 
+
+        if networkIdentityJSON is not None:
+            networkIdentity_template = env.get_template('ISE_network_identity_stores.j2')
+            loop_counter = 0
+
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = networkIdentity_template.render(networkIdentity = networkIdentityJSON,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Network Access Identity Stores.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Network Access Identity Stores Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Network Access Identity Stores.json", "w") as fh:
+                    json.dump(networkIdentityJSON, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(networkIdentityJSON)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_network_access_policy_set(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        networkAccessPolicySet = requests.request("GET", f"{ url }/api/v1/policy/network-access/policy-set", headers=headers, auth=(username, password), verify=False)
+        networkAccessPolicySetJSON = networkAccessPolicySet.json()
+
+        # Pass to template 
+
+        if networkAccessPolicySetJSON is not None:
+            networkAccessPolicySet_template = env.get_template('ISE_network_access_policy_set.j2')
+            loop_counter = 0
+
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = networkAccessPolicySet_template.render(networkAccessPolicySet = networkAccessPolicySetJSON['response'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Network Access Policy Sets.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Network Access Policy Sets Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Network Access Policy Sets.json", "w") as fh:
+                    json.dump(networkAccessPolicySetJSON['response'], fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(networkAccessPolicySetJSON['response'])
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_network_access_policy_authentication(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        networkAccessPolicySet = requests.request("GET", f"{ url }/api/v1/policy/network-access/policy-set", headers=headers, auth=(username, password), verify=False)
+        networkAccessPolicySetJSON = networkAccessPolicySet.json()
+
+        # Pass to template 
+
+        if networkAccessPolicySetJSON is not None:
+            for policy in networkAccessPolicySetJSON['response']:
+                authPolicy = requests.request("GET", f"{ url }/api/v1/policy/network-access/policy-set/{ policy['id'] }/authentication", headers=headers, auth=(username, password), verify=False)
+                authPolicyJSON = authPolicy.json()
+
+                if authPolicyJSON is not None:
+                    networkAccessPolicySet_template = env.get_template('ISE_network_access_policy_authentication.j2')
+                    loop_counter = 0
+
+        # Render Templates
+                    for filetype in filetype_loop:
+                        parsed_output = networkAccessPolicySet_template.render(networkAccessPolicySet = authPolicyJSON['response'],filetype_loop=loop_counter)
+                        loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                        if loop_counter <= 3:
+                            with open(f"ISE Network Access Policy Set Authentication.{ filetype }", "w") as fh:
+                                fh.write(parsed_output)               
+                                fh.close()
+                        else:
+                            with open("ISE Network Access Policy Set Authentication Mind Map.md", "w") as fh:
+                                fh.write(parsed_output)               
+                                fh.close()
+                        with open(f"ISE Network Access Policy Set Authentication.json", "w") as fh:
+                            json.dump(authPolicyJSON['response'], fh, indent=4, sort_keys=True)
+                            fh.close()                            
+        return(authPolicyJSON['response'])
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_network_access_policy_authorization(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        networkAccessPolicySet = requests.request("GET", f"{ url }/api/v1/policy/network-access/policy-set", headers=headers, auth=(username, password), verify=False)
+        networkAccessPolicySetJSON = networkAccessPolicySet.json()
+
+        # Pass to template 
+
+        if networkAccessPolicySetJSON is not None:
+            for policy in networkAccessPolicySetJSON['response']:
+                authPolicy = requests.request("GET", f"{ url }/api/v1/policy/network-access/policy-set/{ policy['id'] }/authorization", headers=headers, auth=(username, password), verify=False)
+                authPolicyJSON = authPolicy.json()
+
+                if authPolicyJSON is not None:
+                    networkAccessPolicySet_template = env.get_template('ISE_network_access_policy_authorization.j2')
+                    loop_counter = 0
+
+        # Render Templates
+                    for filetype in filetype_loop:
+                        parsed_output = networkAccessPolicySet_template.render(networkAccessPolicySet = authPolicyJSON['response'],filetype_loop=loop_counter)
+                        loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                        if loop_counter <= 3:
+                            with open(f"ISE Network Access Policy Set Authorization.{ filetype }", "w") as fh:
+                                fh.write(parsed_output)               
+                                fh.close()
+                        else:
+                            with open("ISE Network Access Policy Set Authorization Mind Map.md", "w") as fh:
+                                fh.write(parsed_output)               
+                                fh.close()
+                        with open(f"ISE Network Access Policy Set Authorization.json", "w") as fh:
+                            json.dump(authPolicyJSON['response'], fh, indent=4, sort_keys=True)
+                            fh.close()                            
+        return(authPolicyJSON['response'])
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_network_access_security_groups(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        networkAccessSecurityGroup = requests.request("GET", f"{ url }/api/v1/policy/network-access/security-groups", headers=headers, auth=(username, password), verify=False)
+        networkAccessSecurityGroupJSON = networkAccessSecurityGroup.json()
+
+        # Pass to template 
+
+        if networkAccessSecurityGroupJSON is not None:
+            networkAccessSecurityGroup_template = env.get_template('ISE_network_access_security_groups.j2')
+            loop_counter = 0
+
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = networkAccessSecurityGroup_template.render(networkAccessSecurityGroup = networkAccessSecurityGroupJSON,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Network Access Security Groups.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Network Access Security Groups Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Network Access Security Groups.json", "w") as fh:
+                    json.dump(networkAccessSecurityGroupJSON, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(networkAccessSecurityGroupJSON)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_network_access_service_names(url, username, password):
+    try:
+
+        headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        networkAccessServiceNames = requests.request("GET", f"{ url }/api/v1/policy/network-access/service-names", headers=headers, auth=(username, password), verify=False)
+        networkAccessServiceNamesJSON = networkAccessServiceNames.json()
+
+        # Pass to template 
+
+        if networkAccessServiceNamesJSON is not None:
+            networkAccessServiceNames_template = env.get_template('ISE_network_access_service_names.j2')
+            loop_counter = 0
+
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = networkAccessServiceNames_template.render(networkAccessServiceNames = networkAccessServiceNamesJSON,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Network Access Security Groups.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Network Access Security Groups Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Network Access Security Groups.json", "w") as fh:
+                    json.dump(networkAccessServiceNamesJSON, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(networkAccessServiceNamesJSON)
+    except Exception as e:
+        logging.exception(e)
+
+# ----------------
+# ISE MnT
+# ----------------
+
+def ISE_active_sessions(url, username, password):
+    try:   
+        activeSessionCount = requests.request("GET", f"{ url }/admin/API/mnt/Session/ActiveCount", auth=(username, password), verify=False)
+        xmlParse = xmltodict.parse(activeSessionCount.text)
+        activeSessionCountJSON = json.loads(json.dumps(xmlParse))
+
+        # Pass to template 
+
+        if activeSessionCountJSON is not None:
+            active_session_template = env.get_template('ISE_active_sessions.j2')
+            loop_counter = 0      
+            
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = active_session_template.render(activeSessionCount = activeSessionCountJSON,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Active Sessions.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Active Sessions Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Active Sessions.json", "w") as fh:
+                    json.dump(activeSessionCountJSON, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(activeSessionCountJSON)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_posture_count(url, username, password):
+    try:   
+        postureCount = requests.request("GET", f"{ url }/admin/API/mnt/Session/PostureCount", auth=(username, password), verify=False)
+        xmlParse = xmltodict.parse(postureCount.text)
+        postureCountJSON = json.loads(json.dumps(xmlParse))
+        # Pass to template 
+
+        if postureCountJSON is not None:
+            posture_count_template = env.get_template('ISE_posture_count.j2')
+            loop_counter = 0      
+            
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = posture_count_template.render(postureCount = postureCountJSON,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Posture Count.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Posture Count Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Posture Count.json", "w") as fh:
+                    json.dump(postureCountJSON, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(postureCountJSON)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_profiler_count(url, username, password):
+    try:   
+        profilerCount = requests.request("GET", f"{ url }/admin/API/mnt/Session/ProfilerCount", auth=(username, password), verify=False)
+        xmlParse = xmltodict.parse(profilerCount.text)
+        profilerCountJSON = json.loads(json.dumps(xmlParse))
+        # Pass to template 
+
+        if profilerCountJSON is not None:
+            profiler_count_template = env.get_template('ISE_profiler_count.j2')
+            loop_counter = 0      
+            
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = profiler_count_template.render(profilerCount = profilerCountJSON,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Profiler Count.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Profiler Count Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Profiler Count.json", "w") as fh:
+                    json.dump(profilerCountJSON, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(profilerCountJSON)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_version(url, username, password):
+    try:   
+        version = requests.request("GET", f"{ url }/admin/API/mnt/Version", auth=(username, password), verify=False)
+        xmlParse = xmltodict.parse(version.text)
+        versionJSON = json.loads(json.dumps(xmlParse))
+        # Pass to template 
+
+        if versionJSON is not None:
+            version_template = env.get_template('ISE_version.j2')
+            loop_counter = 0      
+            
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = version_template.render(version = versionJSON,filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Version.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Version Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Version.json", "w") as fh:
+                    json.dump(versionJSON, fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(versionJSON)
+    except Exception as e:
+        logging.exception(e)
+
+def ISE_failure_codes(url, username, password):
+    try:   
+        failureCodes = requests.request("GET", f"{ url }/admin/API/mnt/FailureReasons", auth=(username, password), verify=False)
+        xmlParse = xmltodict.parse(failureCodes.text)
+        failureCodesJSON = json.loads(json.dumps(xmlParse))
+        # Pass to template 
+
+        if failureCodesJSON is not None:
+            failureCodes_template = env.get_template('ISE_failure_codes.j2')
+            loop_counter = 0      
+            
+        # Render Templates
+            for filetype in filetype_loop:
+                parsed_output = failureCodes_template.render(failureCodes = failureCodesJSON['failureReasonList'],filetype_loop=loop_counter)
+                loop_counter = loop_counter + 1
+
+    # -------------------------
+    # Save the files
+    # -------------------------
+                if loop_counter <= 3:
+                    with open(f"ISE Failure Codes.{ filetype }", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                else:
+                    with open("ISE Failure Codes Mind Map.md", "w") as fh:
+                        fh.write(parsed_output)               
+                        fh.close()
+                with open(f"ISE Failure Codes.json", "w") as fh:
+                    json.dump(failureCodesJSON['failureReasonList'], fh, indent=4, sort_keys=True)
+                    fh.close()                            
+        return(failureCodesJSON['failureReasonList'])
+    except Exception as e:
+        logging.exception(e)
+
+# -------------------------
 # Meraki REST APIs
 # -------------------------
 
@@ -2602,7 +5890,7 @@ def IOS_learn_ospf(hostname, username, password, ip):
             loop_counter = 0
         # Render Templates
             for filetype in filetype_loop:
-                parsed_output = IOS_learn_ospf_template.render(to_parse_routing=learn_ospf['vrf'],filetype_loop=loop_counter)
+                parsed_output = IOS_learn_ospf_template.render(to_parse_ospf=learn_ospf['vrf'],filetype_loop=loop_counter)
                 loop_counter = loop_counter + 1
 
     # -------------------------

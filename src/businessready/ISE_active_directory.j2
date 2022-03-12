@@ -1,0 +1,227 @@
+{%- if filetype_loop == 0 %}Name,Active Directory Scope Name,ID,Description,Domain,Enable Domain Allowed List,Group Name,Group SID,Enable Password Change,Enable Machine Authentication,Enable Machine Access,Aging Time,Enable Dial-In Permission Check,Enable Callback for Dial-In Client,Plain Text Authentication,Identity Not In Active Directory Behavior,Unreachable Domain Behavior,Enable Rewrites,Row ID,Rewrite Match,Rewrite Result,First Name,Last Name,Department,Organizational Unit,Job Title,Locality,E-mail,State / Province,Telephone,Country,Street Address,Schema
+{%- for directory in activeDirectory %}
+{%-     for group in directory.ERSActiveDirectory.adgroups.groups %}
+{%-         for rule in directory.ERSActiveDirectory.advancedSettings.rewriteRules %}
+{{ directory.ERSActiveDirectory.name }},{{ directory.ERSActiveDirectory.adScopesNames }},{{ directory.ERSActiveDirectory.id }},{{ directory.ERSActiveDirectory.description }},{{ directory.ERSActiveDirectory.domain }},{{ directory.ERSActiveDirectory.enableDomainAllowedList }},{{ group.name }},{{ group.sid }},{{ directory.ERSActiveDirectory.advancedSettings.enablePassChange }},{{ directory.ERSActiveDirectory.advancedSettings.enableMachineAuth }},{{ directory.ERSActiveDirectory.advancedSettings.enableMachineAccess }},{{ directory.ERSActiveDirectory.advancedSettings.agingTime }},{{ directory.ERSActiveDirectory.advancedSettings.enableDialinPermissionCheck }},{{ directory.ERSActiveDirectory.advancedSettings.enableCallbackForDialinClient }},{{ directory.ERSActiveDirectory.advancedSettings.plaintextAuth }},{{ directory.ERSActiveDirectory.advancedSettings.identityNotInAdBehaviour }},{{ directory.ERSActiveDirectory.advancedSettings.unreachableDomainsBehaviour }},{{ directory.ERSActiveDirectory.advancedSettings.enableRewrites }},{{ rule.rowId }},{{ rule.rewriteMatch }},{{ rule.rewriteResult }},{{ directory.ERSActiveDirectory.advancedSettings.firstName }},{{ directory.ERSActiveDirectory.advancedSettings.lastName }},{{ directory.ERSActiveDirectory.advancedSettings.department }},{{ directory.ERSActiveDirectory.advancedSettings.organizationalUnit }},{{ directory.ERSActiveDirectory.advancedSettings.jobTitle }},{{ directory.ERSActiveDirectory.advancedSettings.locality }},{{ directory.ERSActiveDirectory.advancedSettings.email }},{{ directory.ERSActiveDirectory.advancedSettings.stateOrProvince }}{{ directory.ERSActiveDirectory.advancedSettings.telephone }}{{ directory.ERSActiveDirectory.advancedSettings.country }}{{ directory.ERSActiveDirectory.advancedSettings.streetAddress }}{{ directory.ERSActiveDirectory.advancedSettings.schema }}
+{%- endfor %}{%- endfor %}{%- endfor %}
+{% else %}{% if filetype_loop == 1 %}
+# ISE Active Directory
+| Name | Active Directory Scope Name | ID | Description | Domain | Enable Domain Allowed List | Group Name | Group SID | Enable Password Change | Enable Machine Authentication | Enable Machine Access | Aging Time | Enable Dial-In Permission Check | Enable Callback for Dial-In Client | Plain Text Authentication | Identity Not In Active Directory Behavior | Unreachable Domain Behavior | Enable Rewrites | Row ID | Rewrite Match | Rewrite Result | First Name | Last Name | Department | Organizational Unit | Job Title | Locality | E-mail | State / Province | Telephone | Country | Street Address | Schema |
+| ---- | --------------------------- | -- | ----------- | ------ | -------------------------- | ---------- | --------- | ---------------------- | ----------------------------- | --------------------- | ---------- | ------------------------------- | ---------------------------------- | ------------------------- | ----------------------------------------- | --------------------------- | --------------- | ------ | ------------- | -------------- | ---------- | --------- | ---------- | ------------------- | --------- | -------- | ------ | ---------------- | --------- | ------- | -------------- | ------ |
+{%- for directory in activeDirectory %}
+{%-     for group in directory.ERSActiveDirectory.adgroups.groups %}
+{%-         for rule in directory.ERSActiveDirectory.advancedSettings.rewriteRules %}
+| {{ directory.ERSActiveDirectory.name }} | {{ directory.ERSActiveDirectory.adScopesNames }} | {{ directory.ERSActiveDirectory.id }} | {{ directory.ERSActiveDirectory.description }} | {{ directory.ERSActiveDirectory.domain }} | {{ directory.ERSActiveDirectory.enableDomainAllowedList }} | {{ group.name }} | {{ group.sid }} | {{ directory.ERSActiveDirectory.advancedSettings.enablePassChange }} | {{ directory.ERSActiveDirectory.advancedSettings.enableMachineAuth }} | {{ directory.ERSActiveDirectory.advancedSettings.enableMachineAccess }} | {{ directory.ERSActiveDirectory.advancedSettings.agingTime }} | {{ directory.ERSActiveDirectory.advancedSettings.enableDialinPermissionCheck }} | {{ directory.ERSActiveDirectory.advancedSettings.enableCallbackForDialinClient }} | {{ directory.ERSActiveDirectory.advancedSettings.plaintextAuth }} | {{ directory.ERSActiveDirectory.advancedSettings.identityNotInAdBehaviour }} | {{ directory.ERSActiveDirectory.advancedSettings.unreachableDomainsBehaviour }} | {{ directory.ERSActiveDirectory.advancedSettings.enableRewrites }} | {{ rule.rowId }} | {{ rule.rewriteMatch }} | {{ rule.rewriteResult }} | {{ directory.ERSActiveDirectory.advancedSettings.firstName }} | {{ directory.ERSActiveDirectory.advancedSettings.lastName }} | {{ directory.ERSActiveDirectory.advancedSettings.department }} | {{ directory.ERSActiveDirectory.advancedSettings.organizationalUnit }} | {{ directory.ERSActiveDirectory.advancedSettings.jobTitle }} | {{ directory.ERSActiveDirectory.advancedSettings.locality }} | {{ directory.ERSActiveDirectory.advancedSettings.email }} | {{ directory.ERSActiveDirectory.advancedSettings.stateOrProvince }}{{ directory.ERSActiveDirectory.advancedSettings.telephone }}{{ directory.ERSActiveDirectory.advancedSettings.country }}{{ directory.ERSActiveDirectory.advancedSettings.streetAddress }}{{ directory.ERSActiveDirectory.advancedSettings.schema }} |
+{%- endfor %}{%- endfor %}{%- endfor %}
+{% else %}{% if filetype_loop == 2 %}
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/colreorder/1.5.4/js/dataTables.colReorder.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/keytable/2.6.4/js/dataTables.keyTable.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.1.9/js/dataTables.fixedHeader.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.9/css/fixedHeader.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/keytable/2.6.4/css/keyTable.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+</head>
+<body>
+<h1>ISE </h1>
+<table id = "ise">
+  <tr>
+    <tr>Name</th>
+    <th>Active Directory Scope Name</th>
+    <th>ID</th>
+    <th>Description</th>
+    <th>Domain</th>
+    <th>Enable Domain Allowed List</th>
+    <th>Group Name</th>
+    <th>Group SID</th>
+    <th>Enable Password Change</th>
+    <th>Enable Machine Authentication</th>
+    <th>Enable Machine Access</th>
+    <th>Aging Time</th>
+    <th>Enable Dial-In Permission Check</th>
+    <th>Enable Callback for Dial-In Client</th>
+    <th>Plain Text Authentication</th>
+    <th>Identity Not In Active Directory Behavior</th>
+    <th>Unreachable Domain Behavior</th>
+    <th>Enable Rewrites</th>
+    <th>Row ID</th>
+    <th>Rewrite Match</th>
+    <th>Rewrite Result</th>
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>Department</th>
+    <th>Organizational Unit</th>
+    <th>Job Title</th>
+    <th>Locality</th>
+    <th>E-mail</th>
+    <th>State / Province</th>
+    <th>Telephone</th>
+    <th>Country</th>
+    <th>Street Address</th>
+    <th>Schema</tr>
+  </tr>
+{%- for directory in activeDirectory %}
+{%-     for group in directory.ERSActiveDirectory.adgroups.groups %}
+{%-         for rule in directory.ERSActiveDirectory.advancedSettings.rewriteRules %}
+  <tr>
+    <td>{{ directory.ERSActiveDirectory.name }}</td>
+    <td>{{ directory.ERSActiveDirectory.adScopesNames }}</td>
+    <td>{{ directory.ERSActiveDirectory.id }}</td>
+    <td>{{ directory.ERSActiveDirectory.description }}</td>
+    <td>{{ directory.ERSActiveDirectory.domain }}</td>
+    <td>{{ directory.ERSActiveDirectory.enableDomainAllowedList }}</td>
+    <td>{{ group.name }}</td>
+    <td>{{ group.sid }}</td>
+    <td>{{ directory.ERSActiveDirectory.advancedSettings.enablePassChange }}</td>
+    <td>{{ directory.ERSActiveDirectory.advancedSettings.enableMachineAuth }}</td>
+    <td>{{ directory.ERSActiveDirectory.advancedSettings.enableMachineAccess }}</td>
+    <td>{{ directory.ERSActiveDirectory.advancedSettings.agingTime }}</td>
+    <td>{{ directory.ERSActiveDirectory.advancedSettings.enableDialinPermissionCheck }}</td>
+    <td>{{ directory.ERSActiveDirectory.advancedSettings.enableCallbackForDialinClient }}</td>
+    <td>{{ directory.ERSActiveDirectory.advancedSettings.plaintextAuth }}</td>
+    <td>{{ directory.ERSActiveDirectory.advancedSettings.identityNotInAdBehaviour }}</td>
+    <td>{{ directory.ERSActiveDirectory.advancedSettings.unreachableDomainsBehaviour }}</td>
+    <td>{{ directory.ERSActiveDirectory.advancedSettings.enableRewrites }}</td>
+    <td>{{ rule.rowId }}</td>
+    <td>{{ rule.rewriteMatch }}</td>
+    <td>{{ rule.rewriteResult }}</td>
+    <td>{{ directory.ERSActiveDirectory.advancedSettings.firstName }}</td>
+    <td>{{ directory.ERSActiveDirectory.advancedSettings.lastName }}</td>
+    <td>{{ directory.ERSActiveDirectory.advancedSettings.department }}</td>
+    <td>{{ directory.ERSActiveDirectory.advancedSettings.organizationalUnit }}</td>
+    <td>{{ directory.ERSActiveDirectory.advancedSettings.jobTitle }}</td>
+    <td>{{ directory.ERSActiveDirectory.advancedSettings.locality }}</td>
+    <td>{{ directory.ERSActiveDirectory.advancedSettings.email }}</td>
+    <td>{{ directory.ERSActiveDirectory.advancedSettings.stateOrProvince }}{{ directory.ERSActiveDirectory.advancedSettings.telephone }}{{ directory.ERSActiveDirectory.advancedSettings.country }}{{ directory.ERSActiveDirectory.advancedSettings.streetAddress }}{{ directory.ERSActiveDirectory.advancedSettings.schema }}</td>
+  </tr>
+{%- endfor %}{%- endfor %}{%- endfor %}  
+</table>
+<script type = "text/javascript">
+  $(document).ready(function(){
+    $('#ise thead tr')
+    .clone(true)
+    .addClass('filters')
+    .appendTo('#ise thead');
+
+    var table = $('#ise').DataTable({
+        keys: true,
+        dom: 'Bfrtip',
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],
+            [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        buttons: [
+        'pageLength','colvis','copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        colReorder: true,
+        select: true,            
+        orderCellsTop: true,
+        fixedHeader: true,
+        initComplete: function () {
+        var api = this.api();
+
+        // For each column
+        api
+            .columns()
+            .eq(0)
+            .each(function (colIdx) {
+                // Set the header cell to contain the input element
+                var cell = $('.filters th').eq(
+                    $(api.column(colIdx).header()).index()
+                );
+                var title = $(cell).text();
+                $(cell).html('<input type="text" placeholder="' + title + '" />');
+
+                // On every keypress in this input
+                $(
+                    'input',
+                    $('.filters th').eq($(api.column(colIdx).header()).index())
+                )
+                    .off('keyup change')
+                    .on('keyup change', function (e) {
+                        e.stopPropagation();
+
+                        // Get the search value
+                        $(this).attr('title', $(this).val());
+                        var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                        var cursorPosition = this.selectionStart;
+                        // Search the column for that value
+                        api
+                            .column(colIdx)
+                            .search(
+                                this.value != ''
+                                    ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                    : '',
+                                this.value != '',
+                                this.value == ''
+                            )
+                            .draw();
+
+                        $(this)
+                            .focus()[0]
+                            .setSelectionRange(cursorPosition, cursorPosition);
+                    });
+            });
+    },
+});
+});        
+</script>
+</body></html>
+{%- else %}
+# ISE Active Directory
+{%- for directory in activeDirectory %}
+## Name: {{ directory.ERSActiveDirectory.name }}
+### Active Directory Scope Name: {{ directory.ERSActiveDirectory.adScopesNames }}
+### ID: {{ directory.ERSActiveDirectory.id }}
+### Description: {{ directory.ERSActiveDirectory.description }}
+### Domain: {{ directory.ERSActiveDirectory.domain }}
+### Enable Domain Allowed List: {{ directory.ERSActiveDirectory.enableDomainAllowedList }}
+### Groups
+{%-     for group in directory.ERSActiveDirectory.adgroups.groups %}
+#### {{ group.name }}
+##### SID: {{ group.sid }}
+{%-     endfor %}
+### Advanced Settings
+#### Enable Password Change: {{ directory.ERSActiveDirectory.advancedSettings.enablePassChange }}
+#### Enable Machine Authentication: {{ directory.ERSActiveDirectory.advancedSettings.enableMachineAuth }}
+#### Enable Machine Access: {{ directory.ERSActiveDirectory.advancedSettings.enableMachineAccess }}
+#### Aging Time: {{ directory.ERSActiveDirectory.advancedSettings.agingTime }}
+#### Enable Dial-In Permission Check: {{ directory.ERSActiveDirectory.advancedSettings.enableDialinPermissionCheck }}
+#### Enable Callback for Dial-In Client: {{ directory.ERSActiveDirectory.advancedSettings.enableCallbackForDialinClient }}
+#### Plain Text Authentication: {{ directory.ERSActiveDirectory.advancedSettings.plaintextAuth }}
+#### Identity Not In Active Directory Behavior: {{ directory.ERSActiveDirectory.advancedSettings.identityNotInAdBehaviour }}
+#### Unreachable Domain Behavior: {{ directory.ERSActiveDirectory.advancedSettings.unreachableDomainsBehaviour }}
+#### Enable Rewrites: {{ directory.ERSActiveDirectory.advancedSettings.enableRewrites }}
+{%-     for rule in directory.ERSActiveDirectory.advancedSettings.rewriteRules %}
+##### Row ID: {{ rule.rowId }}
+##### Rewrite Match: {{ rule.rewriteMatch }}
+##### Rewrite Result: {{ rule.rewriteResult }}
+{%-     endfor %}
+### Contact Information
+#### First Name: {{ directory.ERSActiveDirectory.advancedSettings.firstName }}
+#### Last Name: {{ directory.ERSActiveDirectory.advancedSettings.lastName }}
+#### Department: {{ directory.ERSActiveDirectory.advancedSettings.department }}
+#### Organizational Unit: {{ directory.ERSActiveDirectory.advancedSettings.organizationalUnit }}
+#### Job Title: {{ directory.ERSActiveDirectory.advancedSettings.jobTitle }}
+#### Locality: {{ directory.ERSActiveDirectory.advancedSettings.locality }}
+#### E-mail: {{ directory.ERSActiveDirectory.advancedSettings.email }}
+#### State / Province: {{ directory.ERSActiveDirectory.advancedSettings.stateOrProvince }}
+#### Telephone: {{ directory.ERSActiveDirectory.advancedSettings.telephone }}
+#### Country: {{ directory.ERSActiveDirectory.advancedSettings.country }}
+#### Street Address: {{ directory.ERSActiveDirectory.advancedSettings.streetAddress }}
+#### Schema: {{ directory.ERSActiveDirectory.advancedSettings.schema }}
+{%- endfor %}
+{%- endif %}{% endif %}{% endif %}

@@ -1,0 +1,153 @@
+{% if filetype_loop == 0 %}Rule Default,Rule ID,Rule Name,Rule Hit Counts,Rule Rank,Rule State,Rule Condition,Identity Source Name,If Auth Fail,If User Not Found,If Process Fail
+{%- for hit in policy %}
+{{ hit.rule.default }},{{ hit.rule.id }},{{ hit.rule.name }},{{ hit.rule.hitCounts }},{{ hit.rule.rank }},{{ hit.rule.state }},{{ hit.rule.condition }},{{ hit.identitySourceName }},{{ hit.ifAuthFail }},{{ hit.ifUserNotFound }},{{ hit.ifProcessFail }}
+{%- endfor %}
+{% else %}{% if filetype_loop == 1 %}
+# ISE Authentication Policy Set
+| Rule Default | Rule ID | Rule Name | Rule Hit Counts | Rule Rank | Rule State | Rule Condition | Identity Source Name | If Auth Fail | If User Not Found | If Process Fail |
+| ------------ | ------- | --------- | --------------- | --------- | ---------- | -------------- | -------------------- | ------------ | ----------------- | --------------- |
+{%- for hit in policy %}
+| {{ hit.rule.default }} | {{ hit.rule.id }} | {{ hit.rule.name }} | {{ hit.rule.hitCounts }} | {{ hit.rule.rank }} | {{ hit.rule.state }} | {{ hit.rule.condition }} | {{ hit.identitySourceName }} | {{ hit.ifAuthFail }} | {{ hit.ifUserNotFound }} | {{ hit.ifProcessFail }} |
+{%- endfor %}
+{% else %}{% if filetype_loop == 2 %}
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/colreorder/1.5.4/js/dataTables.colReorder.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/keytable/2.6.4/js/dataTables.keyTable.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.1.9/js/dataTables.fixedHeader.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.9/css/fixedHeader.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/keytable/2.6.4/css/keyTable.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+</head>
+<body>
+<h1>ISE Authentication Policy Set</h1>
+<table id = "ise">
+  <tr>
+    <th>Rule Default</th>
+    <th>Rule ID</th>
+    <th>Rule Name</th>
+    <th>Rule Hit Counts</th>
+    <th>Rule Rank</th>
+    <th>Rule State</th>
+    <th>Rule Condition</th>
+    <th>Identity Source Name</th>
+    <th>If Auth Fail</th>
+    <th>If User Not Found</th>
+    <th>If Process Fail</th>
+  </tr>
+{%- for hit in policy %}  
+  <tr>
+    <td>{{ hit.rule.default }}</td>
+    <td>{{ hit.rule.id }}</td>
+    <td>{{ hit.rule.name }}</td>
+    <td>{{ hit.rule.hitCounts }}</td>
+    <td>{{ hit.rule.rank }}</td>
+    <td>{{ hit.rule.state }}</td>
+    <td>{{ hit.rule.condition }}</td>
+    <td>{{ hit.identitySourceName }}</td>
+    <td>{{ hit.ifAuthFail }}</td>
+    <td>{{ hit.ifUserNotFound }}</td>
+    <td>{{ hit.ifProcessFail }}</td>
+  </tr>
+{%- endfor %}  
+</table>
+<script type = "text/javascript">
+  $(document).ready(function(){
+    $('#ise thead tr')
+    .clone(true)
+    .addClass('filters')
+    .appendTo('#ise thead');
+
+    var table = $('#ise').DataTable({
+        keys: true,
+        dom: 'Bfrtip',
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],
+            [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        buttons: [
+        'pageLength','colvis','copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        colReorder: true,
+        select: true,            
+        orderCellsTop: true,
+        fixedHeader: true,
+        initComplete: function () {
+        var api = this.api();
+
+        // For each column
+        api
+            .columns()
+            .eq(0)
+            .each(function (colIdx) {
+                // Set the header cell to contain the input element
+                var cell = $('.filters th').eq(
+                    $(api.column(colIdx).header()).index()
+                );
+                var title = $(cell).text();
+                $(cell).html('<input type="text" placeholder="' + title + '" />');
+
+                // On every keypress in this input
+                $(
+                    'input',
+                    $('.filters th').eq($(api.column(colIdx).header()).index())
+                )
+                    .off('keyup change')
+                    .on('keyup change', function (e) {
+                        e.stopPropagation();
+
+                        // Get the search value
+                        $(this).attr('title', $(this).val());
+                        var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                        var cursorPosition = this.selectionStart;
+                        // Search the column for that value
+                        api
+                            .column(colIdx)
+                            .search(
+                                this.value != ''
+                                    ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                    : '',
+                                this.value != '',
+                                this.value == ''
+                            )
+                            .draw();
+
+                        $(this)
+                            .focus()[0]
+                            .setSelectionRange(cursorPosition, cursorPosition);
+                    });
+            });
+    },
+});
+});        
+</script>
+</body></html>
+{%- else %}
+# ISE Authentication Policy Set
+{%- for hit in policy %}  
+## {{ hit.rule.name }}
+### Rule
+#### Default: {{ hit.rule.default }}
+#### ID: {{ hit.rule.id }}
+#### Hit Count: {{ hit.rule.hitCounts }}
+#### Rank: {{ hit.rule.rank }}
+#### State: {{ hit.rule.state }}
+#### Condition: {{ hit.rule.condition }}
+### Identity Source Name: {{ hit.identitySourceName }}
+### If Auth Fail: {{ hit.ifAuthFail }}
+### If User Not Found: {{ hit.ifUserNotFound }}
+### If Process Fail: {{ hit.ifProcessFail }}
+{%- endfor %}
+{%- endif %}{% endif %}{% endif %}

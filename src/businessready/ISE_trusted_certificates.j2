@@ -1,0 +1,228 @@
+{% if filetype_loop == 0 %}ID,Friendly Name,Subject,Issued To,Issued By,Key Size,Signature Algorithm,Valid From,Expiration Date,Serial Number Decimal Format,Description,Status,Trusted For,Internal CA,Download CRL,CRL Distribution URL,Automatic CRL Update,Automatic CRL UpdatePeriod,Automatic CRL Update Units,Non Automatic CRL Update Period,Non Automatic CRL Update Units,CRL Download Failure Retries,CRL Download Failure Retries Units,Authenticate Before CRL Received,Ignore CRL Expiration,Enable Server Identity Check,Enable OCSP Validation,Selected OCSP Service,Reject If No Status From OCSP,Reject If Unreachable From OCSP,SHA 256 Fingerprint
+{%- for cert in trustedcerts %}
+{%-     for item in cert %}
+{{ item.id }},{{ item.friendlyName }},{{ item.subject | replace (","," ")}},{{ item.issuedTo }},{{ item.issuedBy }},{{ item.keySize }},{{ item.signatureAlgorithm }},{{ item.validFrom }},{{ item.expirationDate }},{{ item.serialNumberDecimalFormat }},{{ item.description }},{{ item.status }},{{ item.trustedFor | replace(","," ") }},{{ item.internalCA }},{{ item.downloadCRL }},{{ item.crlDistributionUrl }},{{ item.automaticCRLUpdate }},{{ item.automaticCRLUpdatePeriod }},{{ item.automaticCRLUpdateUnits }},{{ item.nonAutomaticCRLUpdatePeriod }},{{ item.nonAutomaticCRLUpdateUnits }},{{ item.crlDownloadFailureRetries }},{{ item.crlDownloadFailureRetriesUnits }},{{ item.authenticateBeforeCRLReceived }},{{ item.ignoreCRLExpiration }},{{ item.enableServerIdentityCheck }},{{ item.enableOCSPValidation }},{{ item.selectedOCSPService }},{{ item.rejectIfNoStatusFromOCSP }},{{ item.rejectIfUnreachableFromOCSP }},{{ item.sha256Fingerprint }}
+{%-     endfor %}
+{%- endfor %}            
+{% else %}{% if filetype_loop == 1 %}
+# ISE Trusted Certificates
+| ID | Friendly Name | Subject | Issued To | Issued By | Key Size | Signature Algorithm | Valid From | Expiration Date | Serial Number Decimal Format | Description | Status | Trusted For | Internal CA | Download CRL | CRL Distribution URL | Automatic CRL Update | Automatic CRL UpdatePeriod | Automatic CRL Update Units | Non Automatic CRL Update Period | Non Automatic CRL Update Units | CRL Download Failure Retries | CRL Download Failure Retries Units | Authenticate Before CRL Received | Ignore CRL Expiration | Enable Server Identity Check | Enable OCSP Validation | Selected OCSP Service | Reject If No Status From OCSP | Reject If Unreachable From OCSP | SHA 256 Fingerprint |
+| -- | ------------- | ------- | --------- | --------- | -------- | ------------------- | ---------- | --------------- | ---------------------------- | ----------- | ------ | ----------- | ----------- | ------------ | -------------------- | -------------------- | -------------------------- | -------------------------- | ------------------------------- | ------------------------------ | ---------------------------- | ---------------------------------- | -------------------------------- | --------------------- | ---------------------------- | ---------------------- | --------------------- | ----------------------------- | ------------------------------- | ------------------- |
+{%- for cert in trustedcerts %}
+{%-     for item in cert %}
+| {{ item.id }} | {{ item.friendlyName }} | {{ item.subject }} | {{ item.issuedTo }} | {{ item.issuedBy }} | {{ item.keySize }} | {{ item.signatureAlgorithm }} | {{ item.validFrom }} | {{ item.expirationDate }} | {{ item.serialNumberDecimalFormat }} | {{ item.description }} | {{ item.status }} | {{ item.trustedFor }} | {{ item.internalCA }} | {{ item.downloadCRL }} | {{ item.crlDistributionUrl }} | {{ item.automaticCRLUpdate }} | {{ item.automaticCRLUpdatePeriod }} | {{ item.automaticCRLUpdateUnits }} | {{ item.nonAutomaticCRLUpdatePeriod }} | {{ item.nonAutomaticCRLUpdateUnits }} | {{ item.crlDownloadFailureRetries }} | {{ item.crlDownloadFailureRetriesUnits }} | {{ item.authenticateBeforeCRLReceived }} | {{ item.ignoreCRLExpiration }} | {{ item.enableServerIdentityCheck }} | {{ item.enableOCSPValidation }} | {{ item.selectedOCSPService }} | {{ item.rejectIfNoStatusFromOCSP }} | {{ item.rejectIfUnreachableFromOCSP }} | {{ item.sha256Fingerprint }} |
+{%-     endfor %}
+{%- endfor %}            
+{% else %}{% if filetype_loop == 2 %}
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/colreorder/1.5.4/js/dataTables.colReorder.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/keytable/2.6.4/js/dataTables.keyTable.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.1.9/js/dataTables.fixedHeader.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.9/css/fixedHeader.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/keytable/2.6.4/css/keyTable.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+</head>
+<body>
+<h1>ISE Trusted Certificates</h1>
+<table id = "ise">
+  <tr>
+    <th>ID</th>
+    <th>Friendly Name</th>
+    <th>Subject</th>
+    <th>Issued To</th>
+    <th>Issued By</th>
+    <th>Key Size</th>
+    <th>Signature Algorithm</th>
+    <th>Valid From</th>
+    <th>Expiration Date</th>
+    <th>Serial Number Decimal Format</th>
+    <th>Description</th>
+    <th>Status</th>
+    <th>Trusted For</th>
+    <th>Internal CA</th>
+    <th>Download CRL</th>
+    <th>CRL Distribution URL</th>
+    <th>Automatic CRL Update</th>
+    <th>Automatic CRL UpdatePeriod</th>
+    <th>Automatic CRL Update Units</th>
+    <th>Non Automatic CRL Update Period</th>
+    <th>Non Automatic CRL Update Units</th>
+    <th>CRL Download Failure Retries</th>
+    <th>CRL Download Failure Retries Units</th>
+    <th>Authenticate Before CRL Received</th>
+    <th>Ignore CRL Expiration</th>
+    <th>Enable Server Identity Check</th>
+    <th>Enable OCSP Validation</th>
+    <th>Selected OCSP Service</th>
+    <th>Reject If No Status From OCSP</th>
+    <th>Reject If Unreachable From OCSP</th>
+    <th>SHA 256 Fingerprint</th>
+  </tr>
+{%- for cert in trustedcerts %}
+{%-     for item in cert %}  
+  <tr>
+    <td>{{ item.id }}</td>
+    <td>{{ item.friendlyName }}</td>
+    <td>{{ item.subject }}</td>
+    <td>{{ item.issuedTo }}</td>
+    <td>{{ item.issuedBy }}</td>
+    <td>{{ item.keySize }}</td>
+    <td>{{ item.signatureAlgorithm }}</td>
+    <td>{{ item.validFrom }}</td>
+    <td>{{ item.expirationDate }}</td>
+    <td>{{ item.serialNumberDecimalFormat }}</td>
+    <td>{{ item.description }}</td>
+    <td>{{ item.status }}</td>
+    <td>{{ item.trustedFor }}</td>
+    <td>{{ item.internalCA }}</td>
+    <td>{{ item.downloadCRL }}</td>
+    <td>{{ item.crlDistributionUrl }}</td>
+    <td>{{ item.automaticCRLUpdate }}</td>
+    <td>{{ item.automaticCRLUpdatePeriod }}</td>
+    <td>{{ item.automaticCRLUpdateUnits }}</td>
+    <td>{{ item.nonAutomaticCRLUpdatePeriod }}</td>
+    <td>{{ item.nonAutomaticCRLUpdateUnits }}</td>
+    <td>{{ item.crlDownloadFailureRetries }}</td>
+    <td>{{ item.crlDownloadFailureRetriesUnits }}</td>
+    <td>{{ item.authenticateBeforeCRLReceived }}</td>
+    <td>{{ item.ignoreCRLExpiration }}</td>
+    <td>{{ item.enableServerIdentityCheck }}</td>
+    <td>{{ item.enableOCSPValidation }}</td>
+    <td>{{ item.selectedOCSPService }}</td>
+    <td>{{ item.rejectIfNoStatusFromOCSP }}</td>
+    <td>{{ item.rejectIfUnreachableFromOCSP }}</td>
+    <td>{{ item.sha256Fingerprint }}</td>
+  </tr>
+{%-     endfor %}
+{%- endfor %}   
+</table>
+<script type = "text/javascript">
+  $(document).ready(function(){
+    $('#ise thead tr')
+    .clone(true)
+    .addClass('filters')
+    .appendTo('#ise thead');
+
+    var table = $('#ise').DataTable({
+        keys: true,
+        dom: 'Bfrtip',
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],
+            [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        buttons: [
+        'pageLength','colvis','copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        colReorder: true,
+        select: true,            
+        orderCellsTop: true,
+        fixedHeader: true,
+        initComplete: function () {
+        var api = this.api();
+
+        // For each column
+        api
+            .columns()
+            .eq(0)
+            .each(function (colIdx) {
+                // Set the header cell to contain the input element
+                var cell = $('.filters th').eq(
+                    $(api.column(colIdx).header()).index()
+                );
+                var title = $(cell).text();
+                $(cell).html('<input type="text" placeholder="' + title + '" />');
+
+                // On every keypress in this input
+                $(
+                    'input',
+                    $('.filters th').eq($(api.column(colIdx).header()).index())
+                )
+                    .off('keyup change')
+                    .on('keyup change', function (e) {
+                        e.stopPropagation();
+
+                        // Get the search value
+                        $(this).attr('title', $(this).val());
+                        var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                        var cursorPosition = this.selectionStart;
+                        // Search the column for that value
+                        api
+                            .column(colIdx)
+                            .search(
+                                this.value != ''
+                                    ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                    : '',
+                                this.value != '',
+                                this.value == ''
+                            )
+                            .draw();
+
+                        $(this)
+                            .focus()[0]
+                            .setSelectionRange(cursorPosition, cursorPosition);
+                    });
+            });
+    },
+});
+});        
+</script>
+</body></html>
+{%- else %}
+# ISE Trusted Certificates
+{%- for cert in trustedcerts %}
+{%-     for item in cert %}  
+## ID: {{ item.id }}
+### Friendly Name: {{ item.friendlyName }}
+### Subject: {{ item.subject }}
+### Issued
+#### To: {{ item.issuedTo }}
+#### By: {{ item.issuedBy }}
+### Key Size: {{ item.keySize }}
+### Signature Algorithm: {{ item.signatureAlgorithm }}
+### Dates
+#### Valid From: {{ item.validFrom }}
+#### Expires: {{ item.expirationDate }}
+### Serial Number Decimal Format: {{ item.serialNumberDecimalFormat }}
+### Description: {{ item.description }}
+### Status: {{ item.status }}
+### Trusted For: {{ item.trustedFor }}
+### Internal CA: {{ item.internalCA }}
+### CRL
+#### Download: {{ item.downloadCRL }}
+#### [Distribution_URL]({{ item.crlDistributionUrl }})
+#### Automatic Update
+##### {{ item.automaticCRLUpdate }}
+##### Period: {{ item.automaticCRLUpdatePeriod }}
+##### Units: {{ item.automaticCRLUpdateUnits }}
+#### Non Automatic Update
+##### Period: {{ item.nonAutomaticCRLUpdatePeriod }}
+##### Units: {{ item.nonAutomaticCRLUpdateUnits }}
+#### Download Failures
+##### Retries: {{ item.crlDownloadFailureRetries }}
+##### Units: {{ item.crlDownloadFailureRetriesUnits }}
+#### Authenticate Before Received: {{ item.authenticateBeforeCRLReceived }}
+#### Expiration: {{ item.ignoreCRLExpiration }}
+### Server Identity Check: {{ item.enableServerIdentityCheck }}
+### OCSP
+#### Validation: {{ item.enableOCSPValidation }}
+#### Selected Service: {{ item.selectedOCSPService }}
+#### Reject
+##### If No Status From: {{ item.rejectIfNoStatusFromOCSP }}
+##### If Unreachable From: {{ item.rejectIfUnreachableFromOCSP }}
+### SHA 256 Fingerprint: {{ item.sha256Fingerprint }}
+{%-     endfor %}
+{%- endfor %} 
+{%- endif %}{% endif %}{% endif %}

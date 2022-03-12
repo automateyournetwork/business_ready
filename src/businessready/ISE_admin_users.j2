@@ -1,0 +1,146 @@
+{% if filetype_loop == 0 %}Name,ID,Description,Enabled,Change Password,Include System Alarms In Email,External User,Inactive Account Never Disabled,Admin Groups
+{%- for admin in adminUsersDetails %}
+{{ admin.AdminUser.name }},{{ admin.AdminUser.id }},{{ admin.AdminUser.description }},{{ admin.AdminUser.enabled }},{{ admin.AdminUser.changePassword }},{{ admin.AdminUser.includeSystemAlarmsInEmail }},{{ admin.AdminUser.externalUser }},{{ admin.AdminUser.inactiveAccountNeverDisabled }},{{ admin.AdminUser.adminGroups }}
+{%- endfor %}
+{% else %}{% if filetype_loop == 1 %}
+# ISE Admin Users
+| Name | ID | Description | Enabled | Change Password | Include System Alarms In Email | External User | Inactive Account Never Disabled | Admin Groups |
+| ---- | -- | ----------- | ------- | --------------- | ------------------------------ | ------------- | ------------------------------- | ------------ |
+{%- for admin in adminUsersDetails %}
+| {{ admin.AdminUser.name }} | {{ admin.AdminUser.id }} | {{ admin.AdminUser.description }} | {{ admin.AdminUser.enabled }} | {{ admin.AdminUser.changePassword }} | {{ admin.AdminUser.includeSystemAlarmsInEmail }} | {{ admin.AdminUser.externalUser }} | {{ admin.AdminUser.inactiveAccountNeverDisabled }} | {{ admin.AdminUser.adminGroups }} |
+{%- endfor %}
+{% else %}{% if filetype_loop == 2 %}
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/colreorder/1.5.4/js/dataTables.colReorder.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/keytable/2.6.4/js/dataTables.keyTable.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.1.9/js/dataTables.fixedHeader.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.9/css/fixedHeader.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/keytable/2.6.4/css/keyTable.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+</head>
+<body>
+<h1>ISE Admin Users</h1>
+<table id = "ise">
+  <tr>
+    <th>Name</th>
+    <th>ID</th>
+    <th>Description</th>
+    <th>Enabled</th>
+    <th>Change Password</th>
+    <th>Include System Alarms In Email</th>
+    <th>External User</th>
+    <th>Inactive Account Never Disabled</th>
+    <th>Admin Groups</th>
+  </tr>
+{%- for admin in adminUsersDetails %}  
+  <tr>
+    <td>{{ admin.AdminUser.name }}</td>
+    <td>{{ admin.AdminUser.id }}</td>
+    <td>{{ admin.AdminUser.description }}</td>
+    <td>{{ admin.AdminUser.enabled }}</td>
+    <td>{{ admin.AdminUser.changePassword }}</td>
+    <td>{{ admin.AdminUser.includeSystemAlarmsInEmail }}</td>
+    <td>{{ admin.AdminUser.externalUser }}</td>
+    <td>{{ admin.AdminUser.inactiveAccountNeverDisabled }}</td>
+    <td>{{ admin.AdminUser.adminGroups }}</td>
+  </tr>
+{%- endfor %}
+</table>
+<script type = "text/javascript">
+  $(document).ready(function(){
+    $('#ise thead tr')
+    .clone(true)
+    .addClass('filters')
+    .appendTo('#ise thead');
+
+    var table = $('#ise').DataTable({
+        keys: true,
+        dom: 'Bfrtip',
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],
+            [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        buttons: [
+        'pageLength','colvis','copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        colReorder: true,
+        select: true,            
+        orderCellsTop: true,
+        fixedHeader: true,
+        initComplete: function () {
+        var api = this.api();
+
+        // For each column
+        api
+            .columns()
+            .eq(0)
+            .each(function (colIdx) {
+                // Set the header cell to contain the input element
+                var cell = $('.filters th').eq(
+                    $(api.column(colIdx).header()).index()
+                );
+                var title = $(cell).text();
+                $(cell).html('<input type="text" placeholder="' + title + '" />');
+
+                // On every keypress in this input
+                $(
+                    'input',
+                    $('.filters th').eq($(api.column(colIdx).header()).index())
+                )
+                    .off('keyup change')
+                    .on('keyup change', function (e) {
+                        e.stopPropagation();
+
+                        // Get the search value
+                        $(this).attr('title', $(this).val());
+                        var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                        var cursorPosition = this.selectionStart;
+                        // Search the column for that value
+                        api
+                            .column(colIdx)
+                            .search(
+                                this.value != ''
+                                    ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                    : '',
+                                this.value != '',
+                                this.value == ''
+                            )
+                            .draw();
+
+                        $(this)
+                            .focus()[0]
+                            .setSelectionRange(cursorPosition, cursorPosition);
+                    });
+            });
+    },
+});
+});        
+</script>
+</body></html>
+{%- else %}
+# ISE Administrators
+{%- for admin in adminUsersDetails %}
+## {{ admin.AdminUser.name }}
+### ID: {{ admin.AdminUser.id }}
+### Description: {{ admin.AdminUser.description }}
+### Enabled: {{ admin.AdminUser.enabled }}
+### Change Password: {{ admin.AdminUser.changePassword }}
+### Include System Alarms In Email: {{ admin.AdminUser.includeSystemAlarmsInEmail }}
+### External User: {{ admin.AdminUser.externalUser }}
+### Inactive Account Never Disabled: {{ admin.AdminUser.inactiveAccountNeverDisabled }}
+### Admin Groups: {{ admin.AdminUser.adminGroups }}
+{%- endfor %}
+{%- endif %}{% endif %}{% endif %}

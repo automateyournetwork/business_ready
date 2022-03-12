@@ -1,0 +1,155 @@
+{% if filetype_loop == 0 %}Name,ID,Description,Access Type,AuthZ Profile Type,Track Movement,Agentless Posture,Service Template,Easy Wired Session Candidate,Dynamic ACL Name,Voice Domain Permission,Profile Name
+{%- for profile in authorizationProfile %}
+{{ profile.AuthorizationProfile.name }},{{ profile.AuthorizationProfile.id }},{{ profile.AuthorizationProfile.description }},{{ profile.AuthorizationProfile.accessType }},{{ profile.AuthorizationProfile.authzProfileType }},{{ profile.AuthorizationProfile.trackMovement }},{{ profile.AuthorizationProfile.agentlessPosture }},{{ profile.AuthorizationProfile.serviceTemplate }},{{ profile.AuthorizationProfile.easywiredSessionCandidate }},{{ profile.AuthorizationProfile.daclName }},{{ profile.AuthorizationProfile.voiceDomainPermission }},{{ profile.AuthorizationProfile.profileName }}
+{%- endfor %}
+{% else %}{% if filetype_loop == 1 %}
+# ISE Authorization Profile 
+| Name | ID | Description | Access Type | AuthZ Profile Type | Track Movement | Agentless Posture | Service Template | Easy Wired Session Candidate | Dynamic ACL Name | Voice Domain Permission | Profile Name |
+| ---- | -- | ----------- | ----------- | ------------------ | -------------- | ----------------- | ---------------- | ---------------------------- | ---------------- | ----------------------- | ------------ |
+{%- for profile in authorizationProfile %}
+| {{ profile.AuthorizationProfile.name }} | {{ profile.AuthorizationProfile.id }} | {{ profile.AuthorizationProfile.description }} | {{ profile.AuthorizationProfile.accessType }} | {{ profile.AuthorizationProfile.authzProfileType }} | {{ profile.AuthorizationProfile.trackMovement }} | {{ profile.AuthorizationProfile.agentlessPosture }} | {{ profile.AuthorizationProfile.serviceTemplate }} | {{ profile.AuthorizationProfile.easywiredSessionCandidate }} | {{ profile.AuthorizationProfile.daclName }} | {{ profile.AuthorizationProfile.voiceDomainPermission }} | {{ profile.AuthorizationProfile.profileName }} |
+{%- endfor %}
+{% else %}{% if filetype_loop == 2 %}
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/colreorder/1.5.4/js/dataTables.colReorder.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/keytable/2.6.4/js/dataTables.keyTable.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.1.9/js/dataTables.fixedHeader.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.9/css/fixedHeader.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/keytable/2.6.4/css/keyTable.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+</head>
+<body>
+<h1>ISE Authorization Profile</h1>
+<table id = "ise">
+  <tr>
+    <th>Name</th>
+    <th>ID</th>
+    <th>Description</th>
+    <th>Access Type</th>
+    <th>AuthZ Profile Type</th>
+    <th>Track Movement</th>
+    <th>Agentless Posture</th>
+    <th>Service Template</th>
+    <th>Easy Wired Session Candidate</th>
+    <th>Dynamic ACL Name</th>
+    <th>Voice Domain Permission</th>
+    <th>Profile Name</th>
+  </tr>
+{%- for profile in authorizationProfile %}  
+  <tr>
+    <td>{{ profile.AuthorizationProfile.name }}</td>
+    <td>{{ profile.AuthorizationProfile.id }}</td>
+    <td>{{ profile.AuthorizationProfile.description }}</td>
+    <td>{{ profile.AuthorizationProfile.accessType }}</td>
+    <td>{{ profile.AuthorizationProfile.authzProfileType }}</td>
+    <td>{{ profile.AuthorizationProfile.trackMovement }}</td>
+    <td>{{ profile.AuthorizationProfile.agentlessPosture }}</td>
+    <td>{{ profile.AuthorizationProfile.serviceTemplate }}</td>
+    <td>{{ profile.AuthorizationProfile.easywiredSessionCandidate }}</td>
+    <td>{{ profile.AuthorizationProfile.daclName }}</td>
+    <td>{{ profile.AuthorizationProfile.voiceDomainPermission }}</td>
+    <td>{{ profile.AuthorizationProfile.profileName }}</td>
+  </tr>
+{%- endfor %}  
+</table>
+<script type = "text/javascript">
+  $(document).ready(function(){
+    $('#ise thead tr')
+    .clone(true)
+    .addClass('filters')
+    .appendTo('#ise thead');
+
+    var table = $('#ise').DataTable({
+        keys: true,
+        dom: 'Bfrtip',
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],
+            [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        buttons: [
+        'pageLength','colvis','copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        colReorder: true,
+        select: true,            
+        orderCellsTop: true,
+        fixedHeader: true,
+        initComplete: function () {
+        var api = this.api();
+
+        // For each column
+        api
+            .columns()
+            .eq(0)
+            .each(function (colIdx) {
+                // Set the header cell to contain the input element
+                var cell = $('.filters th').eq(
+                    $(api.column(colIdx).header()).index()
+                );
+                var title = $(cell).text();
+                $(cell).html('<input type="text" placeholder="' + title + '" />');
+
+                // On every keypress in this input
+                $(
+                    'input',
+                    $('.filters th').eq($(api.column(colIdx).header()).index())
+                )
+                    .off('keyup change')
+                    .on('keyup change', function (e) {
+                        e.stopPropagation();
+
+                        // Get the search value
+                        $(this).attr('title', $(this).val());
+                        var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                        var cursorPosition = this.selectionStart;
+                        // Search the column for that value
+                        api
+                            .column(colIdx)
+                            .search(
+                                this.value != ''
+                                    ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                    : '',
+                                this.value != '',
+                                this.value == ''
+                            )
+                            .draw();
+
+                        $(this)
+                            .focus()[0]
+                            .setSelectionRange(cursorPosition, cursorPosition);
+                    });
+            });
+    },
+});
+});        
+</script>
+</body></html>
+{%- else %}
+# Authorization Profiles
+{%- for profile in authorizationProfile %}
+## {{ profile.AuthorizationProfile.name }}
+### ID: {{ profile.AuthorizationProfile.id }}
+### Description: {{ profile.AuthorizationProfile.description }}
+### Access Type: {{ profile.AuthorizationProfile.accessType }}
+### AuthZ Profile Type: {{ profile.AuthorizationProfile.authzProfileType }}
+### Track Movement: {{ profile.AuthorizationProfile.trackMovement }}
+### Agentless Posture: {{ profile.AuthorizationProfile.agentlessPosture }}
+### Service Template: {{ profile.AuthorizationProfile.serviceTemplate }}
+### Easy Wired Session Candidate: {{ profile.AuthorizationProfile.easywiredSessionCandidate }}
+### Dynamic ACL Name: {{ profile.AuthorizationProfile.daclName }}
+### Voice Domain Permission: {{ profile.AuthorizationProfile.voiceDomainPermission }}
+### Profile Name: {{ profile.AuthorizationProfile.profileName }}
+{%- endfor %}
+{%- endif %}{% endif %}{% endif %}

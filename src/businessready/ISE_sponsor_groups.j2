@@ -1,0 +1,217 @@
+{% if filetype_loop == 0 %}Name,ID,Description,Enabled,Default,Member Groups,Guest Types,Locations,Auto Notification,Import Multiple Accounts,Import Batch Size Limit,Create Random Accounts,Random Batch Size Limit,Specify Username Prefix,Set Future Start Date,Start Date Future Limit Days,Manage Permissions,Update Guest Contact Information,View Guest Passwords,Send SMS Notifications,Reset Guest Passwords,Extend Guest Accounts,Delete Guest Accounts,Suspend Guest Accounts,Require Suspension Reason,Reinstate Suspended Accounts,Approve Self Registered Guests,Limit Approval to Sponsored Guests,Access Via REST
+{%- for group in sponsorGroup %}
+{{ group.SponsorGroup.name }},{{ group.SponsorGroup.id }},{{ group.SponsorGroup.description | replace(","," ")}},{{ group.SponsorGroup.isEnabled }},{{ group.SponsorGroup.isDefaultGroup }},{%- for member in group.SponsorGroup.memberGroups %} {{ member }} {%- endfor %},{%- for type in group.SponsorGroup.guestTypes %}{{ type }} {%- endfor %},{%- for location in group.SponsorGroup.locations %} {{ location }} {%- endfor %},{{ group.SponsorGroup.autoNotification }},{{ group.SponsorGroup.createPermissions.canImportMultipleAccounts }},{{ group.SponsorGroup.createPermissions.importBatchSizeLimit }},{{ group.SponsorGroup.createPermissions.canCreateRandomAccounts }},{{ group.SponsorGroup.createPermissions.randomBatchSizeLimit }},{{ group.SponsorGroup.createPermissions.canSpecifyUsernamePrefix }},{{ group.SponsorGroup.createPermissions.canSetFutureStartDate }},{{ group.SponsorGroup.createPermissions.startDateFutureLimitDays }},{{ group.SponsorGroup.managePermission }},{{ group.SponsorGroup.otherPermissions.canUpdateGuestContactInfo }},{{ group.SponsorGroup.otherPermissions.canViewGuestPasswords }},{{ group.SponsorGroup.otherPermissions.canSendSmsNotifications }},{{ group.SponsorGroup.otherPermissions.canResetGuestPasswords }},{{ group.SponsorGroup.otherPermissions.canExtendGuestAccounts }},{{ group.SponsorGroup.otherPermissions.canDeleteGuestAccounts }},{{ group.SponsorGroup.otherPermissions.canSuspendGuestAccounts }},{{ group.SponsorGroup.otherPermissions.requireSuspensionReason }},{{ group.SponsorGroup.otherPermissions.canReinstateSuspendedAccounts }},{{ group.SponsorGroup.otherPermissions.canApproveSelfregGuests }},{{ group.SponsorGroup.otherPermissions.limitApprovalToSponsorsGuests }},{{ group.SponsorGroup.otherPermissions.canAccessViaRest }}
+{%- endfor %}
+{% else %}{% if filetype_loop == 1 %}
+# ISE Sponsor Groups
+| Name | ID | Description | Enabled | Default | Member Groups | Guest Types | Locations | Auto Notification | Import Multiple Accounts | Import Batch Size Limit | Create Random Accounts | Random Batch Size Limit | Specify Username Prefix | Set Future Start Date | Start Date Future Limit Days | Manage Permissions | Update Guest Contact Information | View Guest Passwords | Send SMS Notifications | Reset Guest Passwords | Extend Guest Accounts | Delete Guest Accounts | Suspend Guest Accounts | Require Suspension Reason | Reinstate Suspended Accounts | Approve Self Registered Guests | Limit Approval to Sponsored Guests | Access Via REST |
+| ---- | -- | ----------- | ------- | ------- | ------------- | ----------- | --------- | ----------------- | ------------------------ | ----------------------- | ---------------------- | ----------------------- | ----------------------- | --------------------- | ---------------------------- | ------------------ | -------------------------------- | -------------------- | ---------------------- | --------------------- | --------------------- | --------------------- | ---------------------- | ------------------------- | ---------------------------- | ------------------------------ | ---------------------------------- | --------------- |
+{%- for group in sponsorGroup %}
+| {{ group.SponsorGroup.name }} | {{ group.SponsorGroup.id }} | {{ group.SponsorGroup.description }} | {{ group.SponsorGroup.isEnabled }} | {{ group.SponsorGroup.isDefaultGroup }} | {%- for member in group.SponsorGroup.memberGroups %} {{ member }} {%- endfor %} | {%- for type in group.SponsorGroup.guestTypes %}{{ type }} {%- endfor %} | {%- for location in group.SponsorGroup.locations %} {{ location }} {%- endfor %} | {{ group.SponsorGroup.autoNotification }} | {{ group.SponsorGroup.createPermissions.canImportMultipleAccounts }} | {{ group.SponsorGroup.createPermissions.importBatchSizeLimit }} | {{ group.SponsorGroup.createPermissions.canCreateRandomAccounts }} | {{ group.SponsorGroup.createPermissions.randomBatchSizeLimit }} | {{ group.SponsorGroup.createPermissions.canSpecifyUsernamePrefix }} | {{ group.SponsorGroup.createPermissions.canSetFutureStartDate }} | {{ group.SponsorGroup.createPermissions.startDateFutureLimitDays }} | {{ group.SponsorGroup.managePermission }} | {{ group.SponsorGroup.otherPermissions.canUpdateGuestContactInfo }} | {{ group.SponsorGroup.otherPermissions.canViewGuestPasswords }} | {{ group.SponsorGroup.otherPermissions.canSendSmsNotifications }} | {{ group.SponsorGroup.otherPermissions.canResetGuestPasswords }} | {{ group.SponsorGroup.otherPermissions.canExtendGuestAccounts }} | {{ group.SponsorGroup.otherPermissions.canDeleteGuestAccounts }} | {{ group.SponsorGroup.otherPermissions.canSuspendGuestAccounts }} | {{ group.SponsorGroup.otherPermissions.requireSuspensionReason }} | {{ group.SponsorGroup.otherPermissions.canReinstateSuspendedAccounts }} | {{ group.SponsorGroup.otherPermissions.canApproveSelfregGuests }} | {{ group.SponsorGroup.otherPermissions.limitApprovalToSponsorsGuests }} | {{ group.SponsorGroup.otherPermissions.canAccessViaRest }} |
+{%- endfor %}
+{% else %}{% if filetype_loop == 2 %}
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/colreorder/1.5.4/js/dataTables.colReorder.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/keytable/2.6.4/js/dataTables.keyTable.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.1.9/js/dataTables.fixedHeader.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.9/css/fixedHeader.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/keytable/2.6.4/css/keyTable.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+</head>
+<body>
+<h1>ISE sponsor Groups</h1>
+<table id = "ise">
+  <tr>
+    <th>Name</th>
+    <th>ID</th>
+    <th>Description</th>
+    <th>Enabled</th>
+    <th>Default</th>
+    <th>Member Groups</th>
+    <th>Guest Types</th>
+    <th>Locations</th>
+    <th>Auto Notification</th>
+    <th>Import Multiple Accounts</th>
+    <th>Import Batch Size Limit</th>
+    <th>Create Random Accounts</th>
+    <th>Random Batch Size Limit</th>
+    <th>Specify Username Prefix</th>
+    <th>Set Future Start Date</th>
+    <th>Start Date Future Limit Days</th>
+    <th>Manage Permissions</th>
+    <th>Update Guest Contact Information</th>
+    <th>View Guest Passwords</th>
+    <th>Send SMS Notifications</th>
+    <th>Reset Guest Passwords</th>
+    <th>Extend Guest Accounts</th>
+    <th>Delete Guest Accounts</th>
+    <th>Suspend Guest Accounts</th>
+    <th>Require Suspension Reason</th>
+    <th>Reinstate Suspended Accounts</th>
+    <th>Approve Self Registered Guests</th>
+    <th>Limit Approval to Sponsored Guests</th>
+    <th>Access Via REST</th>
+  </tr>
+{%- for group in sponsorGroup %}  
+  <tr>
+    <td>{{ group.SponsorGroup.name }}</td>
+    <td>{{ group.SponsorGroup.id }}</td>
+    <td>{{ group.SponsorGroup.description }}</td>
+    <td>{{ group.SponsorGroup.isEnabled }}</td>
+    <td>{{ group.SponsorGroup.isDefaultGroup }}</td>
+    <td>{%- for member in group.SponsorGroup.memberGroups %} {{ member }} {%- endfor %}</td>
+    <td>{%- for type in group.SponsorGroup.guestTypes %}{{ type }} {%- endfor %}</td>
+    <td>{%- for location in group.SponsorGroup.locations %} {{ location }} {%- endfor %}</td>
+    <td>{{ group.SponsorGroup.autoNotification }}</td>
+    <td>{{ group.SponsorGroup.createPermissions.canImportMultipleAccounts }}</td>
+    <td>{{ group.SponsorGroup.createPermissions.importBatchSizeLimit }}</td>
+    <td>{{ group.SponsorGroup.createPermissions.canCreateRandomAccounts }}</td>
+    <td>{{ group.SponsorGroup.createPermissions.randomBatchSizeLimit }}</td>
+    <td>{{ group.SponsorGroup.createPermissions.canSpecifyUsernamePrefix }}</td>
+    <td>{{ group.SponsorGroup.createPermissions.canSetFutureStartDate }}</td>
+    <td>{{ group.SponsorGroup.createPermissions.startDateFutureLimitDays }}</td>
+    <td>{{ group.SponsorGroup.managePermission }}</td>
+    <td>{{ group.SponsorGroup.otherPermissions.canUpdateGuestContactInfo }}</td>
+    <td>{{ group.SponsorGroup.otherPermissions.canViewGuestPasswords }}</td>
+    <td>{{ group.SponsorGroup.otherPermissions.canSendSmsNotifications }}</td>
+    <td>{{ group.SponsorGroup.otherPermissions.canResetGuestPasswords }}</td>
+    <td>{{ group.SponsorGroup.otherPermissions.canExtendGuestAccounts }}</td>
+    <td>{{ group.SponsorGroup.otherPermissions.canDeleteGuestAccounts }}</td>
+    <td>{{ group.SponsorGroup.otherPermissions.canSuspendGuestAccounts }}</td>
+    <td>{{ group.SponsorGroup.otherPermissions.requireSuspensionReason }}</td>
+    <td>{{ group.SponsorGroup.otherPermissions.canReinstateSuspendedAccounts }}</td>
+    <td>{{ group.SponsorGroup.otherPermissions.canApproveSelfregGuests }}</td>
+    <td>{{ group.SponsorGroup.otherPermissions.limitApprovalToSponsorsGuests }}</td>
+    <td>{{ group.SponsorGroup.otherPermissions.canAccessViaRest }}</td>
+  </tr>
+{%- endfor %}  
+</table>
+<script type = "text/javascript">
+  $(document).ready(function(){
+    $('#ise thead tr')
+    .clone(true)
+    .addClass('filters')
+    .appendTo('#ise thead');
+
+    var table = $('#ise').DataTable({
+        keys: true,
+        dom: 'Bfrtip',
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],
+            [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        buttons: [
+        'pageLength','colvis','copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        colReorder: true,
+        select: true,            
+        orderCellsTop: true,
+        fixedHeader: true,
+        initComplete: function () {
+        var api = this.api();
+
+        // For each column
+        api
+            .columns()
+            .eq(0)
+            .each(function (colIdx) {
+                // Set the header cell to contain the input element
+                var cell = $('.filters th').eq(
+                    $(api.column(colIdx).header()).index()
+                );
+                var title = $(cell).text();
+                $(cell).html('<input type="text" placeholder="' + title + '" />');
+
+                // On every keypress in this input
+                $(
+                    'input',
+                    $('.filters th').eq($(api.column(colIdx).header()).index())
+                )
+                    .off('keyup change')
+                    .on('keyup change', function (e) {
+                        e.stopPropagation();
+
+                        // Get the search value
+                        $(this).attr('title', $(this).val());
+                        var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                        var cursorPosition = this.selectionStart;
+                        // Search the column for that value
+                        api
+                            .column(colIdx)
+                            .search(
+                                this.value != ''
+                                    ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                    : '',
+                                this.value != '',
+                                this.value == ''
+                            )
+                            .draw();
+
+                        $(this)
+                            .focus()[0]
+                            .setSelectionRange(cursorPosition, cursorPosition);
+                    });
+            });
+    },
+});
+});        
+</script>
+</body></html>
+{%- else %}
+# ISE Sponsor Groups
+{%- for group in sponsorGroup %}
+## {{ group.SponsorGroup.name }}
+### ID: {{ group.SponsorGroup.id }}
+### Description: {{ group.SponsorGroup.description }}
+### Enabled: {{ group.SponsorGroup.isEnabled }}
+### Default: {{ group.SponsorGroup.isDefaultGroup }}
+### Member Groups
+{%-     for member in group.SponsorGroup.memberGroups %}
+#### {{ member }}
+{%-     endfor %}
+### Guest Types
+{%-     for type in group.SponsorGroup.guestTypes %}
+#### {{ type }}
+{%-     endfor %}
+### Locations
+{%-     for location in group.SponsorGroup.locations %}
+#### {{ location }}
+{%-     endfor %}
+### Auto Notification: {{ group.SponsorGroup.autoNotification }}
+### Create Permissions
+#### Import Multiple Accounts: {{ group.SponsorGroup.createPermissions.canImportMultipleAccounts }}
+#### Import Batch Size Limit: {{ group.SponsorGroup.createPermissions.importBatchSizeLimit }}
+#### Create Random Accounts: {{ group.SponsorGroup.createPermissions.canCreateRandomAccounts }}
+#### Random Batch Size Limit: {{ group.SponsorGroup.createPermissions.randomBatchSizeLimit }}
+#### Specify Username Prefix: {{ group.SponsorGroup.createPermissions.canSpecifyUsernamePrefix }}
+#### Set Future Start Date: {{ group.SponsorGroup.createPermissions.canSetFutureStartDate }}
+#### Start Date Future Limit Days: {{ group.SponsorGroup.createPermissions.startDateFutureLimitDays }}
+### Manage Permissions: {{ group.SponsorGroup.managePermission }}
+### Additonal Permissions
+#### Update Guest Contact Information: {{ group.SponsorGroup.otherPermissions.canUpdateGuestContactInfo }}
+#### View Guest Passwords: {{ group.SponsorGroup.otherPermissions.canViewGuestPasswords }}
+#### Send SMS Notifications: {{ group.SponsorGroup.otherPermissions.canSendSmsNotifications }}
+#### Reset Guest Passwords: {{ group.SponsorGroup.otherPermissions.canResetGuestPasswords }}
+#### Extend Guest Accounts: {{ group.SponsorGroup.otherPermissions.canExtendGuestAccounts }}
+#### Delete Guest Accounts: {{ group.SponsorGroup.otherPermissions.canDeleteGuestAccounts }}
+#### Suspend Guest Accounts: {{ group.SponsorGroup.otherPermissions.canSuspendGuestAccounts }}
+#### Require Suspension Reason: {{ group.SponsorGroup.otherPermissions.requireSuspensionReason }}
+#### Reinstate Suspended Accounts: {{ group.SponsorGroup.otherPermissions.canReinstateSuspendedAccounts }}
+#### Approve Self Registered Guests: {{ group.SponsorGroup.otherPermissions.canApproveSelfregGuests }}
+#### Limit Approval to Sponsored Guests: {{ group.SponsorGroup.otherPermissions.limitApprovalToSponsorsGuests }}
+#### Access Via REST: {{ group.SponsorGroup.otherPermissions.canAccessViaRest }}
+{%- endfor %}
+{%- endif %}{% endif %}{% endif %}

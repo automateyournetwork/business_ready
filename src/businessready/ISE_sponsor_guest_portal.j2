@@ -1,0 +1,287 @@
+{% if filetype_loop == 0 %}Name,ID,Description,Portal Type,Test URL,HTTPS Port,Interfaces,Certificate Group Tag,Authentication Method,Assigned Guest Type For Employee,Display Language,Fallback Language,Always Used Language,Required Access Code,Max Failed Attempts Before Rate Limit,Time Between Logins During Rate Limit,Include AUP,Allowed Guest to Create Accounts,Allowed Forgot Password,Allowed Guest to Change Password,Allowed Alternative Guest Portal,Include,Require Scrolling,Display Frequency,Allow Password Change at First Login,Auto Register Guest Devices,Allow Guest to Register Devices,Enable,Enable Guest Access,Require MDM,Include AUP,AUP Display,Require AUP Acceptance,Require Scrolling,Show Device ID,Endpoint Identity Group ID,Success Redirect,Include Post Access Banner,Success Redirect,Support Info Page,MAC Address,IP Address,Browser User Agent,Policy Server,Failure Code,Empty Field,Portal Theme Name,Portal Theme ID,Portal Language,Banner Title,Contact Text,Footer
+{%- for portal in sponsorGuestPortal %}
+{{ portal.SponsoredGuestPortal.name }},{{ portal.SponsoredGuestPortal.id }},{{ portal.SponsoredGuestPortal.description | replace(","," ")}},{{ portal.SponsoredGuestPortal.portalType }},{{ portal.SponsoredGuestPortal.portalTestUrl }},{{ portal.SponsoredGuestPortal.settings.portalSettings.httpsPort }},{%- for interface in portal.SponsoredGuestPortal.settings.portalSettings.allowedInterfaces %} {{ interface }} {%-    endfor%},{{ portal.SponsoredGuestPortal.settings.portalSettings.certificateGroupTag }},{{ portal.SponsoredGuestPortal.settings.portalSettings.authenticationMethod }},{{ portal.SponsoredGuestPortal.settings.portalSettings.assignedGuestTypeForEmployee }},{{ portal.SponsoredGuestPortal.settings.portalSettings.displayLang }},{{ portal.SponsoredGuestPortal.settings.portalSettings.fallbackLanguage }},{{ portal.SponsoredGuestPortal.settings.portalSettings.alwaysUsedLanguage }},{{ portal.SponsoredGuestPortal.settings.loginPageSettings.requireAccessCode }},{{ portal.SponsoredGuestPortal.settings.loginPageSettings.maxFailedAttemptsBeforeRateLimit }},{{ portal.SponsoredGuestPortal.settings.loginPageSettings.timeBetweenLoginsDuringRateLimit }},{{ portal.SponsoredGuestPortal.settings.loginPageSettings.includeAup }},{{ portal.SponsoredGuestPortal.settings.loginPageSettings.allowGuestToCreateAccounts }},{{ portal.SponsoredGuestPortal.settings.loginPageSettings.allowForgotPassword }},{{ portal.SponsoredGuestPortal.settings.loginPageSettings.allowGuestToChangePassword }},{{ portal.SponsoredGuestPortal.settings.loginPageSettings.allowAlternateGuestPortal }},{{ portal.SponsoredGuestPortal.settings.aupSettings.includeAup }},{{ portal.SponsoredGuestPortal.settings.aupSettings.requireScrolling }},{{ portal.SponsoredGuestPortal.settings.aupSettings.displayFrequency }},{{ portal.SponsoredGuestPortal.settings.guestChangePasswordSettings.allowChangePasswdAtFirstLogin }},{{ portal.SponsoredGuestPortal.settings.guestDeviceRegistrationSettings.autoRegisterGuestDevices }},{{ portal.SponsoredGuestPortal.settings.guestDeviceRegistrationSettings.allowGuestsToRegisterDevices }},{{ portal.SponsoredGuestPortal.settings.byodSettings.byodWelcomeSettings.enableBYOD }},{{ portal.SponsoredGuestPortal.settings.byodSettings.byodWelcomeSettings.enableGuestAccess }},{{ portal.SponsoredGuestPortal.settings.byodSettings.byodWelcomeSettings.requireMDM }},{{ portal.SponsoredGuestPortal.settings.byodSettings.byodWelcomeSettings.includeAup }},{{ portal.SponsoredGuestPortal.settings.byodSettings.byodWelcomeSettings.aupDisplay }},{{ portal.SponsoredGuestPortal.settings.byodSettings.byodWelcomeSettings.requireAupAcceptance }},{{ portal.SponsoredGuestPortal.settings.byodSettings.byodWelcomeSettings.requireScrolling }},{{ portal.SponsoredGuestPortal.settings.byodSettings.byodRegistrationSettings.showDeviceID }},{{ portal.SponsoredGuestPortal.settings.byodSettings.byodRegistrationSettings.endPointIdentityGroupId }},{{ portal.SponsoredGuestPortal.settings.byodSettings.byodRegistrationSuccessSettings.successRedirect }},{{ portal.SponsoredGuestPortal.settings.postLoginBannerSettings.includePostAccessBanner }},{{ portal.SponsoredGuestPortal.settings.authSuccessSettings.successRedirect }},{{ portal.SponsoredGuestPortal.settings.supportInfoSettings.includeSupportInfoPage }},{{ portal.SponsoredGuestPortal.settings.supportInfoSettings.includeMacAddr }},{{ portal.SponsoredGuestPortal.settings.supportInfoSettings.includeIpAddress }},{{ portal.SponsoredGuestPortal.settings.supportInfoSettings.includeBrowserUserAgent }},{{ portal.SponsoredGuestPortal.settings.supportInfoSettings.includePolicyServer }},{{ portal.SponsoredGuestPortal.settings.supportInfoSettings.includeFailureCode }},{{ portal.SponsoredGuestPortal.settings.supportInfoSettings.emptyFieldDisplay }},{{ portal.SponsoredGuestPortal.customizations.portalTheme.name }},{{ portal.SponsoredGuestPortal.customizations.portalTheme.id }},{{ portal.SponsoredGuestPortal.customizations.language.viewLanguage }},{{ portal.SponsoredGuestPortal.customizations.globalCustomizations.bannerTitle }},{{ portal.SponsoredGuestPortal.customizations.globalCustomizations.contactText }},{{ portal.SponsoredGuestPortal.customizations.globalCustomizations.footerElement }}
+{%- endfor %}
+{% else %}{% if filetype_loop == 1 %}
+# ISE Sponsed Guest Portal
+| Name | ID | Description | Portal Type | Test URL | HTTPS Port | Interfaces | Certificate Group Tag | Authentication Method | Assigned Guest Type For Employee | Display Language | Fallback Language | Always Used Language | Required Access Code | Max Failed Attempts Before Rate Limit | Time Between Logins During Rate Limit | Include AUP | Allowed Guest to Create Accounts | Allowed Forgot Password | Allowed Guest to Change Password | Allowed Alternative Guest Portal | Include | Require Scrolling | Display Frequency | Allow Password Change at First Login | Auto Register Guest Devices | Allow Guest to Register Devices | Enable | Enable Guest Access | Require MDM | Include AUP | AUP Display | Require AUP Acceptance | Require Scrolling | Show Device ID | Endpoint Identity Group ID | Success Redirect | Include Post Access Banner | Success Redirect | Support Info Page | MAC Address | IP Address | Browser User Agent | Policy Server | Failure Code | Empty Field | Portal Theme Name | Portal Theme ID | Portal Language | Banner Title | Contact Text | Footer |
+| ---- | -- | ----------- | ----------- | -------- | ---------- | ---------- | --------------------- | --------------------- | -------------------------------- | ---------------- | ----------------- | -------------------- | -------------------- | ------------------------------------- | ------------------------------------- | ----------- | -------------------------------- | ----------------------- | -------------------------------- | -------------------------------- | ------- | ----------------- | ----------------- | ------------------------------------ | --------------------------- | ------------------------------- | ------ | ------------------- | ----------- | ----------- | ----------- | ---------------------- | ----------------- | -------------- | -------------------------- | ---------------- | -------------------------- | ---------------- | ----------------- | ----------- | ---------- | ------------------ | ------------- | ------------ | ----------- | ----------------- | --------------- | --------------- | ------------ | ------------ | ------ |
+{%- for portal in sponsorGuestPortal %}
+| {{ portal.SponsoredGuestPortal.name }} | {{ portal.SponsoredGuestPortal.id }} | {{ portal.SponsoredGuestPortal.description }} | {{ portal.SponsoredGuestPortal.portalType }} | {{ portal.SponsoredGuestPortal.portalTestUrl }} | {{ portal.SponsoredGuestPortal.settings.portalSettings.httpsPort }} | {%- for interface in portal.SponsoredGuestPortal.settings.portalSettings.allowedInterfaces %} {{ interface }} {%-    endfor%} | {{ portal.SponsoredGuestPortal.settings.portalSettings.certificateGroupTag }} | {{ portal.SponsoredGuestPortal.settings.portalSettings.authenticationMethod }} | {{ portal.SponsoredGuestPortal.settings.portalSettings.assignedGuestTypeForEmployee }} | {{ portal.SponsoredGuestPortal.settings.portalSettings.displayLang }} | {{ portal.SponsoredGuestPortal.settings.portalSettings.fallbackLanguage }} | {{ portal.SponsoredGuestPortal.settings.portalSettings.alwaysUsedLanguage }} | {{ portal.SponsoredGuestPortal.settings.loginPageSettings.requireAccessCode }} | {{ portal.SponsoredGuestPortal.settings.loginPageSettings.maxFailedAttemptsBeforeRateLimit }} | {{ portal.SponsoredGuestPortal.settings.loginPageSettings.timeBetweenLoginsDuringRateLimit }} | {{ portal.SponsoredGuestPortal.settings.loginPageSettings.includeAup }} | {{ portal.SponsoredGuestPortal.settings.loginPageSettings.allowGuestToCreateAccounts }} | {{ portal.SponsoredGuestPortal.settings.loginPageSettings.allowForgotPassword }} | {{ portal.SponsoredGuestPortal.settings.loginPageSettings.allowGuestToChangePassword }} | {{ portal.SponsoredGuestPortal.settings.loginPageSettings.allowAlternateGuestPortal }} | {{ portal.SponsoredGuestPortal.settings.aupSettings.includeAup }} | {{ portal.SponsoredGuestPortal.settings.aupSettings.requireScrolling }} | {{ portal.SponsoredGuestPortal.settings.aupSettings.displayFrequency }} | {{ portal.SponsoredGuestPortal.settings.guestChangePasswordSettings.allowChangePasswdAtFirstLogin }} | {{ portal.SponsoredGuestPortal.settings.guestDeviceRegistrationSettings.autoRegisterGuestDevices }} | {{ portal.SponsoredGuestPortal.settings.guestDeviceRegistrationSettings.allowGuestsToRegisterDevices }} | {{ portal.SponsoredGuestPortal.settings.byodSettings.byodWelcomeSettings.enableBYOD }} | {{ portal.SponsoredGuestPortal.settings.byodSettings.byodWelcomeSettings.enableGuestAccess }} | {{ portal.SponsoredGuestPortal.settings.byodSettings.byodWelcomeSettings.requireMDM }} | {{ portal.SponsoredGuestPortal.settings.byodSettings.byodWelcomeSettings.includeAup }} | {{ portal.SponsoredGuestPortal.settings.byodSettings.byodWelcomeSettings.aupDisplay }} | {{ portal.SponsoredGuestPortal.settings.byodSettings.byodWelcomeSettings.requireAupAcceptance }} | {{ portal.SponsoredGuestPortal.settings.byodSettings.byodWelcomeSettings.requireScrolling }} | {{ portal.SponsoredGuestPortal.settings.byodSettings.byodRegistrationSettings.showDeviceID }} | {{ portal.SponsoredGuestPortal.settings.byodSettings.byodRegistrationSettings.endPointIdentityGroupId }} | {{ portal.SponsoredGuestPortal.settings.byodSettings.byodRegistrationSuccessSettings.successRedirect }} | {{ portal.SponsoredGuestPortal.settings.postLoginBannerSettings.includePostAccessBanner }} | {{ portal.SponsoredGuestPortal.settings.authSuccessSettings.successRedirect }} | {{ portal.SponsoredGuestPortal.settings.supportInfoSettings.includeSupportInfoPage }} | {{ portal.SponsoredGuestPortal.settings.supportInfoSettings.includeMacAddr }} | {{ portal.SponsoredGuestPortal.settings.supportInfoSettings.includeIpAddress }} | {{ portal.SponsoredGuestPortal.settings.supportInfoSettings.includeBrowserUserAgent }} | {{ portal.SponsoredGuestPortal.settings.supportInfoSettings.includePolicyServer }} | {{ portal.SponsoredGuestPortal.settings.supportInfoSettings.includeFailureCode }} | {{ portal.SponsoredGuestPortal.settings.supportInfoSettings.emptyFieldDisplay }} | {{ portal.SponsoredGuestPortal.customizations.portalTheme.name }} | {{ portal.SponsoredGuestPortal.customizations.portalTheme.id }} | {{ portal.SponsoredGuestPortal.customizations.language.viewLanguage }} | {{ portal.SponsoredGuestPortal.customizations.globalCustomizations.bannerTitle }} | {{ portal.SponsoredGuestPortal.customizations.globalCustomizations.contactText }} | {{ portal.SponsoredGuestPortal.customizations.globalCustomizations.footerElement }} |
+{%- endfor %}
+{% else %}{% if filetype_loop == 2 %}
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/colreorder/1.5.4/js/dataTables.colReorder.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/keytable/2.6.4/js/dataTables.keyTable.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.1.9/js/dataTables.fixedHeader.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.9/css/fixedHeader.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/keytable/2.6.4/css/keyTable.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+</head>
+<body>
+<h1>ISE Sponsored Guest Portal</h1>
+<table id = "ise">
+  <tr>
+    <th>Name</th>
+    <th>ID</th>
+    <th>Description</th>
+    <th>Portal Type</th>
+    <th>Test URL</th>
+    <th>HTTPS Port</th>
+    <th>Interfaces</th>
+    <th>Certificate Group Tag</th>
+    <th>Authentication Method</th>
+    <th>Assigned Guest Type For Employee</th>
+    <th>Display Language</th>
+    <th>Fallback Language</th>
+    <th>Always Used Language</th>
+    <th>Required Access Code</th>
+    <th>Max Failed Attempts Before Rate Limit</th>
+    <th>Time Between Logins During Rate Limit</th>
+    <th>Include AUP</th>
+    <th>Allowed Guest to Create Accounts</th>
+    <th>Allowed Forgot Password</th>
+    <th>Allowed Guest to Change Password</th>
+    <th>Allowed Alternative Guest Portal</th>
+    <th>Include</th>
+    <th>Require Scrolling</th>
+    <th>Display Frequency</th>
+    <th>Allow Password Change at First Login</th>
+    <th>Auto Register Guest Devices</th>
+    <th>Allow Guest to Register Devices</th>
+    <th>Enable</th>
+    <th>Enable Guest Access</th>
+    <th>Require MDM</th>
+    <th>Include AUP</th>
+    <th>AUP Display</th>
+    <th>Require AUP Acceptance</th>
+    <th>Require Scrolling</th>
+    <th>Show Device ID</th>
+    <th>Endpoint Identity Group ID</th>
+    <th>Success Redirect</th>
+    <th>Include Post Access Banner</th>
+    <th>Success Redirect</th>
+    <th>Support Info Page</th>
+    <th>MAC Address</th>
+    <th>IP Address</th>
+    <th>Browser User Agent</th>
+    <th>Policy Server</th>
+    <th>Failure Code</th>
+    <th>Empty Field</th>
+    <th>Portal Theme Name</th>
+    <th>Portal Theme ID</th>
+    <th>Portal Language</th>
+    <th>Banner Title</th>
+    <th>Contact Text</th>
+    <th>Footer</th>
+  </tr>
+{%- for portal in sponsorGuestPortal %}  
+  <tr>
+    <td>{{ portal.SponsoredGuestPortal.name }}</td>
+    <td>{{ portal.SponsoredGuestPortal.id }}</td>
+    <td>{{ portal.SponsoredGuestPortal.description }}</td>
+    <td>{{ portal.SponsoredGuestPortal.portalType }}</td>
+    <td>{{ portal.SponsoredGuestPortal.portalTestUrl }}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.portalSettings.httpsPort }}</td>
+    <td>{%- for interface in portal.SponsoredGuestPortal.settings.portalSettings.allowedInterfaces %} {{ interface }} {%-    endfor%}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.portalSettings.certificateGroupTag }}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.portalSettings.authenticationMethod }}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.portalSettings.assignedGuestTypeForEmployee }}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.portalSettings.displayLang }}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.portalSettings.fallbackLanguage }}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.portalSettings.alwaysUsedLanguage }}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.loginPageSettings.requireAccessCode }}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.loginPageSettings.maxFailedAttemptsBeforeRateLimit }}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.loginPageSettings.timeBetweenLoginsDuringRateLimit }}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.loginPageSettings.includeAup }}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.loginPageSettings.allowGuestToCreateAccounts }}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.loginPageSettings.allowForgotPassword }}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.loginPageSettings.allowGuestToChangePassword }}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.loginPageSettings.allowAlternateGuestPortal }}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.aupSettings.includeAup }}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.aupSettings.requireScrolling }}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.aupSettings.displayFrequency }}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.guestChangePasswordSettings.allowChangePasswdAtFirstLogin }}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.guestDeviceRegistrationSettings.autoRegisterGuestDevices }}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.guestDeviceRegistrationSettings.allowGuestsToRegisterDevices }}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.byodSettings.byodWelcomeSettings.enableBYOD }}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.byodSettings.byodWelcomeSettings.enableGuestAccess }}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.byodSettings.byodWelcomeSettings.requireMDM }}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.byodSettings.byodWelcomeSettings.includeAup }}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.byodSettings.byodWelcomeSettings.aupDisplay }}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.byodSettings.byodWelcomeSettings.requireAupAcceptance }}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.byodSettings.byodWelcomeSettings.requireScrolling }}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.byodSettings.byodRegistrationSettings.showDeviceID }}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.byodSettings.byodRegistrationSettings.endPointIdentityGroupId }}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.byodSettings.byodRegistrationSuccessSettings.successRedirect }}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.postLoginBannerSettings.includePostAccessBanner }}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.authSuccessSettings.successRedirect }}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.supportInfoSettings.includeSupportInfoPage }}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.supportInfoSettings.includeMacAddr }}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.supportInfoSettings.includeIpAddress }}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.supportInfoSettings.includeBrowserUserAgent }}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.supportInfoSettings.includePolicyServer }}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.supportInfoSettings.includeFailureCode }}</td>
+    <td>{{ portal.SponsoredGuestPortal.settings.supportInfoSettings.emptyFieldDisplay }}</td>
+    <td>{{ portal.SponsoredGuestPortal.customizations.portalTheme.name }}</td>
+    <td>{{ portal.SponsoredGuestPortal.customizations.portalTheme.id }}</td>
+    <td>{{ portal.SponsoredGuestPortal.customizations.language.viewLanguage }}</td>
+    <td>{{ portal.SponsoredGuestPortal.customizations.globalCustomizations.bannerTitle }}</td>
+    <td>{{ portal.SponsoredGuestPortal.customizations.globalCustomizations.contactText }}</td>
+    <td>{{ portal.SponsoredGuestPortal.customizations.globalCustomizations.footerElement }}</td>
+  </tr>
+{%- endfor %}  
+</table>
+<script type = "text/javascript">
+  $(document).ready(function(){
+    $('#ise thead tr')
+    .clone(true)
+    .addClass('filters')
+    .appendTo('#ise thead');
+
+    var table = $('#ise').DataTable({
+        keys: true,
+        dom: 'Bfrtip',
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],
+            [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        buttons: [
+        'pageLength','colvis','copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        colReorder: true,
+        select: true,            
+        orderCellsTop: true,
+        fixedHeader: true,
+        initComplete: function () {
+        var api = this.api();
+
+        // For each column
+        api
+            .columns()
+            .eq(0)
+            .each(function (colIdx) {
+                // Set the header cell to contain the input element
+                var cell = $('.filters th').eq(
+                    $(api.column(colIdx).header()).index()
+                );
+                var title = $(cell).text();
+                $(cell).html('<input type="text" placeholder="' + title + '" />');
+
+                // On every keypress in this input
+                $(
+                    'input',
+                    $('.filters th').eq($(api.column(colIdx).header()).index())
+                )
+                    .off('keyup change')
+                    .on('keyup change', function (e) {
+                        e.stopPropagation();
+
+                        // Get the search value
+                        $(this).attr('title', $(this).val());
+                        var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                        var cursorPosition = this.selectionStart;
+                        // Search the column for that value
+                        api
+                            .column(colIdx)
+                            .search(
+                                this.value != ''
+                                    ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                    : '',
+                                this.value != '',
+                                this.value == ''
+                            )
+                            .draw();
+
+                        $(this)
+                            .focus()[0]
+                            .setSelectionRange(cursorPosition, cursorPosition);
+                    });
+            });
+    },
+});
+});        
+</script>
+</body></html>
+{%- else %}
+## ISE Sponsored Guest Portal
+{%- for portal in sponsorGuestPortal %}
+### {{ portal.SponsoredGuestPortal.name }}
+#### ID: {{ portal.SponsoredGuestPortal.id }}
+#### Description: {{ portal.SponsoredGuestPortal.description }}
+#### Portal Type: {{ portal.SponsoredGuestPortal.portalType }}
+#### [Test URL]({{ portal.SponsoredGuestPortal.portalTestUrl }})
+#### Portal Settings
+##### HTTPS Port: {{ portal.SponsoredGuestPortal.settings.portalSettings.httpsPort }}
+{%-    for interface in portal.SponsoredGuestPortal.settings.portalSettings.allowedInterfaces %}
+##### Interface: {{ interface }}
+{%-    endfor%}
+##### Certificate Group Tag: {{ portal.SponsoredGuestPortal.settings.portalSettings.certificateGroupTag }}
+##### Authentication Method: {{ portal.SponsoredGuestPortal.settings.portalSettings.authenticationMethod }}
+##### Assigned Guest Type For Employee: {{ portal.SponsoredGuestPortal.settings.portalSettings.assignedGuestTypeForEmployee }}
+##### Display Language: {{ portal.SponsoredGuestPortal.settings.portalSettings.displayLang }}
+##### Fallback Language: {{ portal.SponsoredGuestPortal.settings.portalSettings.fallbackLanguage }}
+##### Always Used Language: {{ portal.SponsoredGuestPortal.settings.portalSettings.alwaysUsedLanguage }}
+#### Login Page Settings
+##### Required Access Code: {{ portal.SponsoredGuestPortal.settings.loginPageSettings.requireAccessCode }}
+##### Max Failed Attempts Before Rate Limit: {{ portal.SponsoredGuestPortal.settings.loginPageSettings.maxFailedAttemptsBeforeRateLimit }}
+##### Time Between Logins During Rate Limit: {{ portal.SponsoredGuestPortal.settings.loginPageSettings.timeBetweenLoginsDuringRateLimit }}
+##### Include AUP: {{ portal.SponsoredGuestPortal.settings.loginPageSettings.includeAup }}
+##### Allowed Guest to Create Accounts: {{ portal.SponsoredGuestPortal.settings.loginPageSettings.allowGuestToCreateAccounts }}
+##### Allowed Forgot Password: {{ portal.SponsoredGuestPortal.settings.loginPageSettings.allowForgotPassword }}
+##### Allowed Guest to Change Password: {{ portal.SponsoredGuestPortal.settings.loginPageSettings.allowGuestToChangePassword }}
+##### Allowed Alternative Guest Portal: {{ portal.SponsoredGuestPortal.settings.loginPageSettings.allowAlternateGuestPortal }}
+#### Acceptable Use Policy
+##### Include: {{ portal.SponsoredGuestPortal.settings.aupSettings.includeAup }}
+##### Require Scrolling: {{ portal.SponsoredGuestPortal.settings.aupSettings.requireScrolling }}
+##### Display Frequency: {{ portal.SponsoredGuestPortal.settings.aupSettings.displayFrequency }}
+#### Guest Change Password
+##### Allow Password Change at First Login: {{ portal.SponsoredGuestPortal.settings.guestChangePasswordSettings.allowChangePasswdAtFirstLogin }}
+#### Device Registration
+##### Auto Register Guest Devices: {{ portal.SponsoredGuestPortal.settings.guestDeviceRegistrationSettings.autoRegisterGuestDevices }}
+##### Allow Guest to Register Devices: {{ portal.SponsoredGuestPortal.settings.guestDeviceRegistrationSettings.allowGuestsToRegisterDevices }}
+#### Bring Your Own Device
+##### Enable: {{ portal.SponsoredGuestPortal.settings.byodSettings.byodWelcomeSettings.enableBYOD }}
+##### Enable Guest Access: {{ portal.SponsoredGuestPortal.settings.byodSettings.byodWelcomeSettings.enableGuestAccess }}
+##### Require MDM: {{ portal.SponsoredGuestPortal.settings.byodSettings.byodWelcomeSettings.requireMDM }}
+##### Include AUP: {{ portal.SponsoredGuestPortal.settings.byodSettings.byodWelcomeSettings.includeAup }}
+##### AUP Display: {{ portal.SponsoredGuestPortal.settings.byodSettings.byodWelcomeSettings.aupDisplay }}
+##### Require AUP Acceptance: {{ portal.SponsoredGuestPortal.settings.byodSettings.byodWelcomeSettings.requireAupAcceptance }}
+##### Require Scrolling: {{ portal.SponsoredGuestPortal.settings.byodSettings.byodWelcomeSettings.requireScrolling }}
+##### Show Device ID: {{ portal.SponsoredGuestPortal.settings.byodSettings.byodRegistrationSettings.showDeviceID }}
+##### Endpoint Identity Group ID: {{ portal.SponsoredGuestPortal.settings.byodSettings.byodRegistrationSettings.endPointIdentityGroupId }}
+##### Success Redirect: {{ portal.SponsoredGuestPortal.settings.byodSettings.byodRegistrationSuccessSettings.successRedirect }}
+#### Post Login Banner
+##### Include Post Access Banner: {{ portal.SponsoredGuestPortal.settings.postLoginBannerSettings.includePostAccessBanner }}
+#### Authentication Success
+##### Success Redirect: {{ portal.SponsoredGuestPortal.settings.authSuccessSettings.successRedirect }}
+#### Support Information
+##### Support Info Page: {{ portal.SponsoredGuestPortal.settings.supportInfoSettings.includeSupportInfoPage }}
+##### MAC Address: {{ portal.SponsoredGuestPortal.settings.supportInfoSettings.includeMacAddr }}
+##### IP Address: {{ portal.SponsoredGuestPortal.settings.supportInfoSettings.includeIpAddress }}
+##### Browser User Agent: {{ portal.SponsoredGuestPortal.settings.supportInfoSettings.includeBrowserUserAgent }}
+##### Policy Server: {{ portal.SponsoredGuestPortal.settings.supportInfoSettings.includePolicyServer }}
+##### Failure Code: {{ portal.SponsoredGuestPortal.settings.supportInfoSettings.includeFailureCode }}
+##### Empty Field: {{ portal.SponsoredGuestPortal.settings.supportInfoSettings.emptyFieldDisplay }}
+#### Customizations
+##### Portal Theme Name: {{ portal.SponsoredGuestPortal.customizations.portalTheme.name }}
+##### Portal Theme ID: {{ portal.SponsoredGuestPortal.customizations.portalTheme.id }}
+##### Portal Language: {{ portal.SponsoredGuestPortal.customizations.language.viewLanguage }}
+##### Banner Title: {{ portal.SponsoredGuestPortal.customizations.globalCustomizations.bannerTitle }}
+##### Contact Text: {{ portal.SponsoredGuestPortal.customizations.globalCustomizations.contactText }}
+##### Footer: {{ portal.SponsoredGuestPortal.customizations.globalCustomizations.footerElement }}
+{%- endfor %}
+{%- endif %}{% endif %}{% endif %}

@@ -1,0 +1,407 @@
+{% if filetype_loop == 0 %}Name,ID,Description,Process Host Lookup,Allow PAP ASCII,Allow CHAP,Allow MS CHAPv1,Allow MS CHAPv2,Allow EAP MD5,Allow LEAP,Allow EAP-TLS,Allow EAP-TTLS,Allow EAP-FAST,Allow PEAP,Allow TEAP,Allow Preferred EAP,EAP-TLS Bit,Allow Weak EAP Ciphers,Require Message Authentication,Allow EAP Fast EAP GTC,Allow EAP Fast EAP GTC Pwd Change,Allow EAP Fast EAP GTC Pwd Change Retries,Allow EAP Fast EAP MS CHAPv2,Allow EAP Fast EAP MS CHAPv2 Pwd Change,Allow EAP Fast EAP MS CHAPv2 Pwd Change Retries,Allow EAP Fast EAP TLS,Allow EAP Fast EAP TLS Auth Of Expired Certs,EAP FAST Enable EAP Chaining,EAP FAST Use Pacs,EAP FAST Use Pacs Accept Client Cert,EAP FAST Use Pacs Allow Anonym Provisioning,EAP FAST Use Pacs Allow Authen Provisioning,EAP FAST Use Pacs Allow Machine Authentication,EAP FAST Use Pacs Authorization Pac TTL,EAP FAST Use Pacs Authorization Pac TTL Units,EAP FAST Use Pacs Machine Pac TTL,EAP FAST Use Pacs Machine Pac TTL Units,EAP FAST Use Pacs Server Returns,EAP FAST Use Pacs Stateless Session Resume,EAP FAST Use Pacs Tunnel Pac TTL,EAP FAST Use Pacs Tunnel Pac TTL Units,EAP FAST Use Pacs Use Proactive Pac Update Precentage,Allow EAP TLS Auth Of Expired Certs,EAP TLS Enable Stateless Session Resume,EAP TTLS CHAP,EAP TTLS EAP MD5,EAP TTLS EAP MS CHAPv2,EAP TTLS EAP MS CHAPv2 Pwd Change,EAP TTLS EAP MS CHAPv2 Pwd Change Retries,EAP TTLS MS CHAPv1,EAP TTLS MS CHAPv2,EAP TTLS PAP ASCII,Allow PEAP EAP GTC,Allow PEAP EAP GTC Pwd Change,Allow PEAP EAP GTC Pwd ChangeRetries,Allow PEAP EAP MS CHAPv2,Allow PEAP EAP MS CHAPv2 Pwd Change,Allow PEAP EAP MS CHAPv2 Pwd Change Retries,Allow PEAP EAP TLS,Allow PEAP EAP TLS Auth Of Expired Certs,Allow PEAP V0,Require Cryptobinding,Accept Client Cert During Tunnel Est,Allow Downgrade Msk,Allow TEAP EAP MS CHAPv2,Allow TEAP EAP MS CHAPv2 Pwd Change,Allow TEAP EAP MS CHAPv2 Pwd Change Retries,Allow TEAP EAP TLS,Allow TEAP EAP TLS Auth Of Expired Certs,Enable EAP Chaining
+{%- for resource in allowedProtocolsDetails %}
+{{ resource.AllowedProtocols.name }},{{ resource.AllowedProtocols.id }},{{ resource.AllowedProtocols.description }},{{ resource.AllowedProtocols.processHostLookup }},{{ resource.AllowedProtocols.allowPapAscii }},{{ resource.AllowedProtocols.allowChap }},{{ resource.AllowedProtocols.allowMsChapV1 }},{{ resource.AllowedProtocols.allowMsChapV2 }},{{ resource.AllowedProtocols.allowEapMd5 }},{{ resource.AllowedProtocols.allowLeap }},{{ resource.AllowedProtocols.allowEapTls }},{{ resource.AllowedProtocols.allowEapTtls }},{{ resource.AllowedProtocols.allowEapFast }},{{ resource.AllowedProtocols.allowPeap }},{{ resource.AllowedProtocols.allowTeap }},{{ resource.AllowedProtocols.allowPreferredEapProtocol }},{{ resource.AllowedProtocols.eapTlsLBit }},{{ resource.AllowedProtocols.allowWeakCiphersForEap }},{{ resource.AllowedProtocols.requireMessageAuth }},{%- if resource.AllowedProtocols.eapFast is defined %}{{ resource.AllowedProtocols.eapFast.allowEapFastEapGtc }},{{ resource.AllowedProtocols.eapFast.allowEapFastEapGtcPwdChange }},{{ resource.AllowedProtocols.eapFast.allowEapFastEapGtcPwdChangeRetries }},{{ resource.AllowedProtocols.eapFast.allowEapFastEapMsChapV2 }},{{ resource.AllowedProtocols.eapFast.allowEapFastEapMsChapV2PwdChange }},{{ resource.AllowedProtocols.eapFast.allowEapFastEapMsChapV2PwdChangeRetries }},{{ resource.AllowedProtocols.eapFast.allowEapFastEapTls }},{{ resource.AllowedProtocols.eapFast.allowEapFastEapTlsAuthOfExpiredCerts }},{{ resource.AllowedProtocols.eapFast.eapFastEnableEAPChaining }},{{ resource.AllowedProtocols.eapFast.eapFastUsePacs }},{{ resource.AllowedProtocols.eapFast.eapFastUsePacsAcceptClientCert }},{{ resource.AllowedProtocols.eapFast.eapFastUsePacsAllowAnonymProvisioning }},{{ resource.AllowedProtocols.eapFast.eapFastUsePacsAllowAuthenProvisioning }},{{ resource.AllowedProtocols.eapFast.eapFastUsePacsAllowMachineAuthentication }},{{ resource.AllowedProtocols.eapFast.eapFastUsePacsAuthorizationPacTtl }},{{ resource.AllowedProtocols.eapFast.eapFastUsePacsAuthorizationPacTtlUnits }},{{ resource.AllowedProtocols.eapFast.eapFastUsePacsMachinePacTtl }},{{ resource.AllowedProtocols.eapFast.eapFastUsePacsMachinePacTtlUnits }},{{ resource.AllowedProtocols.eapFast.eapFastUsePacsServerReturns }},{{ resource.AllowedProtocols.eapFast.eapFastUsePacsStatelessSessionResume }},{{ resource.AllowedProtocols.eapFast.eapFastUsePacsTunnelPacTtl }},{{ resource.AllowedProtocols.eapFast.eapFastUsePacsTunnelPacTtlUnits }},{{ resource.AllowedProtocols.eapFast.eapFastUsePacsUseProactivePacUpdatePrecentage }},{%- else %}N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,{%- endif %}{%- if resource.AllowedProtocols.eapTls is defined %}{{ resource.AllowedProtocols.eapTls.allowEapTlsAuthOfExpiredCerts }},{{ resource.AllowedProtocols.eapTls.eapTlsEnableStatelessSessionResume }},{%- else %}N/A,N/A,{%- endif %}{%- if resource.AllowedProtocols.eapTtls is defined %}{{ resource.AllowedProtocols.eapTtls.eapTtlsChap }},{{ resource.AllowedProtocols.eapTtls.eapTtlsEapMd5 }},{{ resource.AllowedProtocols.eapTtls.eapTtlsEapMsChapV2 }},{{ resource.AllowedProtocols.eapTtls.eapTtlsEapMsChapV2PwdChange }},{{ resource.AllowedProtocols.eapTtls.eapTtlsEapMsChapV2PwdChangeRetries }},{{ resource.AllowedProtocols.eapTtls.eapTtlsMsChapV1 }},{{ resource.AllowedProtocols.eapTtls.eapTtlsMsChapV2 }},{{ resource.AllowedProtocols.eapTtls.eapTtlsPapAscii }},{%- else %}N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,{%- endif %}{%- if resource.AllowedProtocols.peap is defined %}{{ resource.AllowedProtocols.peap.allowPeapEapGtc }},{{ resource.AllowedProtocols.peap.allowPeapEapGtcPwdChange }},{{ resource.AllowedProtocols.peap.allowPeapEapGtcPwdChangeRetries }},{{ resource.AllowedProtocols.peap.allowPeapEapMsChapV2 }},{{ resource.AllowedProtocols.peap.allowPeapEapMsChapV2PwdChange }},{{ resource.AllowedProtocols.peap.allowPeapEapMsChapV2PwdChangeRetries }},{{ resource.AllowedProtocols.peap.allowPeapEapTls }},{{ resource.AllowedProtocols.peap.allowPeapEapTlsAuthOfExpiredCerts }},{{ resource.AllowedProtocols.peap.allowPeapV0 }},{{ resource.AllowedProtocols.peap.requireCryptobinding }},{%- else %}N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,{%- endif %}{%- if resource.AllowedProtocols.teap is defined %}{{ resource.AllowedProtocols.teap.acceptClientCertDuringTunnelEst }},{{ resource.AllowedProtocols.teap.allowDowngradeMsk }},{{ resource.AllowedProtocols.teap.allowTeapEapMsChapV2 }},{{ resource.AllowedProtocols.teap.allowTeapEapMsChapV2PwdChange }},{{ resource.AllowedProtocols.teap.allowTeapEapMsChapV2PwdChangeRetries }},{{ resource.AllowedProtocols.teap.allowTeapEapTls }},{{ resource.AllowedProtocols.teap.allowTeapEapTlsAuthOfExpiredCerts }},{{ resource.AllowedProtocols.teap.enableEapChaining }}{%- else %}N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A{%- endif %}
+{%- endfor %}
+{% else %}{% if filetype_loop == 1 %}
+# ISE Allowed Protocols 
+| Name | ID | Description | Process Host Lookup | Allow PAP ASCII | Allow CHAP | Allow MS CHAPv1 | Allow MS CHAPv2 | Allow EAP MD5 | Allow LEAP | Allow EAP-TLS | Allow EAP-TTLS | Allow EAP-FAST | Allow PEAP | Allow TEAP | Allow Preferred EAP | EAP-TLS Bit | Allow Weak EAP Ciphers | Require Message Authentication | Allow EAP Fast EAP GTC | Allow EAP Fast EAP GTC Pwd Change | Allow EAP Fast EAP GTC Pwd Change Retries | Allow EAP Fast EAP MS CHAPv2 | Allow EAP Fast EAP MS CHAPv2 Pwd Change | Allow EAP Fast EAP MS CHAPv2 Pwd Change Retries | Allow EAP Fast EAP TLS | Allow EAP Fast EAP TLS Auth Of Expired Certs | EAP FAST Enable EAP Chaining | EAP FAST Use Pacs | EAP FAST Use Pacs Accept Client Cert | EAP FAST Use Pacs Allow Anonym Provisioning | EAP FAST Use Pacs Allow Authen Provisioning | EAP FAST Use Pacs Allow Machine Authentication | EAP FAST Use Pacs Authorization Pac TTL | EAP FAST Use Pacs Authorization Pac TTL Units | EAP FAST Use Pacs Machine Pac TTL | EAP FAST Use Pacs Machine Pac TTL Units | EAP FAST Use Pacs Server Returns | EAP FAST Use Pacs Stateless Session Resume | EAP FAST Use Pacs Tunnel Pac TTL | EAP FAST Use Pacs Tunnel Pac TTL Units | EAP FAST Use Pacs Use Proactive Pac Update Precentage | Allow EAP TLS Auth Of Expired Certs | EAP TLS Enable Stateless Session Resume | EAP TTLS CHAP | EAP TTLS EAP MD5 | EAP TTLS EAP MS CHAPv2 | EAP TTLS EAP MS CHAPv2 Pwd Change | EAP TTLS EAP MS CHAPv2 Pwd Change Retries | EAP TTLS MS CHAPv1 | EAP TTLS MS CHAPv2 | EAP TTLS PAP ASCII | Allow PEAP EAP GTC | Allow PEAP EAP GTC Pwd Change | Allow PEAP EAP GTC Pwd ChangeRetries | Allow PEAP EAP MS CHAPv2 | Allow PEAP EAP MS CHAPv2 Pwd Change | Allow PEAP EAP MS CHAPv2 Pwd Change Retries | Allow PEAP EAP TLS | Allow PEAP EAP TLS Auth Of Expired Certs | Allow PEAP V0 | Require Cryptobinding | Accept Client Cert During Tunnel Est | Allow Downgrade Msk | Allow TEAP EAP MS CHAPv2 | Allow TEAP EAP MS CHAPv2 Pwd Change | Allow TEAP EAP MS CHAPv2 Pwd Change Retries | Allow TEAP EAP TLS | Allow TEAP EAP TLS Auth Of Expired Certs | Enable EAP Chaining |
+| ---- | -- | ----------- | ------------------- | --------------- | ---------- | --------------- | --------------- | ------------- | ---------- | ------------- | -------------- | -------------- | ---------- | ---------- | ------------------- | ----------- | ---------------------- | ------------------------------ | ---------------------- | --------------------------------- | ----------------------------------------- | ----------------------------- | ---------------------------------------- | ------------------------------------------------ | ---------------------- | -------------------------------------------- | ---------------------------- | ----------------- | ------------------------------------ | ------------------------------------------- | ------------------------------------------- | ---------------------------------------------- | --------------------------------------- | --------------------------------------------- | --------------------------------- | --------------------------------------- | -------------------------------- | ------------------------------------------ | -------------------------------- | -------------------------------------- | ----------------------------------------------------- | ----------------------------------- | --------------------------------------- | ------------- | ---------------- | ----------------------- | ---------------------------------- | ------------------------------------------ | ------------------- | ------------------- | ------------------ | ------------------ | ----------------------------- | ------------------------------------ | ------------------------- | ------------------------------------ | -------------------------------------------- | ------------------ | ---------------------------------------- | ------------- | --------------------- | ------------------------------------ | ------------------- | ------------------------- | ------------------------------------ | -------------------------------------------- | ------------------ | ---------------------------------------- | ------------------- |
+{%- for resource in allowedProtocolsDetails %}
+| {{ resource.AllowedProtocols.name }} | {{ resource.AllowedProtocols.id }} | {{ resource.AllowedProtocols.description }} | {{ resource.AllowedProtocols.processHostLookup }} | {{ resource.AllowedProtocols.allowPapAscii }} | {{ resource.AllowedProtocols.allowChap }} | {{ resource.AllowedProtocols.allowMsChapV1 }} | {{ resource.AllowedProtocols.allowMsChapV2 }} | {{ resource.AllowedProtocols.allowEapMd5 }} | {{ resource.AllowedProtocols.allowLeap }} | {{ resource.AllowedProtocols.allowEapTls }} | {{ resource.AllowedProtocols.allowEapTtls }} | {{ resource.AllowedProtocols.allowEapFast }} | {{ resource.AllowedProtocols.allowPeap }} | {{ resource.AllowedProtocols.allowTeap }} | {{ resource.AllowedProtocols.allowPreferredEapProtocol }} | {{ resource.AllowedProtocols.eapTlsLBit }} | {{ resource.AllowedProtocols.allowWeakCiphersForEap }} | {{ resource.AllowedProtocols.requireMessageAuth }} | {%- if resource.AllowedProtocols.eapFast is defined %}{{ resource.AllowedProtocols.eapFast.allowEapFastEapGtc }} | {{ resource.AllowedProtocols.eapFast.allowEapFastEapGtcPwdChange }} | {{ resource.AllowedProtocols.eapFast.allowEapFastEapGtcPwdChangeRetries }} | {{ resource.AllowedProtocols.eapFast.allowEapFastEapMsChapV2 }} | {{ resource.AllowedProtocols.eapFast.allowEapFastEapMsChapV2PwdChange }} | {{ resource.AllowedProtocols.eapFast.allowEapFastEapMsChapV2PwdChangeRetries }} | {{ resource.AllowedProtocols.eapFast.allowEapFastEapTls }} | {{ resource.AllowedProtocols.eapFast.allowEapFastEapTlsAuthOfExpiredCerts }} | {{ resource.AllowedProtocols.eapFast.eapFastEnableEAPChaining }} | {{ resource.AllowedProtocols.eapFast.eapFastUsePacs }} | {{ resource.AllowedProtocols.eapFast.eapFastUsePacsAcceptClientCert }} | {{ resource.AllowedProtocols.eapFast.eapFastUsePacsAllowAnonymProvisioning }} | {{ resource.AllowedProtocols.eapFast.eapFastUsePacsAllowAuthenProvisioning }} | {{ resource.AllowedProtocols.eapFast.eapFastUsePacsAllowMachineAuthentication }} | {{ resource.AllowedProtocols.eapFast.eapFastUsePacsAuthorizationPacTtl }} | {{ resource.AllowedProtocols.eapFast.eapFastUsePacsAuthorizationPacTtlUnits }} | {{ resource.AllowedProtocols.eapFast.eapFastUsePacsMachinePacTtl }} | {{ resource.AllowedProtocols.eapFast.eapFastUsePacsMachinePacTtlUnits }} | {{ resource.AllowedProtocols.eapFast.eapFastUsePacsServerReturns }} | {{ resource.AllowedProtocols.eapFast.eapFastUsePacsStatelessSessionResume }} | {{ resource.AllowedProtocols.eapFast.eapFastUsePacsTunnelPacTtl }} | {{ resource.AllowedProtocols.eapFast.eapFastUsePacsTunnelPacTtlUnits }} | {{ resource.AllowedProtocols.eapFast.eapFastUsePacsUseProactivePacUpdatePrecentage }} | {%- else %}N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | {%- endif %}{%- if resource.AllowedProtocols.eapTls is defined %}{{ resource.AllowedProtocols.eapTls.allowEapTlsAuthOfExpiredCerts }} | {{ resource.AllowedProtocols.eapTls.eapTlsEnableStatelessSessionResume }} | {%- else %}N/A | N/A | {%- endif %}{%- if resource.AllowedProtocols.eapTtls is defined %}{{ resource.AllowedProtocols.eapTtls.eapTtlsChap }} | {{ resource.AllowedProtocols.eapTtls.eapTtlsEapMd5 }} | {{ resource.AllowedProtocols.eapTtls.eapTtlsEapMsChapV2 }} | {{ resource.AllowedProtocols.eapTtls.eapTtlsEapMsChapV2PwdChange }} | {{ resource.AllowedProtocols.eapTtls.eapTtlsEapMsChapV2PwdChangeRetries }} | {{ resource.AllowedProtocols.eapTtls.eapTtlsMsChapV1 }} | {{ resource.AllowedProtocols.eapTtls.eapTtlsMsChapV2 }} | {{ resource.AllowedProtocols.eapTtls.eapTtlsPapAscii }} | {%- else %}N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | {%- endif %}{%- if resource.AllowedProtocols.peap is defined %}{{ resource.AllowedProtocols.peap.allowPeapEapGtc }} | {{ resource.AllowedProtocols.peap.allowPeapEapGtcPwdChange }} | {{ resource.AllowedProtocols.peap.allowPeapEapGtcPwdChangeRetries }} | {{ resource.AllowedProtocols.peap.allowPeapEapMsChapV2 }} | {{ resource.AllowedProtocols.peap.allowPeapEapMsChapV2PwdChange }} | {{ resource.AllowedProtocols.peap.allowPeapEapMsChapV2PwdChangeRetries }} | {{ resource.AllowedProtocols.peap.allowPeapEapTls }} | {{ resource.AllowedProtocols.peap.allowPeapEapTlsAuthOfExpiredCerts }} | {{ resource.AllowedProtocols.peap.allowPeapV0 }} | {{ resource.AllowedProtocols.peap.requireCryptobinding }} | {%- else %}N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A | {%- endif %}{%- if resource.AllowedProtocols.teap is defined %}{{ resource.AllowedProtocols.teap.acceptClientCertDuringTunnelEst }} | {{ resource.AllowedProtocols.teap.allowDowngradeMsk }} | {{ resource.AllowedProtocols.teap.allowTeapEapMsChapV2 }} | {{ resource.AllowedProtocols.teap.allowTeapEapMsChapV2PwdChange }} | {{ resource.AllowedProtocols.teap.allowTeapEapMsChapV2PwdChangeRetries }} | {{ resource.AllowedProtocols.teap.allowTeapEapTls }} | {{ resource.AllowedProtocols.teap.allowTeapEapTlsAuthOfExpiredCerts }} | {{ resource.AllowedProtocols.teap.enableEapChaining }}{%- else %}N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A{%- endif %} |
+{%- endfor %}
+{% else %}{% if filetype_loop == 2 %}
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/colreorder/1.5.4/js/dataTables.colReorder.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/keytable/2.6.4/js/dataTables.keyTable.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.1.9/js/dataTables.fixedHeader.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.9/css/fixedHeader.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/keytable/2.6.4/css/keyTable.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+</head>
+<body>
+<h1>ISE Allowed Protocols </h1>
+<table id = "ise">
+  <tr>
+    <th>Name</th>
+    <th>ID</th>
+    <th>Description</th>
+    <th>Process Host Lookup</th>
+    <th>Allow PAP ASCII</th>
+    <th>Allow CHAP</th>
+    <th>Allow MS CHAPv1</th>
+    <th>Allow MS CHAPv2</th>
+    <th>Allow EAP MD5</th>
+    <th>Allow LEAP</th>
+    <th>Allow EAP-TLS</th>
+    <th>Allow EAP-TTLS</th>
+    <th>Allow EAP-FAST</th>
+    <th>Allow PEAP</th>
+    <th>Allow TEAP</th>
+    <th>Allow Preferred EAP</th>
+    <th>EAP-TLS Bit</th>
+    <th>Allow Weak EAP Ciphers</th>
+    <th>Require Message Authentication</th>
+    <th>Allow EAP Fast EAP GTC</th>
+    <th>Allow EAP Fast EAP GTC Pwd Change</th>
+    <th>Allow EAP Fast EAP GTC Pwd Change Retries</th>
+    <th>Allow EAP Fast EAP MS CHAPv2</th>
+    <th>Allow EAP Fast EAP MS CHAPv2 Pwd Change</th>
+    <th>Allow EAP Fast EAP MS CHAPv2 Pwd Change Retries</th>
+    <th>Allow EAP Fast EAP TLS</th>
+    <th>Allow EAP Fast EAP TLS Auth Of Expired Certs</th>
+    <th>EAP FAST Enable EAP Chaining</th>
+    <th>EAP FAST Use Pacs</th>
+    <th>EAP FAST Use Pacs Accept Client Cert</th>
+    <th>EAP FAST Use Pacs Allow Anonym Provisioning</th>
+    <th>EAP FAST Use Pacs Allow Authen Provisioning</th>
+    <th>EAP FAST Use Pacs Allow Machine Authentication</th>
+    <th>EAP FAST Use Pacs Authorization Pac TTL</th>
+    <th>EAP FAST Use Pacs Authorization Pac TTL Units</th>
+    <th>EAP FAST Use Pacs Machine Pac TTL</th>
+    <th>EAP FAST Use Pacs Machine Pac TTL Units</th>
+    <th>EAP FAST Use Pacs Server Returns</th>
+    <th>EAP FAST Use Pacs Stateless Session Resume</th>
+    <th>EAP FAST Use Pacs Tunnel Pac TTL</th>
+    <th>EAP FAST Use Pacs Tunnel Pac TTL Units</th>
+    <th>EAP FAST Use Pacs Use Proactive Pac Update Precentage</th>
+    <th>Allow EAP TLS Auth Of Expired Certs</th>
+    <th>EAP TLS Enable Stateless Session Resume</th>
+    <th>EAP TTLS CHAP</th>
+    <th>EAP TTLS EAP MD5</th>
+    <th>EAP TTLS EAP MS CHAPv2</th>
+    <th>EAP TTLS EAP MS CHAPv2 Pwd Change</th>
+    <th>EAP TTLS EAP MS CHAPv2 Pwd Change Retries</th>
+    <th>EAP TTLS MS CHAPv1</th>
+    <th>EAP TTLS MS CHAPv2</th>
+    <th>EAP TTLS PAP ASCII</th>
+    <th>Allow PEAP EAP GTC</th>
+    <th>Allow PEAP EAP GTC Pwd Change</th>
+    <th>Allow PEAP EAP GTC Pwd ChangeRetries</th>
+    <th>Allow PEAP EAP MS CHAPv2</th>
+    <th>Allow PEAP EAP MS CHAPv2 Pwd Change</th>
+    <th>Allow PEAP EAP MS CHAPv2 Pwd Change Retries</th>
+    <th>Allow PEAP EAP TLS</th>
+    <th>Allow PEAP EAP TLS Auth Of Expired Certs</th>
+    <th>Allow PEAP V0</th>
+    <th>Require Cryptobinding</th>
+    <th>Accept Client Cert During Tunnel Est</th>
+    <th>Allow Downgrade Msk</th>
+    <th>Allow TEAP EAP MS CHAPv2</th>
+    <th>Allow TEAP EAP MS CHAPv2 Pwd Change</th>
+    <th>Allow TEAP EAP MS CHAPv2 Pwd Change Retries</th>
+    <th>Allow TEAP EAP TLS</th>
+    <th>Allow TEAP EAP TLS Auth Of Expired Certs</th>
+    <th>Enable EAP Chaining</th>
+  </tr>
+{%- for resource in allowedProtocolsDetails %}
+  <tr>
+    <td>{{ resource.AllowedProtocols.name }}</td>
+    <td>{{ resource.AllowedProtocols.id }}</td>
+    <td>{{ resource.AllowedProtocols.description }}</td>
+    <td>{{ resource.AllowedProtocols.processHostLookup }}</td>
+    <td>{{ resource.AllowedProtocols.allowPapAscii }}</td>
+    <td>{{ resource.AllowedProtocols.allowChap }}</td>
+    <td>{{ resource.AllowedProtocols.allowMsChapV1 }}</td>
+    <td>{{ resource.AllowedProtocols.allowMsChapV2 }}</td>
+    <td>{{ resource.AllowedProtocols.allowEapMd5 }}</td>
+    <td>{{ resource.AllowedProtocols.allowLeap }}</td>
+    <td>{{ resource.AllowedProtocols.allowEapTls }}</td>
+    <td>{{ resource.AllowedProtocols.allowEapTtls }}</td>
+    <td>{{ resource.AllowedProtocols.allowEapFast }}</td>
+    <td>{{ resource.AllowedProtocols.allowPeap }}</td>
+    <td>{{ resource.AllowedProtocols.allowTeap }}</td>
+    <td>{{ resource.AllowedProtocols.allowPreferredEapProtocol }}</td>
+    <td>{{ resource.AllowedProtocols.eapTlsLBit }}</td>
+    <td>{{ resource.AllowedProtocols.allowWeakCiphersForEap }}</td>
+    <td>{{ resource.AllowedProtocols.requireMessageAuth }}</td>
+    <td>{%- if resource.AllowedProtocols.eapFast is defined %}{{ resource.AllowedProtocols.eapFast.allowEapFastEapGtc }}</td>
+    <td>{{ resource.AllowedProtocols.eapFast.allowEapFastEapGtcPwdChange }}</td>
+    <td>{{ resource.AllowedProtocols.eapFast.allowEapFastEapGtcPwdChangeRetries }}</td>
+    <td>{{ resource.AllowedProtocols.eapFast.allowEapFastEapMsChapV2 }}</td>
+    <td>{{ resource.AllowedProtocols.eapFast.allowEapFastEapMsChapV2PwdChange }}</td>
+    <td>{{ resource.AllowedProtocols.eapFast.allowEapFastEapMsChapV2PwdChangeRetries }}</td>
+    <td>{{ resource.AllowedProtocols.eapFast.allowEapFastEapTls }}</td>
+    <td>{{ resource.AllowedProtocols.eapFast.allowEapFastEapTlsAuthOfExpiredCerts }}</td>
+    <td>{{ resource.AllowedProtocols.eapFast.eapFastEnableEAPChaining }}</td>
+    <td>{{ resource.AllowedProtocols.eapFast.eapFastUsePacs }}</td>
+    <td>{{ resource.AllowedProtocols.eapFast.eapFastUsePacsAcceptClientCert }}</td>
+    <td>{{ resource.AllowedProtocols.eapFast.eapFastUsePacsAllowAnonymProvisioning }}</td>
+    <td>{{ resource.AllowedProtocols.eapFast.eapFastUsePacsAllowAuthenProvisioning }}</td>
+    <td>{{ resource.AllowedProtocols.eapFast.eapFastUsePacsAllowMachineAuthentication }}</td>
+    <td>{{ resource.AllowedProtocols.eapFast.eapFastUsePacsAuthorizationPacTtl }}</td>
+    <td>{{ resource.AllowedProtocols.eapFast.eapFastUsePacsAuthorizationPacTtlUnits }}</td>
+    <td>{{ resource.AllowedProtocols.eapFast.eapFastUsePacsMachinePacTtl }}</td>
+    <td>{{ resource.AllowedProtocols.eapFast.eapFastUsePacsMachinePacTtlUnits }}</td>
+    <td>{{ resource.AllowedProtocols.eapFast.eapFastUsePacsServerReturns }}</td>
+    <td>{{ resource.AllowedProtocols.eapFast.eapFastUsePacsStatelessSessionResume }}</td>
+    <td>{{ resource.AllowedProtocols.eapFast.eapFastUsePacsTunnelPacTtl }}</td>
+    <td>{{ resource.AllowedProtocols.eapFast.eapFastUsePacsTunnelPacTtlUnits }}</td>
+    <td>{{ resource.AllowedProtocols.eapFast.eapFastUsePacsUseProactivePacUpdatePrecentage }}</td>
+    {%- else %}
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    {%- endif %}{%- if resource.AllowedProtocols.eapTls is defined %}
+    <td>{{ resource.AllowedProtocols.eapTls.allowEapTlsAuthOfExpiredCerts }}</td>
+    <td>{{ resource.AllowedProtocols.eapTls.eapTlsEnableStatelessSessionResume }}</td>
+    {%- else %}
+    <td>N/A</td>
+    <td>N/A</td>
+    {%- endif %}{%- if resource.AllowedProtocols.eapTtls is defined %}
+    <td>{{ resource.AllowedProtocols.eapTtls.eapTtlsChap }}</td>
+    <td>{{ resource.AllowedProtocols.eapTtls.eapTtlsEapMd5 }}</td>
+    <td>{{ resource.AllowedProtocols.eapTtls.eapTtlsEapMsChapV2 }}</td>
+    <td>{{ resource.AllowedProtocols.eapTtls.eapTtlsEapMsChapV2PwdChange }}</td>
+    <td>{{ resource.AllowedProtocols.eapTtls.eapTtlsEapMsChapV2PwdChangeRetries }}</td>
+    <td>{{ resource.AllowedProtocols.eapTtls.eapTtlsMsChapV1 }}</td>
+    <td>{{ resource.AllowedProtocols.eapTtls.eapTtlsMsChapV2 }}</td>
+    <td>{{ resource.AllowedProtocols.eapTtls.eapTtlsPapAscii }}</td>
+    {%- else %}
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    {%- endif %}{%- if resource.AllowedProtocols.peap is defined %}
+    <td>{{ resource.AllowedProtocols.peap.allowPeapEapGtc }}</td>
+    <td>{{ resource.AllowedProtocols.peap.allowPeapEapGtcPwdChange }}</td>
+    <td>{{ resource.AllowedProtocols.peap.allowPeapEapGtcPwdChangeRetries }}</td>
+    <td>{{ resource.AllowedProtocols.peap.allowPeapEapMsChapV2 }}</td>
+    <td>{{ resource.AllowedProtocols.peap.allowPeapEapMsChapV2PwdChange }}</td>
+    <td>{{ resource.AllowedProtocols.peap.allowPeapEapMsChapV2PwdChangeRetries }}</td>
+    <td>{{ resource.AllowedProtocols.peap.allowPeapEapTls }}</td>
+    <td>{{ resource.AllowedProtocols.peap.allowPeapEapTlsAuthOfExpiredCerts }}</td>
+    <td>{{ resource.AllowedProtocols.peap.allowPeapV0 }}</td>
+    <td>{{ resource.AllowedProtocols.peap.requireCryptobinding }}</td>
+    {%- else %}
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    {%- endif %}{%- if resource.AllowedProtocols.teap is defined %}
+    <td>{{ resource.AllowedProtocols.teap.acceptClientCertDuringTunnelEst }}</td>
+    <td>{{ resource.AllowedProtocols.teap.allowDowngradeMsk }}</td>
+    <td>{{ resource.AllowedProtocols.teap.allowTeapEapMsChapV2 }}</td>
+    <td>{{ resource.AllowedProtocols.teap.allowTeapEapMsChapV2PwdChange }}</td>
+    <td>{{ resource.AllowedProtocols.teap.allowTeapEapMsChapV2PwdChangeRetries }}</td>
+    <td>{{ resource.AllowedProtocols.teap.allowTeapEapTls }}</td>
+    <td>{{ resource.AllowedProtocols.teap.allowTeapEapTlsAuthOfExpiredCerts }}</td>
+    <td>{{ resource.AllowedProtocols.teap.enableEapChaining }}{%- else %}N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>
+    <td>N/A</td>{%- endif %}
+  </tr>
+{%- endfor %}   
+</table>
+<script type = "text/javascript">
+  $(document).ready(function(){
+    $('#ise thead tr')
+    .clone(true)
+    .addClass('filters')
+    .appendTo('#ise thead');
+
+    var table = $('#ise').DataTable({
+        keys: true,
+        dom: 'Bfrtip',
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],
+            [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        buttons: [
+        'pageLength','colvis','copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        colReorder: true,
+        select: true,            
+        orderCellsTop: true,
+        fixedHeader: true,
+        initComplete: function () {
+        var api = this.api();
+
+        // For each column
+        api
+            .columns()
+            .eq(0)
+            .each(function (colIdx) {
+                // Set the header cell to contain the input element
+                var cell = $('.filters th').eq(
+                    $(api.column(colIdx).header()).index()
+                );
+                var title = $(cell).text();
+                $(cell).html('<input type="text" placeholder="' + title + '" />');
+
+                // On every keypress in this input
+                $(
+                    'input',
+                    $('.filters th').eq($(api.column(colIdx).header()).index())
+                )
+                    .off('keyup change')
+                    .on('keyup change', function (e) {
+                        e.stopPropagation();
+
+                        // Get the search value
+                        $(this).attr('title', $(this).val());
+                        var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                        var cursorPosition = this.selectionStart;
+                        // Search the column for that value
+                        api
+                            .column(colIdx)
+                            .search(
+                                this.value != ''
+                                    ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                    : '',
+                                this.value != '',
+                                this.value == ''
+                            )
+                            .draw();
+
+                        $(this)
+                            .focus()[0]
+                            .setSelectionRange(cursorPosition, cursorPosition);
+                    });
+            });
+    },
+});
+});        
+</script>
+</body></html>
+{%- else %}
+# ISE Allowed Protocols
+{%- for resource in allowedProtocolsDetails %}
+## {{ resource.AllowedProtocols.name }}
+### ID: {{ resource.AllowedProtocols.id }}
+### Description: {{ resource.AllowedProtocols.description }}
+### Process Host Lookup: {{ resource.AllowedProtocols.processHostLookup }}
+### Allow
+#### PAP ASCII: {{ resource.AllowedProtocols.allowPapAscii }}
+#### CHAP: {{ resource.AllowedProtocols.allowChap }}
+#### MS CHAPv1: {{ resource.AllowedProtocols.allowMsChapV1 }}
+#### MS CHAPv2: {{ resource.AllowedProtocols.allowMsChapV2 }}
+#### EAP MD5: {{ resource.AllowedProtocols.allowEapMd5 }}
+#### LEAP: {{ resource.AllowedProtocols.allowLeap }}
+#### EAP-TLS: {{ resource.AllowedProtocols.allowEapTls }}
+#### EAP-TTLS: {{ resource.AllowedProtocols.allowEapTtls }}
+#### EAP FAST: {{ resource.AllowedProtocols.allowEapFast }}
+#### PEAP: {{ resource.AllowedProtocols.allowPeap }}
+#### TEAP: {{ resource.AllowedProtocols.allowTeap }}
+#### Preferred EAP Protocol: {{ resource.AllowedProtocols.allowPreferredEapProtocol }}
+#### TLS Bit: {{ resource.AllowedProtocols.eapTlsLBit }}
+#### Weap EAP Ciphers: {{ resource.AllowedProtocols.allowWeakCiphersForEap }}
+### Require Message Auth: {{ resource.AllowedProtocols.requireMessageAuth }}
+{%- if resource.AllowedProtocols.eapFast is defined %}
+### EAP Fast EAP
+#### GTC
+##### {{ resource.AllowedProtocols.eapFast.allowEapFastEapGtc }}
+##### Password Change: {{ resource.AllowedProtocols.eapFast.allowEapFastEapGtcPwdChange }}
+##### Password Change Retries: {{ resource.AllowedProtocols.eapFast.allowEapFastEapGtcPwdChangeRetries }}
+#### MS CHAPv2
+##### {{ resource.AllowedProtocols.eapFast.allowEapFastEapMsChapV2 }}
+##### Password Change:{{ resource.AllowedProtocols.eapFast.allowEapFastEapMsChapV2PwdChange }}
+##### Password Change Retries: {{ resource.AllowedProtocols.eapFast.allowEapFastEapMsChapV2PwdChangeRetries }}
+#### FAST
+##### {{ resource.AllowedProtocols.eapFast.allowEapFastEapTls }}
+##### Auth of Expired Certs: {{ resource.AllowedProtocols.eapFast.allowEapFastEapTlsAuthOfExpiredCerts }}
+##### Enable EAP Chaining: {{ resource.AllowedProtocols.eapFast.eapFastEnableEAPChaining }}
+##### Pacs
+##### {{ resource.AllowedProtocols.eapFast.eapFastUsePacs }}
+###### Accept Client Cert: {{ resource.AllowedProtocols.eapFast.eapFastUsePacsAcceptClientCert }}
+###### Anonym Provisioning: {{ resource.AllowedProtocols.eapFast.eapFastUsePacsAllowAnonymProvisioning }}
+###### Authentication Provisioning: {{ resource.AllowedProtocols.eapFast.eapFastUsePacsAllowAuthenProvisioning }}
+###### Machine Authentication: {{ resource.AllowedProtocols.eapFast.eapFastUsePacsAllowMachineAuthentication }}
+###### TTL: {{ resource.AllowedProtocols.eapFast.eapFastUsePacsAuthorizationPacTtl }}
+###### Authorization TTL Units: {{ resource.AllowedProtocols.eapFast.eapFastUsePacsAuthorizationPacTtlUnits }}
+###### Machine TTL: {{ resource.AllowedProtocols.eapFast.eapFastUsePacsMachinePacTtl }}
+###### Machine TTL Units: {{ resource.AllowedProtocols.eapFast.eapFastUsePacsMachinePacTtlUnits }}
+###### Server Returns: {{ resource.AllowedProtocols.eapFast.eapFastUsePacsServerReturns }}
+###### Stateless Session Resume: {{ resource.AllowedProtocols.eapFast.eapFastUsePacsStatelessSessionResume }}
+###### Tunnel TTL: {{ resource.AllowedProtocols.eapFast.eapFastUsePacsTunnelPacTtl }}
+###### Tunnel TTL Units: {{ resource.AllowedProtocols.eapFast.eapFastUsePacsTunnelPacTtlUnits }}
+###### Proactive Update Precentage: {{ resource.AllowedProtocols.eapFast.eapFastUsePacsUseProactivePacUpdatePrecentage }}
+{% endif %}
+{%- if resource.AllowedProtocols.eapTls is defined %}
+### EAP TLS
+#### Auth of Expired Certs: {{ resource.AllowedProtocols.eapTls.allowEapTlsAuthOfExpiredCerts }}
+#### Enable Stateless Session Resume: {{ resource.AllowedProtocols.eapTls.eapTlsEnableStatelessSessionResume }}
+{%- endif %}
+{%- if resource.AllowedProtocols.eapTtls is defined %}
+### EAP TTLS
+#### CHAP: {{ resource.AllowedProtocols.eapTtls.eapTtlsChap }}
+#### MD5: {{ resource.AllowedProtocols.eapTtls.eapTtlsEapMd5 }}
+#### EAP MS CHAPv2: {{ resource.AllowedProtocols.eapTtls.eapTtlsEapMsChapV2 }}
+#### EAP MS CHAPv2 Password Change: {{ resource.AllowedProtocols.eapTtls.eapTtlsEapMsChapV2PwdChange }}
+#### EAP MS CHAPv2 Password Change Retries: {{ resource.AllowedProtocols.eapTtls.eapTtlsEapMsChapV2PwdChangeRetries }}
+#### MS CHAPv1: {{ resource.AllowedProtocols.eapTtls.eapTtlsMsChapV1 }}
+#### MS CHAPv2: {{ resource.AllowedProtocols.eapTtls.eapTtlsMsChapV2 }}
+#### PAP ASCII: {{ resource.AllowedProtocols.eapTtls.eapTtlsPapAscii }}
+{% endif %}
+{%- if resource.AllowedProtocols.peap is defined %}
+### PEAP
+#### EAP GTC: {{ resource.AllowedProtocols.peap.allowPeapEapGtc }}
+#### EAP GTC Password Change: {{ resource.AllowedProtocols.peap.allowPeapEapGtcPwdChange }}
+#### EAP GTC Password Change Retries: {{ resource.AllowedProtocols.peap.allowPeapEapGtcPwdChangeRetries }}
+#### EAP MS CHAPv2: {{ resource.AllowedProtocols.peap.allowPeapEapMsChapV2 }}
+#### EAP MS CHAPv2 Password Change: {{ resource.AllowedProtocols.peap.allowPeapEapMsChapV2PwdChange }}
+#### EAP MS CHAPv2 Password Change Retries: {{ resource.AllowedProtocols.peap.allowPeapEapMsChapV2PwdChangeRetries }}
+#### EAP TLS: {{ resource.AllowedProtocols.peap.allowPeapEapTls }}
+#### EAP TLS Auth of Expired Certs: {{ resource.AllowedProtocols.peap.allowPeapEapTlsAuthOfExpiredCerts }}
+#### V0: {{ resource.AllowedProtocols.peap.allowPeapV0 }}
+#### Require Cryptobinding: {{ resource.AllowedProtocols.peap.requireCryptobinding }}
+{% endif %}
+{%- if resource.AllowedProtocols.teap is defined %}
+### TEAP
+#### Accept Client Cert During Tunnel Est: {{ resource.AllowedProtocols.teap.acceptClientCertDuringTunnelEst }}
+#### Downgrade Msk: {{ resource.AllowedProtocols.teap.allowDowngradeMsk }}
+#### EAP MS CHAPv2: {{ resource.AllowedProtocols.teap.allowTeapEapMsChapV2 }}
+#### EAP MS CHAPv2 Password Change: {{ resource.AllowedProtocols.teap.allowTeapEapMsChapV2PwdChange }}
+#### EAP MS CHAPv2 Password Change Retries: {{ resource.AllowedProtocols.teap.allowTeapEapMsChapV2PwdChangeRetries }}
+#### EAP TLS: {{ resource.AllowedProtocols.teap.allowTeapEapTls }}
+#### EAP TLS Auth of Expired Certs: {{ resource.AllowedProtocols.teap.allowTeapEapTlsAuthOfExpiredCerts }}
+#### EAP Chaining: {{ resource.AllowedProtocols.teap.enableEapChaining }}
+{%- endif %}
+{%- endfor %}
+{%- endif %}{% endif %}{% endif %}
