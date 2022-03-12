@@ -1,0 +1,239 @@
+{% if filetype_loop == 0 %}Name,ID,Description,Portal Type,Test URL,HTTPS Port,Allowed Interface,Certificate Group Tag,Authentication Method,Idle Timeout,Display Language,Fallback Language,Always Used Language,Available SSID,Max Failed Attempts Before Rate Limit,Time Between Logins During Rate Limit,Include AUP,Require AUP Scrolling,Include,Require Scrolling,Display Frequency,Allow Sponsor to Change Password,Include POST Access,Support Page,MAC Address,IP Address,Browser User Agent,Policy Server,Failure Code,Empty Field Display,Name,ID,Language,Banner Title,Contact Text,Footer Element
+{%- for portal in sponsorPortal %}
+{{ portal.SponsorPortal.name }},{{ portal.SponsorPortal.id }},{{ portal.SponsorPortal.description }},{{ portal.SponsorPortal.portalType }},{{ portal.SponsorPortal.portalTestUrl }},{{ portal.SponsorPortal.settings.portalSettings.httpsPort }},{%- for interface in portal.SponsorPortal.settings.portalSettings.allowedInterfaces %} {{ interface }} {%- endfor%},{{ portal.SponsorPortal.settings.portalSettings.certificateGroupTag }},{{ portal.SponsorPortal.settings.portalSettings.authenticationMethod }},{{ portal.SponsorPortal.settings.portalSettings.idleTimeout }},{{ portal.SponsorPortal.settings.portalSettings.displayLang }},{{ portal.SponsorPortal.settings.portalSettings.fallbackLanguage }},{{ portal.SponsorPortal.settings.portalSettings.alwaysUsedLanguage }},{%- for ssid in portal.SponsorPortal.settings.portalSettings.availableSsids %} {{ ssid }} {%- endfor%},{{ portal.SponsorPortal.settings.loginPageSettings.maxFailedAttemptsBeforeRateLimit }},{{ portal.SponsorPortal.settings.loginPageSettings.timeBetweenLoginsDuringRateLimit }},{{ portal.SponsorPortal.settings.loginPageSettings.includeAup }},{{ portal.SponsorPortal.settings.loginPageSettings.requireAupScrolling }},{{ portal.SponsorPortal.settings.aupSettings.includeAup }},{{ portal.SponsorPortal.settings.aupSettings.requireScrolling }},{{ portal.SponsorPortal.settings.aupSettings.displayFrequency }},{{ portal.SponsorPortal.settings.sponsorChangePasswordSettings.allowSponsorToChangePwd }},{{ portal.SponsorPortal.settings.postLoginBannerSettings.includePostAccessBanner }},{{ portal.SponsorPortal.settings.supportInfoSettings.includeSupportInfoPage }},{{ portal.SponsorPortal.settings.supportInfoSettings.includeMacAddr }},{{ portal.SponsorPortal.settings.supportInfoSettings.includeIpAddress }},{{ portal.SponsorPortal.settings.supportInfoSettings.includeBrowserUserAgent }},{{ portal.SponsorPortal.settings.supportInfoSettings.includePolicyServer }},{{ portal.SponsorPortal.settings.supportInfoSettings.includeFailureCode }},{{ portal.SponsorPortal.settings.supportInfoSettings.emptyFieldDisplay }},{{ portal.SponsorPortal.customizations.portalTheme.name }},{{ portal.SponsorPortal.customizations.portalTheme.id }},{{ portal.SponsorPortal.customizations.language.viewLanguage }},{{ portal.SponsorPortal.customizations.globalCustomizations.bannerTitle }},{{ portal.SponsorPortal.customizations.globalCustomizations.contactText }},{{ portal.SponsorPortal.customizations.globalCustomizations.footerElement }}
+{%- endfor %}
+{% else %}{% if filetype_loop == 1 %}
+# ISE Sponsor Portal
+| Name | ID | Description | Portal Type | Test URL | HTTPS Port | Allowed Interface | Certificate Group Tag | Authentication Method | Idle Timeout | Display Language | Fallback Language | Always Used Language | Available SSID | Max Failed Attempts Before Rate Limit | Time Between Logins During Rate Limit | Include AUP | Require AUP Scrolling | Include | Require Scrolling | Display Frequency | Allow Sponsor to Change Password | Include POST Access | Support Page | MAC Address | IP Address | Browser User Agent | Policy Server | Failure Code | Empty Field Display | Name | ID | Language | Banner Title | Contact Text | Footer Element |
+| ---- | -- | ----------- | ----------- | -------- | ---------- | ----------------- | --------------------- | --------------------- | ------------ | ---------------- | ----------------- | -------------------- | -------------- | ------------------------------------- | ------------------------------------- | ----------- | --------------------- | ------- | ----------------- | ----------------- | -------------------------------- | ------------------- | ------------ | ----------- | ---------- | ------------------ | ------------- | ------------ | ------------------- | ---- | -- | -------- | ------------ | ------------ | -------------- |
+{%- for portal in sponsorPortal %}
+| {{ portal.SponsorPortal.name }} | {{ portal.SponsorPortal.id }} | {{ portal.SponsorPortal.description }} | {{ portal.SponsorPortal.portalType }} | {{ portal.SponsorPortal.portalTestUrl }} | {{ portal.SponsorPortal.settings.portalSettings.httpsPort }} | {%- for interface in portal.SponsorPortal.settings.portalSettings.allowedInterfaces %} {{ interface }} {%- endfor%} | {{ portal.SponsorPortal.settings.portalSettings.certificateGroupTag }} | {{ portal.SponsorPortal.settings.portalSettings.authenticationMethod }} | {{ portal.SponsorPortal.settings.portalSettings.idleTimeout }} | {{ portal.SponsorPortal.settings.portalSettings.displayLang }} | {{ portal.SponsorPortal.settings.portalSettings.fallbackLanguage }} | {{ portal.SponsorPortal.settings.portalSettings.alwaysUsedLanguage }} | {%- for ssid in portal.SponsorPortal.settings.portalSettings.availableSsids %} {{ ssid }} {%- endfor%} | {{ portal.SponsorPortal.settings.loginPageSettings.maxFailedAttemptsBeforeRateLimit }} | {{ portal.SponsorPortal.settings.loginPageSettings.timeBetweenLoginsDuringRateLimit }} | {{ portal.SponsorPortal.settings.loginPageSettings.includeAup }} | {{ portal.SponsorPortal.settings.loginPageSettings.requireAupScrolling }} | {{ portal.SponsorPortal.settings.aupSettings.includeAup }} | {{ portal.SponsorPortal.settings.aupSettings.requireScrolling }} | {{ portal.SponsorPortal.settings.aupSettings.displayFrequency }} | {{ portal.SponsorPortal.settings.sponsorChangePasswordSettings.allowSponsorToChangePwd }} | {{ portal.SponsorPortal.settings.postLoginBannerSettings.includePostAccessBanner }} | {{ portal.SponsorPortal.settings.supportInfoSettings.includeSupportInfoPage }} | {{ portal.SponsorPortal.settings.supportInfoSettings.includeMacAddr }} | {{ portal.SponsorPortal.settings.supportInfoSettings.includeIpAddress }} | {{ portal.SponsorPortal.settings.supportInfoSettings.includeBrowserUserAgent }} | {{ portal.SponsorPortal.settings.supportInfoSettings.includePolicyServer }} | {{ portal.SponsorPortal.settings.supportInfoSettings.includeFailureCode }} | {{ portal.SponsorPortal.settings.supportInfoSettings.emptyFieldDisplay }} | {{ portal.SponsorPortal.customizations.portalTheme.name }} | {{ portal.SponsorPortal.customizations.portalTheme.id }} | {{ portal.SponsorPortal.customizations.language.viewLanguage }} | {{ portal.SponsorPortal.customizations.globalCustomizations.bannerTitle }} | {{ portal.SponsorPortal.customizations.globalCustomizations.contactText }} | {{ portal.SponsorPortal.customizations.globalCustomizations.footerElement }} |
+{%- endfor %}
+{% else %}{% if filetype_loop == 2 %}
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/colreorder/1.5.4/js/dataTables.colReorder.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/keytable/2.6.4/js/dataTables.keyTable.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.1.9/js/dataTables.fixedHeader.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.9/css/fixedHeader.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/keytable/2.6.4/css/keyTable.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+</head>
+<body>
+<h1>ISE Sponsor Portal</h1>
+<table id = "ise">
+  <tr>
+    <th>Name</th>
+    <th>ID</th>
+    <th>Description</th>
+    <th>Portal Type</th>
+    <th>Test URL</th>
+    <th>HTTPS Port</th>
+    <th>Allowed Interface</th>
+    <th>Certificate Group Tag</th>
+    <th>Authentication Method</th>
+    <th>Idle Timeout</th>
+    <th>Display Language</th>
+    <th>Fallback Language</th>
+    <th>Always Used Language</th>
+    <th>Available SSID</th>
+    <th>Max Failed Attempts Before Rate Limit</th>
+    <th>Time Between Logins During Rate Limit</th>
+    <th>Include AUP</th>
+    <th>Require AUP Scrolling</th>
+    <th>Include</th>
+    <th>Require Scrolling</th>
+    <th>Display Frequency</th>
+    <th>Allow Sponsor to Change Password</th>
+    <th>Include POST Access</th>
+    <th>Support Page</th>
+    <th>MAC Address</th>
+    <th>IP Address</th>
+    <th>Browser User Agent</th>
+    <th>Policy Server</th>
+    <th>Failure Code</th>
+    <th>Empty Field Display</th>
+    <th>Name</th>
+    <th>ID</th>
+    <th>Language</th>
+    <th>Banner Title</th>
+    <th>Contact Text</th>
+    <th>Footer Element</th>
+  </tr>
+{%- for portal in sponsorPortal %}  
+  <tr>
+    <td>{{ portal.SponsorPortal.name }}</td>
+    <td>{{ portal.SponsorPortal.id }}</td>
+    <td>{{ portal.SponsorPortal.description }}</td>
+    <td>{{ portal.SponsorPortal.portalType }}</td>
+    <td>{{ portal.SponsorPortal.portalTestUrl }}</td>
+    <td>{{ portal.SponsorPortal.settings.portalSettings.httpsPort }}</td>
+    <td>{%- for interface in portal.SponsorPortal.settings.portalSettings.allowedInterfaces %} {{ interface }} {%- endfor%}</td>
+    <td>{{ portal.SponsorPortal.settings.portalSettings.certificateGroupTag }}</td>
+    <td>{{ portal.SponsorPortal.settings.portalSettings.authenticationMethod }}</td>
+    <td>{{ portal.SponsorPortal.settings.portalSettings.idleTimeout }}</td>
+    <td>{{ portal.SponsorPortal.settings.portalSettings.displayLang }}</td>
+    <td>{{ portal.SponsorPortal.settings.portalSettings.fallbackLanguage }}</td>
+    <td>{{ portal.SponsorPortal.settings.portalSettings.alwaysUsedLanguage }}</td>
+    <td>{%- for ssid in portal.SponsorPortal.settings.portalSettings.availableSsids %} {{ ssid }} {%- endfor%}</td>
+    <td>{{ portal.SponsorPortal.settings.loginPageSettings.maxFailedAttemptsBeforeRateLimit }}</td>
+    <td>{{ portal.SponsorPortal.settings.loginPageSettings.timeBetweenLoginsDuringRateLimit }}</td>
+    <td>{{ portal.SponsorPortal.settings.loginPageSettings.includeAup }}</td>
+    <td>{{ portal.SponsorPortal.settings.loginPageSettings.requireAupScrolling }}</td>
+    <td>{{ portal.SponsorPortal.settings.aupSettings.includeAup }}</td>
+    <td>{{ portal.SponsorPortal.settings.aupSettings.requireScrolling }}</td>
+    <td>{{ portal.SponsorPortal.settings.aupSettings.displayFrequency }}</td>
+    <td>{{ portal.SponsorPortal.settings.sponsorChangePasswordSettings.allowSponsorToChangePwd }}</td>
+    <td>{{ portal.SponsorPortal.settings.postLoginBannerSettings.includePostAccessBanner }}</td>
+    <td>{{ portal.SponsorPortal.settings.supportInfoSettings.includeSupportInfoPage }}</td>
+    <td>{{ portal.SponsorPortal.settings.supportInfoSettings.includeMacAddr }}</td>
+    <td>{{ portal.SponsorPortal.settings.supportInfoSettings.includeIpAddress }}</td>
+    <td>{{ portal.SponsorPortal.settings.supportInfoSettings.includeBrowserUserAgent }}</td>
+    <td>{{ portal.SponsorPortal.settings.supportInfoSettings.includePolicyServer }}</td>
+    <td>{{ portal.SponsorPortal.settings.supportInfoSettings.includeFailureCode }}</td>
+    <td>{{ portal.SponsorPortal.settings.supportInfoSettings.emptyFieldDisplay }}</td>
+    <td>{{ portal.SponsorPortal.customizations.portalTheme.name }}</td>
+    <td>{{ portal.SponsorPortal.customizations.portalTheme.id }}</td>
+    <td>{{ portal.SponsorPortal.customizations.language.viewLanguage }}</td>
+    <td>{{ portal.SponsorPortal.customizations.globalCustomizations.bannerTitle }}</td>
+    <td>{{ portal.SponsorPortal.customizations.globalCustomizations.contactText }}</td>
+    <td>{{ portal.SponsorPortal.customizations.globalCustomizations.footerElement }}</td>
+  </tr>
+{%- endfor %}  
+</table>
+<script type = "text/javascript">
+  $(document).ready(function(){
+    $('#ise thead tr')
+    .clone(true)
+    .addClass('filters')
+    .appendTo('#ise thead');
+
+    var table = $('#ise').DataTable({
+        keys: true,
+        dom: 'Bfrtip',
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],
+            [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        buttons: [
+        'pageLength','colvis','copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        colReorder: true,
+        select: true,            
+        orderCellsTop: true,
+        fixedHeader: true,
+        initComplete: function () {
+        var api = this.api();
+
+        // For each column
+        api
+            .columns()
+            .eq(0)
+            .each(function (colIdx) {
+                // Set the header cell to contain the input element
+                var cell = $('.filters th').eq(
+                    $(api.column(colIdx).header()).index()
+                );
+                var title = $(cell).text();
+                $(cell).html('<input type="text" placeholder="' + title + '" />');
+
+                // On every keypress in this input
+                $(
+                    'input',
+                    $('.filters th').eq($(api.column(colIdx).header()).index())
+                )
+                    .off('keyup change')
+                    .on('keyup change', function (e) {
+                        e.stopPropagation();
+
+                        // Get the search value
+                        $(this).attr('title', $(this).val());
+                        var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                        var cursorPosition = this.selectionStart;
+                        // Search the column for that value
+                        api
+                            .column(colIdx)
+                            .search(
+                                this.value != ''
+                                    ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                    : '',
+                                this.value != '',
+                                this.value == ''
+                            )
+                            .draw();
+
+                        $(this)
+                            .focus()[0]
+                            .setSelectionRange(cursorPosition, cursorPosition);
+                    });
+            });
+    },
+});
+});        
+</script>
+</body></html>
+{%- else %}
+## ISE Sponsor Portal
+{%- for portal in sponsorPortal %}
+### {{ portal.SponsorPortal.name }}
+#### ID: {{ portal.SponsorPortal.id }}
+#### Description: {{ portal.SponsorPortal.description }}
+#### Portal Type: {{ portal.SponsorPortal.portalType }}
+#### [Test URL]({{ portal.SponsorPortal.portalTestUrl }})
+#### Portal Settings
+##### HTTPS Port: {{ portal.SponsorPortal.settings.portalSettings.httpsPort }}
+{%-     for interface in portal.SponsorPortal.settings.portalSettings.allowedInterfaces %}
+##### Allowed Interface: {{ interface }}
+{%-     endfor%}
+##### Certificate Group Tag: {{ portal.SponsorPortal.settings.portalSettings.certificateGroupTag }}
+##### Authentication Method: {{ portal.SponsorPortal.settings.portalSettings.authenticationMethod }}
+##### Idle Timeout: {{ portal.SponsorPortal.settings.portalSettings.idleTimeout }}
+##### Display Language: {{ portal.SponsorPortal.settings.portalSettings.displayLang }}
+##### Fallback Language: {{ portal.SponsorPortal.settings.portalSettings.fallbackLanguage }}
+##### Always Used Language: {{ portal.SponsorPortal.settings.portalSettings.alwaysUsedLanguage }}
+{%-     for ssid in portal.SponsorPortal.settings.portalSettings.availableSsids %}
+##### Available SSID: {{ ssid }}
+{%-     endfor%}
+#### Login Page
+##### Max Failed Attempts Before Rate Limit: {{ portal.SponsorPortal.settings.loginPageSettings.maxFailedAttemptsBeforeRateLimit }}
+##### Time Between Logins During Rate Limit: {{ portal.SponsorPortal.settings.loginPageSettings.timeBetweenLoginsDuringRateLimit }}
+##### Include AUP: {{ portal.SponsorPortal.settings.loginPageSettings.includeAup }}
+##### Require AUP Scrolling: {{ portal.SponsorPortal.settings.loginPageSettings.requireAupScrolling }}
+#### Acceptable Use Policy
+##### Include: {{ portal.SponsorPortal.settings.aupSettings.includeAup }}
+##### Require Scrolling: {{ portal.SponsorPortal.settings.aupSettings.requireScrolling }}
+##### Display Frequency: {{ portal.SponsorPortal.settings.aupSettings.displayFrequency }}
+#### Sponsor Change Password
+##### Allow Sponsor to Change Password: {{ portal.SponsorPortal.settings.sponsorChangePasswordSettings.allowSponsorToChangePwd }}
+#### Post Login Banner
+##### Include POST Access: {{ portal.SponsorPortal.settings.postLoginBannerSettings.includePostAccessBanner }}
+#### Support Info
+##### Support Page: {{ portal.SponsorPortal.settings.supportInfoSettings.includeSupportInfoPage }}
+##### MAC Address: {{ portal.SponsorPortal.settings.supportInfoSettings.includeMacAddr }}
+##### IP Address: {{ portal.SponsorPortal.settings.supportInfoSettings.includeIpAddress }}
+##### Browser User Agent: {{ portal.SponsorPortal.settings.supportInfoSettings.includeBrowserUserAgent }}
+##### Policy Server: {{ portal.SponsorPortal.settings.supportInfoSettings.includePolicyServer }}
+##### Failure Code: {{ portal.SponsorPortal.settings.supportInfoSettings.includeFailureCode }}
+##### Empty Field Display: {{ portal.SponsorPortal.settings.supportInfoSettings.emptyFieldDisplay }}
+### Customizations
+#### Portal Theme
+##### Name: {{ portal.SponsorPortal.customizations.portalTheme.name }}
+##### ID: {{ portal.SponsorPortal.customizations.portalTheme.id }}
+#### Language: {{ portal.SponsorPortal.customizations.language.viewLanguage }}
+#### Banner Title: {{ portal.SponsorPortal.customizations.globalCustomizations.bannerTitle }}
+#### Contact Text: {{ portal.SponsorPortal.customizations.globalCustomizations.contactText }}
+#### Footer Element: {{ portal.SponsorPortal.customizations.globalCustomizations.footerElement }}
+{%- endfor %}
+{%- endif %}{% endif %}{% endif %}

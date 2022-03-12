@@ -1,0 +1,171 @@
+{% if filetype_loop == 0 %}Name,ID,Description,Network Protocol,Radius Shared Secret,Enable Key Wrap,DTLS Required,Enable Multi Secret,Profile Name,Change of Authority Port,IP Address,Subnet Mask,Group
+{%- for device in networkDevice %}
+{%-     for ip in device.NetworkDevice.NetworkDeviceIPList %}
+{%-        for group in device.NetworkDevice.NetworkDeviceGroupList %}
+{{ device.NetworkDevice.name }},{{ device.NetworkDevice.id }},{{ device.NetworkDevice.description }},{{ device.NetworkDevice.authenticationSettings.networkProtocol }},{{ device.NetworkDevice.authenticationSettings.radiusSharedSecret }},{{ device.NetworkDevice.authenticationSettings.enableKeyWrap }},{{ device.NetworkDevice.authenticationSettings.dtlsRequired }},{{ device.NetworkDevice.authenticationSettings.enableMultiSecret }},{{ device.NetworkDevice.profileName }},{{ device.NetworkDevice.coaPort }},{{ ip.ipaddress }},{{ ip.mask }},{{ group }}
+{%- endfor %}{%- endfor %}{%- endfor %}
+{% else %}{% if filetype_loop == 1 %}
+# ISE Network Devices
+| Name | ID | Description | Network Protocol | Radius Shared Secret | Enable Key Wrap | DTLS Required | Enable Multi Secret | Profile Name | Change of Authority Port | IP Address | Subnet Mask | Group |
+| ---- | -- | ----------- | ---------------- | -------------------- | --------------- | ------------- | ------------------- | ------------ | ------------------------ | ---------- | ----------- | ----- |
+{%- for device in networkDevice %}
+{%-     for ip in device.NetworkDevice.NetworkDeviceIPList %}
+{%-        for group in device.NetworkDevice.NetworkDeviceGroupList %}
+| {{ device.NetworkDevice.name }} | {{ device.NetworkDevice.id }} | {{ device.NetworkDevice.description }} | {{ device.NetworkDevice.authenticationSettings.networkProtocol }} | {{ device.NetworkDevice.authenticationSettings.radiusSharedSecret }} | {{ device.NetworkDevice.authenticationSettings.enableKeyWrap }} | {{ device.NetworkDevice.authenticationSettings.dtlsRequired }} | {{ device.NetworkDevice.authenticationSettings.enableMultiSecret }} | {{ device.NetworkDevice.profileName }} | {{ device.NetworkDevice.coaPort }} | {{ ip.ipaddress }} | {{ ip.mask }} | {{ group }} |
+{%- endfor %}{%- endfor %}{%- endfor %}
+{% else %}{% if filetype_loop == 2 %}
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/colreorder/1.5.4/js/dataTables.colReorder.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/keytable/2.6.4/js/dataTables.keyTable.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.1.9/js/dataTables.fixedHeader.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.9/css/fixedHeader.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/keytable/2.6.4/css/keyTable.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+</head>
+<body>
+<h1>ISE Network Devices</h1>
+<table id = "ise">
+  <tr>
+    <th>Name</th>
+    <th>ID</th>
+    <th>Description</th>
+    <th>Network Protocol</th>
+    <th>Radius Shared Secret</th>
+    <th>Enable Key Wrap</th>
+    <th>DTLS Required</th>
+    <th>Enable Multi Secret</th>
+    <th>Profile Name</th>
+    <th>Change of Authority Port</th>
+    <th>IP Address</th>
+    <th>Subnet Mask</th>
+    <th>Group</th>
+  </tr>
+{%- for device in networkDevice %}
+{%-     for ip in device.NetworkDevice.NetworkDeviceIPList %}
+{%-        for group in device.NetworkDevice.NetworkDeviceGroupList %}  
+  <tr>
+    <td>{{ device.NetworkDevice.name }}</td>
+    <td>{{ device.NetworkDevice.id }}</td>
+    <td>{{ device.NetworkDevice.description }}</td>
+    <td>{{ device.NetworkDevice.authenticationSettings.networkProtocol }}</td>
+    <td>{{ device.NetworkDevice.authenticationSettings.radiusSharedSecret }}</td>
+    <td>{{ device.NetworkDevice.authenticationSettings.enableKeyWrap }}</td>
+    <td>{{ device.NetworkDevice.authenticationSettings.dtlsRequired }}</td>
+    <td>{{ device.NetworkDevice.authenticationSettings.enableMultiSecret }}</td>
+    <td>{{ device.NetworkDevice.profileName }}</td>
+    <td>{{ device.NetworkDevice.coaPort }}</td>
+    <td>{{ ip.ipaddress }}</td>
+    <td>{{ ip.mask }}</td>
+    <td>{{ group }}</td>
+  </tr>
+{%- endfor %}{%- endfor %}{%- endfor %}  
+</table>
+<script type = "text/javascript">
+  $(document).ready(function(){
+    $('#ise thead tr')
+    .clone(true)
+    .addClass('filters')
+    .appendTo('#ise thead');
+
+    var table = $('#ise').DataTable({
+        keys: true,
+        dom: 'Bfrtip',
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],
+            [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        buttons: [
+        'pageLength','colvis','copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        colReorder: true,
+        select: true,            
+        orderCellsTop: true,
+        fixedHeader: true,
+        initComplete: function () {
+        var api = this.api();
+
+        // For each column
+        api
+            .columns()
+            .eq(0)
+            .each(function (colIdx) {
+                // Set the header cell to contain the input element
+                var cell = $('.filters th').eq(
+                    $(api.column(colIdx).header()).index()
+                );
+                var title = $(cell).text();
+                $(cell).html('<input type="text" placeholder="' + title + '" />');
+
+                // On every keypress in this input
+                $(
+                    'input',
+                    $('.filters th').eq($(api.column(colIdx).header()).index())
+                )
+                    .off('keyup change')
+                    .on('keyup change', function (e) {
+                        e.stopPropagation();
+
+                        // Get the search value
+                        $(this).attr('title', $(this).val());
+                        var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                        var cursorPosition = this.selectionStart;
+                        // Search the column for that value
+                        api
+                            .column(colIdx)
+                            .search(
+                                this.value != ''
+                                    ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                    : '',
+                                this.value != '',
+                                this.value == ''
+                            )
+                            .draw();
+
+                        $(this)
+                            .focus()[0]
+                            .setSelectionRange(cursorPosition, cursorPosition);
+                    });
+            });
+    },
+});
+});        
+</script>
+</body></html>
+{%- else %}
+# ISE Network Devices
+{%- for device in networkDevice %}
+## {{ device.NetworkDevice.name }}
+### ID: {{ device.NetworkDevice.id }}
+### Description: {{ device.NetworkDevice.description }}
+### Authentication Settings
+#### Network Protocol: {{ device.NetworkDevice.authenticationSettings.networkProtocol }}
+#### Radius Shared Secret: {{ device.NetworkDevice.authenticationSettings.radiusSharedSecret }}
+#### Enable Key Wrap: {{ device.NetworkDevice.authenticationSettings.enableKeyWrap }}
+#### DTLS Required: {{ device.NetworkDevice.authenticationSettings.dtlsRequired }}
+#### Enable Multi Secret: {{ device.NetworkDevice.authenticationSettings.enableMultiSecret }}
+### Profile Name: {{ device.NetworkDevice.profileName }}
+### Change of Authority Port: {{ device.NetworkDevice.coaPort }}
+### IP Addresses
+{%-     for ip in device.NetworkDevice.NetworkDeviceIPList %}
+#### IP Address: {{ ip.ipaddress }}
+#### Subnet Mask: {{ ip.mask }}
+{%-     endfor %}
+### Network Device Groups
+{%-    for group in device.NetworkDevice.NetworkDeviceGroupList%}
+#### {{ group }}
+{%-    endfor %}
+{%- endfor %}
+{%- endif %}{% endif %}{% endif %}

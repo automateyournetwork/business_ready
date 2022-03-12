@@ -1,0 +1,154 @@
+{% if filetype_loop == 0 %}Repository,Type,Name,StartDate,Error,Action,Scheduled,Status,Message,Just Complete,Percent Complete,Details,Hostname,Initiated From
+{{ lastBackup.repository }},{{ lastBackup.type }},{{ lastBackup.name }},{{ lastBackup.startDate }},{{ lastBackup.error }},{{ lastBackup.action }},{{ lastBackup.scheduled }},{{ lastBackup.status }},{{ lastBackup.message }},{{ lastBackup.justComplete }},{{ lastBackup.percentComplete }},{{ lastBackup.details }},{{ lastBackup.hostName }},{{ lastBackup.initiatedFrom }}
+{% else %}{% if filetype_loop == 1 %}
+# ISE Last Backup
+| Repository | Type | Name | StartDate | Error | Action | Scheduled | Status | Message | Just Complete | Percent Complete | Details | Hostname | Initiated From |
+| ---------- | ---- | ---- | --------- | ----- | ------ | --------- | ------ | ------- | ------------- | ---------------- | ------- | -------- | -------------- |
+| {{ lastBackup.repository }} | {{ lastBackup.type }} | {{ lastBackup.name }} | {{ lastBackup.startDate }} | {{ lastBackup.error }} | {{ lastBackup.action }} | {{ lastBackup.scheduled }} | {{ lastBackup.status }} | {{ lastBackup.message }} | {{ lastBackup.justComplete }} | {{ lastBackup.percentComplete }} | {{ lastBackup.details }} | {{ lastBackup.hostName }} | {{ lastBackup.initiatedFrom }} | 
+{% else %}{% if filetype_loop == 2 %}
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/colreorder/1.5.4/js/dataTables.colReorder.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/keytable/2.6.4/js/dataTables.keyTable.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.1.9/js/dataTables.fixedHeader.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.9/css/fixedHeader.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/keytable/2.6.4/css/keyTable.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+</head>
+<body>
+<h1>ISE Last Backup</h1>
+<table id = "ise">
+  <tr>
+    <th>Repository</th>
+    <th>Type</th>
+    <th>Name</th>
+    <th>StartDate</th>
+    <th>Error</th>
+    <th>Action</th>
+    <th>Scheduled</th>
+    <th>Status</th>
+    <th>Message</th>
+    <th>Just Complete</th>
+    <th>Percent Complete</th>
+    <th>Details</th>
+    <th>Hostname</th>
+    <th>Initiated From</th>
+  </tr>
+  <tr>
+    <td>{{ lastBackup.repository }}</td>
+    <td>{{ lastBackup.type }}</td>
+    <td>{{ lastBackup.name }}</td>
+    <td>{{ lastBackup.startDate }}</td>
+    <td>{{ lastBackup.error }}</td>
+    <td>{{ lastBackup.action }}</td>
+    <td>{{ lastBackup.scheduled }}</td>
+    <td>{{ lastBackup.status }}</td>
+    <td>{{ lastBackup.message }}</td>
+    <td>{{ lastBackup.justComplete }}</td>
+    <td>{{ lastBackup.percentComplete }}</td>
+    <td>{{ lastBackup.details }}</td>
+    <td>{{ lastBackup.hostName }}</td>
+    <td>{{ lastBackup.initiatedFrom }}</td>
+  </tr>
+</table>
+<script type = "text/javascript">
+  $(document).ready(function(){
+    $('#ise thead tr')
+    .clone(true)
+    .addClass('filters')
+    .appendTo('#ise thead');
+
+    var table = $('#ise').DataTable({
+        keys: true,
+        dom: 'Bfrtip',
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],
+            [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+        ],
+        buttons: [
+        'pageLength','colvis','copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        colReorder: true,
+        select: true,            
+        orderCellsTop: true,
+        fixedHeader: true,
+        initComplete: function () {
+        var api = this.api();
+
+        // For each column
+        api
+            .columns()
+            .eq(0)
+            .each(function (colIdx) {
+                // Set the header cell to contain the input element
+                var cell = $('.filters th').eq(
+                    $(api.column(colIdx).header()).index()
+                );
+                var title = $(cell).text();
+                $(cell).html('<input type="text" placeholder="' + title + '" />');
+
+                // On every keypress in this input
+                $(
+                    'input',
+                    $('.filters th').eq($(api.column(colIdx).header()).index())
+                )
+                    .off('keyup change')
+                    .on('keyup change', function (e) {
+                        e.stopPropagation();
+
+                        // Get the search value
+                        $(this).attr('title', $(this).val());
+                        var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                        var cursorPosition = this.selectionStart;
+                        // Search the column for that value
+                        api
+                            .column(colIdx)
+                            .search(
+                                this.value != ''
+                                    ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                    : '',
+                                this.value != '',
+                                this.value == ''
+                            )
+                            .draw();
+
+                        $(this)
+                            .focus()[0]
+                            .setSelectionRange(cursorPosition, cursorPosition);
+                    });
+            });
+    },
+});
+});        
+</script>
+</body></html>
+{%- else %}
+# ISE Last Backup
+## Hostname: {{ lastBackup.hostName }}
+### Repository: {{ lastBackup.repository }}
+### Type: {{ lastBackup.type }}
+### Name: {{ lastBackup.name }}
+### StartDate: {{ lastBackup.startDate }}
+### Error: {{ lastBackup.error }}
+### Action: {{ lastBackup.action }}
+### Scheduled: {{ lastBackup.scheduled }}
+### Status: {{ lastBackup.status }}
+### Message: {{ lastBackup.message }}
+### Complete: 
+#### Just: {{ lastBackup.justComplete }}
+#### Percent: {{ lastBackup.percentComplete }}
+### Details: {{ lastBackup.details }}
+### Initiated From: {{ lastBackup.initiatedFrom }}
+{%- endif %}{% endif %}{% endif %}
