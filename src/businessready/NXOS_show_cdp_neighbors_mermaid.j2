@@ -1,0 +1,53 @@
+{%- if filetype_loop == 0 %}
+```mermaid
+flowchart LR;
+{%-     for neighbor in to_parse_cdp_neighbors.index %}
+{%-         if to_parse_cdp_neighbors.index[neighbor].local_interface == to_parse_cdp_neighbors.index[neighbor].port_id %}
+{{ hostname }} <--> {{ to_parse_cdp_neighbors.index[neighbor].local_interface }} <--> {{ to_parse_cdp_neighbors.index[neighbor].device_id }}
+{%-         else %}
+{{ hostname }} <--> {{ to_parse_cdp_neighbors.index[neighbor].local_interface }} <--> {{ to_parse_cdp_neighbors.index[neighbor].port_id }} <--> {{ to_parse_cdp_neighbors.index[neighbor].device_id }}
+{%-         endif %}
+{%-     endfor %}
+```
+{%- else %}{%- if filetype_loop == 1 %}
+{%-     for neighbor in to_parse_cdp_neighbors.index %}
+```mermaid
+classDiagram
+class {{ to_parse_cdp_neighbors.index[neighbor].device_id | replace("-","_") | replace(".","_") | replace("(","_") | replace(")","") }}{
+Platform: {{ to_parse_cdp_neighbors.index[neighbor].platform }}
+Local Interface: {{ to_parse_cdp_neighbors.index[neighbor].local_interface }}
+Port ID: {{ to_parse_cdp_neighbors.index[neighbor].port_id }}
+Capability: {{ to_parse_cdp_neighbors.index[neighbor].capability }}
+Hold Time: {{ to_parse_cdp_neighbors.index[neighbor].hold_time }}
+}
+```
+{%-     endfor %}
+{%- else %}{%- if filetype_loop == 2 %}
+{%- for neighbor in to_parse_cdp_neighbors.index %}
+```mermaid
+stateDiagram
+    direction LR
+{{ hostname | replace("-","_")}} --> Local_{{ to_parse_cdp_neighbors.index[neighbor].local_interface }}
+Local_{{ to_parse_cdp_neighbors.index[neighbor].local_interface }} --> Remote_{{ to_parse_cdp_neighbors.index[neighbor].port_id }}
+Remote_{{ to_parse_cdp_neighbors.index[neighbor].port_id }} --> {{ to_parse_cdp_neighbors.index[neighbor].device_id | replace("-","_") | replace(".","_") | replace("(","_") | replace(")","") }}
+    state {{ to_parse_cdp_neighbors.index[neighbor].device_id | replace("-","_") | replace(".","_") | replace("(","_") | replace(")","") }}{
+        Platform --> {{ to_parse_cdp_neighbors.index[neighbor].platform | replace("-","_") }}
+        Capability --> {{ to_parse_cdp_neighbors.index[neighbor].capability | replace (" ","_")}}
+        HoldTime --> {{ to_parse_cdp_neighbors.index[neighbor].hold_time }}
+}
+```
+{%- endfor  %}
+{%- else %}{%- if filetype_loop == 3 %}
+{%- for neighbor in to_parse_cdp_neighbors.index %}
+```mermaid
+erDiagram
+    {{ hostname }} |o--|{ {{ to_parse_cdp_neighbors.index[neighbor].device_id | replace("-","_") | replace(".","_") | replace("(","_") | replace(")","") }} : {{ to_parse_cdp_neighbors.index[neighbor].local_interface }}
+    {{ to_parse_cdp_neighbors.index[neighbor].device_id | replace("-","_") | replace(".","_") | replace("(","_") | replace(")","") }} {
+        Platform {{ to_parse_cdp_neighbors.index[neighbor].platform }}
+        PortID {{ to_parse_cdp_neighbors.index[neighbor].port_id }}
+        Capability {{ to_parse_cdp_neighbors.index[neighbor].capability | replace(" ","")}}
+        HoldTime Seconds_{{ to_parse_cdp_neighbors.index[neighbor].hold_time | string()}}
+    }
+```
+{% endfor %}
+{%- endif %}{%- endif %}{%- endif %}{%- endif %}

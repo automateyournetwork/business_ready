@@ -1,14 +1,11 @@
 [tool.poetry]
 name = 'businessready'
-version = "0.9.44"
+version = "0.9.150"
 description = "Transform Cisco CLIs and APIs into Business Ready Documents"
 authors = ["John Capobianco <ptcapo@gmail.com>"]
 packages = [{ include = "businessready", from = "src"}]
 readme = "README.md"
 repository = "https://github.com/automateyournetwork/business_ready"
-
-[tool.poetry.scripts]
-wikimd = 'brd.script:run'
 
 [tool.poetry.dependencies]
 python = "^3.9"

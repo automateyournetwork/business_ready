@@ -1,0 +1,439 @@
+{%- if filetype_loop == 0 %}
+```mermaid
+flowchart LR;
+{%-     for interface in to_parse_interface %}
+{%-         if to_parse_interface[interface].description %}
+{{ hostname }} <--> {{ to_parse_interface[interface].description | replace(" ","_") }} <--> {{ interface }}
+{%-         else %}
+{{ hostname }} <--> {{ interface }}
+{%-         endif %}
+{%-     endfor %}
+```
+{%- else %}{%- if filetype_loop == 1 %}
+{%- for interface in to_parse_interface %}
+```mermaid
+classDiagram
+class {{ interface | replace("/","_")}}{
+Description: {{ to_parse_interface[interface].description | default("N/A") }}
+Enabled: {{ to_parse_interface[interface].enabled | default("N/A") }}
+Operational Status: {{ to_parse_interface[interface].oper_status | default("N/A") }}
+{%-                  if to_parse_interface[interface].access_vlan is defined %}
+Access VLAN: {{ to_parse_interface[interface].access_vlan }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].native_vlan is defined %}
+Native VLAN: {{ to_parse_interface[interface].native_vlan }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].switchport_enable is defined %}
+Switchport Enable: {{ to_parse_interface[interface].switchport_enable }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].switchport_mode is defined %}
+Switchport Mode: {{ to_parse_interface[interface].switchport_mode }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].type is defined %}
+Type: {{ to_parse_interface[interface].type }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].bandwidth is defined %}
+Bandwidth: {{ to_parse_interface[interface].bandwidth }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].auto_negotiate is defined %}
+Auto Negotiate: {{ to_parse_interface[interface].auto_negotiate }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].port_speed is defined %}
+Port Speed: {{ to_parse_interface[interface].port_speed }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].duplex_mode is defined %}
+Duplex Mode: {{ to_parse_interface[interface].duplex_mode }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].mtu is defined %}
+MTU: {{ to_parse_interface[interface].mtu }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].mac_address is defined %}
+MAC Address: {{ to_parse_interface[interface].mac_address }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].phys_address is defined %}
+Physical Address: {{ to_parse_interface[interface].phys_address }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].ipv4 is defined %}
+{%-                      for ip_address in to_parse_interface[interface].ipv4 %}
+IP Address: {{ ip_address }}
+{%-                      endfor %}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].medium is defined %}
+Medium: {{ to_parse_interface[interface].medium }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].delay is defined %}
+Delay: {{ to_parse_interface[interface].delay }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].encapsulation is defined %}
+Encapsulation: {{ to_parse_interface[interface].encapsulation.encapsulation }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].flow_control is defined %}
+Flow Control Receive: {{ to_parse_interface[interface].flow_control.receive }}
+Flow Control Send: {{ to_parse_interface[interface].flow_control.send }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].port_channel is defined %}
+{%                       if to_parse_interface[interface].port_channel.port_channel_int is defined %}
+Port Channel Interface: {{ to_parse_interface[interface].port_channel.port_channel_int }}
+{%                       endif %}
+{%                       if to_parse_interface[interface].port_channel.port_channel_member_intfs is defined %}
+{%-                          for member in to_parse_interface[interface].port_channel.port_channel_member_intfs %}
+Member: {{ member }}
+{%-                          endfor %}
+{%                       else %}
+{%-                          if to_parse_interface[interface].port_channel.port_channel_member is defined %}
+Port Channel Member: {{ to_parse_interface[interface].port_channel.port_channel_member }}
+{%-                          endif %}
+{%-                      endif %}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].last_change is defined %}
+Last Change: {{ to_parse_interface[interface].last_change }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].counters is defined %}
+{%-                      if to_parse_interface[interface].counters.in_broadcast_pkts is defined %}
+Input Broadcast: {{ to_parse_interface[interface].counters.in_broadcast_pkts }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.in_crc_errors is defined %}
+Input CRC Errors: {{ to_parse_interface[interface].counters.in_crc_errors }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.in_errors is defined %}
+Input Errors: {{ to_parse_interface[interface].counters.in_errors }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.in_mac_pause_frames is defined %}
+Input MAC Pause Frames: {{ to_parse_interface[interface].counters.in_mac_pause_frames }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.in_multicast_pkts is defined %}
+Input Multicast: {{ to_parse_interface[interface].counters.in_multicast_pkts }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.in_octets is defined %}
+Input Octects: {{ to_parse_interface[interface].counters.in_octets }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.in_unicast_pkts is defined %}
+Input Unicast: {{ to_parse_interface[interface].counters.in_unicast_pkts }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.in_unknown_protos is defined %}
+Input Unknown: {{ to_parse_interface[interface].counters.in_unknown_protos }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.in_pkts is defined %}
+Input Packets: {{ to_parse_interface[interface].counters.in_pkts }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.out_broadcast_pkts is defined %}
+Output Broadcast: {{ to_parse_interface[interface].counters.out_broadcast_pkts }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.out_discard is defined %}
+Output Discards: {{ to_parse_interface[interface].counters.out_discard }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.out_errors is defined %}
+Output Errors: {{ to_parse_interface[interface].counters.out_errors }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.out_mac_pause_frames is defined %}
+Output MAC Pause Frames: {{ to_parse_interface[interface].counters.out_mac_pause_frames }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.out_multicast_pkts is defined %}
+Output Multicast: {{ to_parse_interface[interface].counters.out_multicast_pkts }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.out_unicast_pkts is defined %}
+Output Unicast: {{ to_parse_interface[interface].counters.out_unicast_pkts }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.out_pkts is defined %}
+Output Packets: {{ to_parse_interface[interface].counters.out_pkts }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.last_clear is defined %}
+Output Last Clear: {{ to_parse_interface[interface].counters.last_clear }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.rate is defined %}
+Input Rate: {{ to_parse_interface[interface].counters.rate.in_rate }}
+Load Interval: {{ to_parse_interface[interface].counters.rate.load_interval }}
+Output Rate: {{ to_parse_interface[interface].counters.rate.out_rate }}
+{%-                      endif %}
+{%-                  endif %}
+}
+```
+{%- endfor %}
+{%- else %}{%- if filetype_loop == 2 %}
+{%- for interface in to_parse_interface %}
+```mermaid
+stateDiagram
+{{ hostname | replace("-","_")}} --> {{ interface }}
+{{ interface }} --> Counters
+    state {{ interface }}{
+Description -->  {{ to_parse_interface[interface].description | default("N/A") | replace(".","_") | replace("-","_") | replace(" ","_") }}
+Enabled -->  {{ to_parse_interface[interface].enabled | default("N/A") }}
+Operational_Status -->  {{ to_parse_interface[interface].oper_status | default("N/A") }}
+{%-                  if to_parse_interface[interface].access_vlan is defined %}
+Access_VLAN -->  {{ to_parse_interface[interface].access_vlan }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].native_vlan is defined %}
+Native_VLAN -->  {{ to_parse_interface[interface].native_vlan }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].switchport_enable is defined %}
+Switchport_Enable -->  {{ to_parse_interface[interface].switchport_enable }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].switchport_mode is defined %}
+Switchport_Mode -->  {{ to_parse_interface[interface].switchport_mode }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].type is defined %}
+Type -->  {{ to_parse_interface[interface].type }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].bandwidth is defined %}
+Bandwidth -->  {{ to_parse_interface[interface].bandwidth }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].auto_negotiate is defined %}
+Auto_Negotiate -->  {{ to_parse_interface[interface].auto_negotiate }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].port_speed is defined %}
+Port_Speed -->  {{ to_parse_interface[interface].port_speed }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].duplex_mode is defined %}
+Duplex_Mode -->  {{ to_parse_interface[interface].duplex_mode }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].mtu is defined %}
+MTU -->  {{ to_parse_interface[interface].mtu }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].mac_address is defined %}
+MAC_Address -->  {{ to_parse_interface[interface].mac_address }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].phys_address is defined %}
+Physical_Address -->  {{ to_parse_interface[interface].phys_address }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].ipv4 is defined %}
+{%-                      for ip_address in to_parse_interface[interface].ipv4 %}
+IP_Address -->  {{ ip_address }}
+{%-                      endfor %}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].medium is defined %}
+Medium -->  {{ to_parse_interface[interface].medium }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].delay is defined %}
+Delay -->  {{ to_parse_interface[interface].delay }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].encapsulation is defined %}
+Encapsulation -->  {{ to_parse_interface[interface].encapsulation.encapsulation }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].flow_control is defined %}
+Flow_Control_Receive -->  {{ to_parse_interface[interface].flow_control.receive }}
+Flow_Control_Send -->  {{ to_parse_interface[interface].flow_control.send }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].port_channel is defined %}
+{%                       if to_parse_interface[interface].port_channel.port_channel_int is defined %}
+Port_Channel_Interface -->  {{ to_parse_interface[interface].port_channel.port_channel_int }}
+{%                       endif %}
+{%                       if to_parse_interface[interface].port_channel.port_channel_member_intfs is defined %}
+{%-                          for member in to_parse_interface[interface].port_channel.port_channel_member_intfs %}
+Member -->  {{ member }}
+{%-                          endfor %}
+{%                       else %}
+{%-                          if to_parse_interface[interface].port_channel.port_channel_member is defined %}
+Port_Channel_Member -->  {{ to_parse_interface[interface].port_channel.port_channel_member }}
+{%-                          endif %}
+{%-                      endif %}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].last_change is defined %}
+Last_Change -->  {{ to_parse_interface[interface].last_change | replace(":","_")}}
+{%-                  endif %}
+    }
+{%-                  if to_parse_interface[interface].counters is defined %}
+state Counters{
+{%-                      if to_parse_interface[interface].counters.in_broadcast_pkts is defined %}
+Input_Broadcast -->  {{ to_parse_interface[interface].counters.in_broadcast_pkts }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.in_crc_errors is defined %}
+Input_CRC_Errors -->  {{ to_parse_interface[interface].counters.in_crc_errors }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.in_errors is defined %}
+Input_Errors -->  {{ to_parse_interface[interface].counters.in_errors }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.in_mac_pause_frames is defined %}
+Input_MAC_Pause_Frames -->  {{ to_parse_interface[interface].counters.in_mac_pause_frames }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.in_multicast_pkts is defined %}
+Input_Multicast -->  {{ to_parse_interface[interface].counters.in_multicast_pkts }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.in_octets is defined %}
+Input_Octects -->  {{ to_parse_interface[interface].counters.in_octets }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.in_unicast_pkts is defined %}
+Input_Unicast -->  {{ to_parse_interface[interface].counters.in_unicast_pkts }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.in_unknown_protos is defined %}
+Input_Unknown -->  {{ to_parse_interface[interface].counters.in_unknown_protos }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.in_pkts is defined %}
+Input_Packets -->  {{ to_parse_interface[interface].counters.in_pkts }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.out_broadcast_pkts is defined %}
+Output_Broadcast -->  {{ to_parse_interface[interface].counters.out_broadcast_pkts }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.out_discard is defined %}
+Output_Discards -->  {{ to_parse_interface[interface].counters.out_discard }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.out_errors is defined %}
+Output_Errors -->  {{ to_parse_interface[interface].counters.out_errors }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.out_mac_pause_frames is defined %}
+Output_MAC_Pause_Frames -->  {{ to_parse_interface[interface].counters.out_mac_pause_frames }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.out_multicast_pkts is defined %}
+Output_Multicast -->  {{ to_parse_interface[interface].counters.out_multicast_pkts }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.out_unicast_pkts is defined %}
+Output_Unicast -->  {{ to_parse_interface[interface].counters.out_unicast_pkts }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.out_pkts is defined %}
+Output_Packets -->  {{ to_parse_interface[interface].counters.out_pkts }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.last_clear is defined %}
+Last_Clear -->  {{ to_parse_interface[interface].counters.last_clear }}
+{%-                      endif %}
+{%-                 if to_parse_interface[interface].counters.rate is defined %}
+Input_Rate -->  {{ to_parse_interface[interface].counters.rate.in_rate }}
+Load_Interval -->  {{ to_parse_interface[interface].counters.rate.load_interval }}
+Output_Rate -->  {{ to_parse_interface[interface].counters.rate.out_rate }}
+{%-                 endif %}
+{%-             endif %}
+}
+```
+{%- endfor %}
+{%- else %}{%- if filetype_loop == 3 %}
+{%- for interface in to_parse_interface %}
+```mermaid
+erDiagram
+{{ hostname }} |o--|{ {{ interface }} : {{ to_parse_interface[interface].description | default("N/A") | replace(".","_") | replace("-","_") | replace(" ","_") }}
+{{ interface }}{
+Enabled {{ to_parse_interface[interface].enabled | default("N/A") }}
+Operational_Status {{ to_parse_interface[interface].oper_status | default("N/A") }}
+{%-                  if to_parse_interface[interface].access_vlan is defined %}
+Access_VLAN VLAN_{{ to_parse_interface[interface].access_vlan }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].native_vlan is defined %}
+Native_VLAN VLAN_{{ to_parse_interface[interface].native_vlan }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].switchport_enable is defined %}
+Switchport_Enable {{ to_parse_interface[interface].switchport_enable }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].switchport_mode is defined %}
+Switchport_Mode {{ to_parse_interface[interface].switchport_mode }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].type is defined %}
+Type {{ to_parse_interface[interface].type }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].bandwidth is defined %}
+Bandwidth x_{{ to_parse_interface[interface].bandwidth }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].auto_negotiate is defined %}
+Auto_Negotiate {{ to_parse_interface[interface].auto_negotiate }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].port_speed is defined %}
+Port_Speed x_{{ to_parse_interface[interface].port_speed }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].duplex_mode is defined %}
+Duplex_Mode {{ to_parse_interface[interface].duplex_mode }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].mtu is defined %}
+MTU x_{{ to_parse_interface[interface].mtu }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].mac_address is defined %}
+MAC_Address x_{{ to_parse_interface[interface].mac_address | replace(".","_") }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].phys_address is defined %}
+Physical_Address x_{{ to_parse_interface[interface].phys_address | replace(".","_") }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].ipv4 is defined %}
+{%-                      for ip_address in to_parse_interface[interface].ipv4 %}
+IP_Address x_{{ ip_address | replace (".","_") | replace("/","_")}}
+{%-                      endfor %}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].medium is defined %}
+Medium {{ to_parse_interface[interface].medium }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].delay is defined %}
+Delay x_{{ to_parse_interface[interface].delay }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].encapsulation is defined %}
+Encapsulation {{ to_parse_interface[interface].encapsulation.encapsulation }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].flow_control is defined %}
+Flow_Control_Receive {{ to_parse_interface[interface].flow_control.receive }}
+Flow_Control_Send {{ to_parse_interface[interface].flow_control.send }}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].port_channel is defined %}
+{%                       if to_parse_interface[interface].port_channel.port_channel_int is defined %}
+Port_Channel_Interface {{ to_parse_interface[interface].port_channel.port_channel_int }}
+{%                       endif %}
+{%                       if to_parse_interface[interface].port_channel.port_channel_member_intfs is defined %}
+{%-                          for member in to_parse_interface[interface].port_channel.port_channel_member_intfs %}
+Member {{ member }}
+{%-                          endfor %}
+{%                       else %}
+{%-                          if to_parse_interface[interface].port_channel.port_channel_member is defined %}
+Port_Channel_Member {{ to_parse_interface[interface].port_channel.port_channel_member }}
+{%-                          endif %}
+{%-                      endif %}
+{%-                  endif %}
+{%-                  if to_parse_interface[interface].last_change is defined %}
+Last_Change x_{{ to_parse_interface[interface].last_change | replace(":","_")}}
+{%-                  endif %}
+}
+{{ interface }} |o--|{ Counters : counters
+Counters {
+{%-                  if to_parse_interface[interface].counters is defined %}
+{%-                      if to_parse_interface[interface].counters.in_broadcast_pkts is defined %}
+Input_Broadcast x_{{ to_parse_interface[interface].counters.in_broadcast_pkts }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.in_crc_errors is defined %}
+Input_CRC_Errors x_{{ to_parse_interface[interface].counters.in_crc_errors }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.in_errors is defined %}
+Input_Errors x_{{ to_parse_interface[interface].counters.in_errors }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.in_mac_pause_frames is defined %}
+Input_MAC_Pause_Frames x_{{ to_parse_interface[interface].counters.in_mac_pause_frames }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.in_multicast_pkts is defined %}
+Input_Multicast x_{{ to_parse_interface[interface].counters.in_multicast_pkts }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.in_octets is defined %}
+Input_Octects x_{{ to_parse_interface[interface].counters.in_octets }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.in_unicast_pkts is defined %}
+Input_Unicast x_{{ to_parse_interface[interface].counters.in_unicast_pkts }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.in_unknown_protos is defined %}
+Input_Unknown x_{{ to_parse_interface[interface].counters.in_unknown_protos }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.in_pkts is defined %}
+Input_Packets x_{{ to_parse_interface[interface].counters.in_pkts }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.out_broadcast_pkts is defined %}
+Output_Broadcast x_{{ to_parse_interface[interface].counters.out_broadcast_pkts }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.out_discard is defined %}
+Output_Discards x_{{ to_parse_interface[interface].counters.out_discard }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.out_errors is defined %}
+Output_Errors x_{{ to_parse_interface[interface].counters.out_errors }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.out_mac_pause_frames is defined %}
+Output_MAC_Pause_Frames x_{{ to_parse_interface[interface].counters.out_mac_pause_frames }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.out_multicast_pkts is defined %}
+Output_Multicast x_{{ to_parse_interface[interface].counters.out_multicast_pkts }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.out_unicast_pkts is defined %}
+Output_Unicast x_{{ to_parse_interface[interface].counters.out_unicast_pkts }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.out_pkts is defined %}
+Output_Packets x_{{ to_parse_interface[interface].counters.out_pkts }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.last_clear is defined %}
+Last_Clear x_{{ to_parse_interface[interface].counters.last_clear }}
+{%-                      endif %}
+{%-                 if to_parse_interface[interface].counters.rate is defined %}
+Input_Rate x_{{ to_parse_interface[interface].counters.rate.in_rate }}
+Load_Interval x_{{ to_parse_interface[interface].counters.rate.load_interval }}
+Output_Rate x_{{ to_parse_interface[interface].counters.rate.out_rate }}
+{%-                 endif %}
+{%-             endif %}
+}
+```
+{%- endfor %}
+{%- endif %}{%- endif %}{%- endif %}{%- endif %}

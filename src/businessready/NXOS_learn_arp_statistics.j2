@@ -138,7 +138,7 @@
 ### Drops: {{ to_parse_arp.in_drops }}
 ### Reply Packets: {{ to_parse_arp.in_replies_pkts }}
 ### Request Packets: {{ to_parse_arp.in_requests_pkts }}
-### Total:
+### Total: {{ to_parse_arp.in_total | default("N/A") }}
 ## Output
 ### Drops: {{ to_parse_arp.out_drops | default("N/A") }}
 ### Gratuitous Packets: {{ to_parse_arp.out_gratuitous_pkts | default("N/A") }}

@@ -1,0 +1,63 @@
+{%- for interface in to_parse_interface %}
+{%-                  if to_parse_interface[interface].counters is defined %}
+```mermaid
+pie
+    title {{ hostname }} Interface {{ interface }} Counters
+{%-                      if to_parse_interface[interface].counters.in_broadcast_pkts is defined %}
+"Input Broadcast" : {{ to_parse_interface[interface].counters.in_broadcast_pkts }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.in_crc_errors is defined %}
+"Input CRC Errors" : {{ to_parse_interface[interface].counters.in_crc_errors }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.in_errors is defined %}
+"Input Errors " : {{ to_parse_interface[interface].counters.in_errors }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.in_mac_pause_frames is defined %}
+"Input MAC Pause Frames" : {{ to_parse_interface[interface].counters.in_mac_pause_frames }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.in_multicast_pkts is defined %}
+"Input Multicast" : {{ to_parse_interface[interface].counters.in_multicast_pkts }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.in_unicast_pkts is defined %}
+"Input Unicast" : {{ to_parse_interface[interface].counters.in_unicast_pkts }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.in_unknown_protos is defined %}
+"Input Unknown" : {{ to_parse_interface[interface].counters.in_unknown_protos }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.in_pkts is defined %}
+"Input Packets" : {{ to_parse_interface[interface].counters.in_pkts }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.out_broadcast_pkts is defined %}
+"Output Broadcast" : {{ to_parse_interface[interface].counters.out_broadcast_pkts }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.out_discard is defined %}
+"Output Discards" : {{ to_parse_interface[interface].counters.out_discard }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.out_errors is defined %}
+"Output Errors" : {{ to_parse_interface[interface].counters.out_errors }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.out_mac_pause_frames is defined %}
+"Output MAC Pause Frames" : {{ to_parse_interface[interface].counters.out_mac_pause_frames }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.out_multicast_pkts is defined %}
+"Output Multicast" : {{ to_parse_interface[interface].counters.out_multicast_pkts }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.out_unicast_pkts is defined %}
+"Output Unicast" : {{ to_parse_interface[interface].counters.out_unicast_pkts }}
+{%-                      endif %}
+{%-                      if to_parse_interface[interface].counters.out_pkts is defined %}
+"Output Packets" : {{ to_parse_interface[interface].counters.out_pkts }}
+{%-                      endif %}
+```
+{%- endif %}
+{%- if to_parse_interface[interface].counters is defined %}
+{%-     if to_parse_interface[interface].counters.rate is defined %}
+```mermaid
+pie
+    title {{ hostname }} Interface {{ interface }} I/O Rate
+"Input" : {{ to_parse_interface[interface].counters.rate.in_rate }}
+"Output" : {{ to_parse_interface[interface].counters.rate.out_rate }}
+```
+{%-     endif %}
+{%- endif %}
+{%- endfor %}

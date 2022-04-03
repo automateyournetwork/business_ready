@@ -1,0 +1,58 @@
+{%- if filetype_loop == 0 %}
+```mermaid
+flowchart LR;
+{%- for interface in to_parse_arp %}
+{%-     if to_parse_arp[interface].ipv4 is defined %}
+{%-         for neighbor in to_parse_arp[interface].ipv4.neighbors %}
+{{ hostname }} <--> {{ interface }} <--> {{ neighbor }} <--> {{ to_parse_arp[interface].ipv4.neighbors[neighbor].link_layer_address }}
+{%-        endfor %}
+{%-     endif %}
+{%- endfor %}
+```
+{%- else %}{%- if filetype_loop == 1 %}
+{%- for interface in to_parse_arp %}
+{%-     if to_parse_arp[interface].ipv4 is defined %}
+{%-         for neighbor in to_parse_arp[interface].ipv4.neighbors %}
+```mermaid
+classDiagram
+class {{ interface | replace("/","_")}}{
+IP: {{ neighbor }}
+MAC: {{ to_parse_arp[interface].ipv4.neighbors[neighbor].link_layer_address }}
+Origin: {{ to_parse_arp[interface].ipv4.neighbors[neighbor].origin }}
+}
+```
+{%-        endfor %}
+{%-     endif %}
+{%- endfor %}
+{%- else %}{%- if filetype_loop == 2 %}
+{%- for interface in to_parse_arp %}
+{%-     if to_parse_arp[interface].ipv4 is defined %}
+{%-         for neighbor in to_parse_arp[interface].ipv4.neighbors %}
+```mermaid
+stateDiagram
+{{ hostname | replace("-","_") }} --> {{ interface }}
+{{ interface }} --> {{ neighbor }}
+{{ neighbor }} --> {{ to_parse_arp[interface].ipv4.neighbors[neighbor].link_layer_address }}
+state {{ to_parse_arp[interface].ipv4.neighbors[neighbor].link_layer_address }}{
+Origin --> {{ to_parse_arp[interface].ipv4.neighbors[neighbor].origin }}
+}
+```
+{%-        endfor %}
+{%-     endif %}
+{%- endfor %}
+{%- else %}{%- if filetype_loop == 3 %}
+{%- for interface in to_parse_arp %}
+{%-     if to_parse_arp[interface].ipv4 is defined %}
+{%-         for neighbor in to_parse_arp[interface].ipv4.neighbors %}
+```mermaid
+erDiagram
+{{ hostname }} |o--|{ {{ interface | replace("/","_")}} : IP_{{ neighbor }}
+{{ interface | replace("/","_")}} {
+MAC_Address x_{{ to_parse_arp[interface].ipv4.neighbors[neighbor].link_layer_address }}
+Origin {{ to_parse_arp[interface].ipv4.neighbors[neighbor].origin }}
+}
+```
+{%-        endfor %}
+{%-     endif %}
+{%- endfor %}
+{%- endif %}{%- endif %}{%- endif %}{%- endif %}
