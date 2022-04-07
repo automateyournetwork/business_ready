@@ -63,7 +63,6 @@
     <th>Total Active Areas</th>
     <th>Number of Paths</th>
   </tr>
-  <tr>
 {% for vrf in to_parse_ip_ospf %}{% for address_family in to_parse_ip_ospf[vrf].address_family %}{% for instance in to_parse_ip_ospf[vrf].address_family[address_family].instance %}{% for graceful_restart in to_parse_ip_ospf[vrf].address_family[address_family].instance[instance].graceful_restart %}{% if to_parse_ip_ospf[vrf].address_family[address_family].instance[instance].areas is defined %}{% for area in to_parse_ip_ospf[vrf].address_family[address_family].instance[instance].areas %}                  
   <tr>
     <td>{{ vrf }}</td>
