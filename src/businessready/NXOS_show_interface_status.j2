@@ -28,6 +28,7 @@
 <body>
 <h1>Show Interface Status</h1>
 <table id = "interface">
+<thead>
   <tr>
     <th>Interface</th>
     <th>Status</th>
@@ -35,6 +36,9 @@
     <th>VLAN</th>
     <th>Port Speed</th>
     <th>Duplex</th>
+  </tr>
+</thead>
+<tbody>
 {%- for interface in to_parse_interface.interfaces %}
 <tr>
     <td>{{ interface }}</td>
@@ -45,6 +49,7 @@
     <td>{{ to_parse_interface.interfaces[interface].duplex_code }}</td>    
   </tr>
 {%- endfor %}
+</tbody>
 </table>
 <script type = "text/javascript">
   $(document).ready(function(){

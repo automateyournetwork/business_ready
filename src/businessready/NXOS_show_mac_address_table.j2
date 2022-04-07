@@ -35,6 +35,7 @@
     <th>Interface</th>
     <th>Entry Type</th>
     <th>Age</th>
+  </tr>
 {%- for vlan in to_parse_mac_address_table.vlans %}{% for mac in to_parse_mac_address_table.vlans[vlan].mac_addresses %}{% for interface in to_parse_mac_address_table.vlans[vlan].mac_addresses[mac].interfaces %}
   <tr>
     <td>{{ vlan }}</td>

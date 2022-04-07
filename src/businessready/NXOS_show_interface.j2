@@ -111,8 +111,9 @@
    <th>RX</th>
    <th>TX</th>
   </tr>   
-{%- for interface in to_parse_interface %}   
-  <td>{{ interface }}</td>
+{%- for interface in to_parse_interface %}
+  <tr>
+    <td>{{ interface }}</td>
     <td>{% if to_parse_interface[interface].description is defined %}{{ to_parse_interface[interface].description }}{% else %}N/A{% endif %}</td>
     <td>{% if to_parse_interface[interface].admin_state is defined %}{{ to_parse_interface[interface].admin_state }}{% else %}N/A{% endif %}</td>
     <td>{% if to_parse_interface[interface].enabled is defined %}{{ to_parse_interface[interface].enabled }}{% else %}N/A{% endif %}</td>
