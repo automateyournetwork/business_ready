@@ -6,7 +6,7 @@
 {%-     if filetype_loop == 1 %}
 # Show NTP Associations
 | Server Address | Reference Clock | Stratum | Poll | Reach | Delay | Offset | Dispersion |
-| ------- | --------------- | ------- | ---- | ----- | ----- | ------ | ---------- |
+| -------------- | --------------- | ------- | ---- | ----- | ----- | ------ | ---------- |
 {%-         for peer in to_parse_ntp_associations.peer %}
 | {{ peer }} | {{ to_parse_ntp_associations['peer'][peer]['local_mode']['client']['refid'] }} | {{ to_parse_ntp_associations['peer'][peer]['local_mode']['client']['stratum'] }} | {{ to_parse_ntp_associations['peer'][peer]['local_mode']['client']['poll'] }} | {{ to_parse_ntp_associations['peer'][peer]['local_mode']['client']['reach'] }} | {{ to_parse_ntp_associations['peer'][peer]['local_mode']['client']['delay'] }} | {{ to_parse_ntp_associations['peer'][peer]['local_mode']['client']['offset'] }} | {{ to_parse_ntp_associations['peer'][peer]['local_mode']['client']['jitter'] }} |
 {%-         endfor %}

@@ -1,0 +1,15 @@
+```mermaid
+pie
+title {{ hostname }} ARP Statistics
+"Entries" : {{ to_parse_arp.entries_total }}
+"Incomplete" : {{ to_parse_arp.incomplete_total }}
+"Input Drops" : {{ to_parse_arp.in_drops }}
+"Input Reply Packets" : {{ to_parse_arp.in_replies_pkts }}
+"Input Request Packets" : {{ to_parse_arp.in_requests_pkts }}
+"Input Total" : {{ to_parse_arp.in_total | default("N/A") }}
+"Output Drops" : {{ to_parse_arp.out_drops | default("N/A") }}
+"Output Gratuitous Packets" : {{ to_parse_arp.out_gratuitous_pkts | default("N/A") }}
+"Output Reply Packets" : {{ to_parse_arp.out_replies_pkts }}
+"Output Request Packets" : {{ to_parse_arp.out_requests_pkts }}
+"Output Total" : {{ to_parse_arp.out_total| default("N/A") }}
+```

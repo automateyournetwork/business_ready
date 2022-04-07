@@ -1,0 +1,30 @@
+{%- if filetype_loop == 0 %}
+```mermaid
+flowchart LR;
+{%-     for vlan in to_parse_hsrp %}
+{%-         for address_family in to_parse_hsrp[vlan].address_family %}
+{%-             for version in to_parse_hsrp[vlan].address_family[address_family].version %}
+{%-                 for group in to_parse_hsrp[vlan].address_family[address_family].version[version].groups %}
+{{ hostname }} <--> {{ vlan }} <--> {{ address_family }} <--> {{ version }} <--> {{ group }} <--> {{ to_parse_hsrp[vlan].address_family[address_family].version[version].groups[group].active_router }} <--> {{ to_parse_hsrp[vlan].address_family[address_family].version[version].groups[group].primary_ipv4_address.address }} <--> {{ to_parse_hsrp[vlan].address_family[address_family].version[version].groups[group].session_name }} <--> {{ to_parse_hsrp[vlan].address_family[address_family].version[version].groups[group].standby_router }}
+{%-                 endfor %}
+{%-             endfor %}
+{%-         endfor %}
+{%-     endfor %}
+```
+{%- else %}{%- if filetype_loop == 1 %}
+```mermaid
+classDiagram
+
+```
+{%- else %}{%- if filetype_loop == 2 %}
+```mermaid
+stateDiagram
+
+```
+{%- else %}{%- if filetype_loop == 3 %}
+```mermaid
+erDiagram
+
+```
+
+{%- endif %}{%- endif %}{%- endif %}{%- endif %}

@@ -2,7 +2,11 @@
 {%-     for instance in to_parse_bgp %}
 {%-         for vrf in to_parse_bgp[instance].vrf %}
 {%-             for neighbor in to_parse_bgp[instance].vrf[vrf].neighbor %}
+{%-                 if to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].bgp_neighbor_counters is defined %}
 {{ instance }},{{ to_parse_bgp[instance].bgp_id }},{{ to_parse_bgp[instance].protocol_state }},{{ vrf }},{{ to_parse_bgp[instance].vrf[vrf].router_id }},{{ to_parse_bgp[instance].vrf[vrf].cluster_id }},{{ to_parse_bgp[instance].vrf[vrf].confederation_identifier }},{{ neighbor }},{{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].bgp_version }},{{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].holdtime }},{{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].keepalive_interval }},{{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].local_as_as_no }},{{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].remote_as }},{{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].bgp_neighbor_counters.messages.received.total }},{{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].bgp_neighbor_counters.messages.sent.total }},{{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].bgp_session_transport.connection.last_reset }},{{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].bgp_session_transport.connection.reset_reason }}
+{%-                 else %}
+{{ instance }},{{ to_parse_bgp[instance].bgp_id }},{{ to_parse_bgp[instance].protocol_state }},{{ vrf }},{{ to_parse_bgp[instance].vrf[vrf].router_id }},{{ to_parse_bgp[instance].vrf[vrf].cluster_id }},{{ to_parse_bgp[instance].vrf[vrf].confederation_identifier }},{{ neighbor }},{{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].bgp_version }},{{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].holdtime }},{{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].keepalive_interval }},{{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].local_as_as_no }},{{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].remote_as }},N/A,N/A,{{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].bgp_session_transport.connection.last_reset }},{{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].bgp_session_transport.connection.reset_reason }}
+{%-                 endif %}
 {%-             endfor %}
 {%-         endfor %}
 {%-     endfor %}
@@ -14,7 +18,11 @@
 {%-         for instance in to_parse_bgp %}
 {%-             for vrf in to_parse_bgp[instance].vrf %}
 {%-                 for neighbor in to_parse_bgp[instance].vrf[vrf].neighbor %}
+{%-                 if to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].bgp_neighbor_counters is defined %}
 | {{ instance }} | {{ to_parse_bgp[instance].bgp_id }} | {{ to_parse_bgp[instance].protocol_state }} | {{ vrf }} | {{ to_parse_bgp[instance].vrf[vrf].router_id }} | {{ to_parse_bgp[instance].vrf[vrf].cluster_id }} | {{ to_parse_bgp[instance].vrf[vrf].confederation_identifier }} | {{ neighbor }} | {{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].bgp_version }} | {{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].holdtime }} | {{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].keepalive_interval }} | {{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].local_as_as_no }} | {{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].remote_as }} | {{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].bgp_neighbor_counters.messages.received.total }} | {{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].bgp_neighbor_counters.messages.sent.total }} | {{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].bgp_session_transport.connection.last_reset }} | {{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].bgp_session_transport.connection.reset_reason }} |
+{%-                 else %}
+| {{ instance }} | {{ to_parse_bgp[instance].bgp_id }} | {{ to_parse_bgp[instance].protocol_state }} | {{ vrf }} | {{ to_parse_bgp[instance].vrf[vrf].router_id }} | {{ to_parse_bgp[instance].vrf[vrf].cluster_id }} | {{ to_parse_bgp[instance].vrf[vrf].confederation_identifier }} | {{ neighbor }} | {{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].bgp_version }} | {{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].holdtime }} | {{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].keepalive_interval }} | {{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].local_as_as_no }} | {{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].remote_as }} | N/A | N/A | {{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].bgp_session_transport.connection.last_reset }} | {{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].bgp_session_transport.connection.reset_reason }} |
+{%-                 endif %}
 {%-                 endfor %}
 {%-             endfor %}
 {%-         endfor %}
@@ -82,8 +90,13 @@
     <td>{{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].keepalive_interval }}</td>
     <td>{{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].local_as_as_no }}</td>
     <td>{{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].remote_as }}</td>
+{%-                 if to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].bgp_neighbor_counters is defined %}    
     <td>{{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].bgp_neighbor_counters.messages.received.total }}</td>
     <td>{{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].bgp_neighbor_counters.messages.sent.total }}</td>
+{%-                 else %}
+    <td>N/A</td>
+    <td>N/A</td>
+{%                  endif %}
     <td>{{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].bgp_session_transport.connection.last_reset }}</td>
     <td>{{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].bgp_session_transport.connection.reset_reason }}</td>
   </tr>
@@ -185,8 +198,10 @@
 ###### Keepalive Interval: {{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].keepalive_interval }}
 ###### Local AS Number: {{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].local_as_as_no }}
 ###### Remote AS: {{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].remote_as }}
+{%-                 if to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].bgp_neighbor_counters is defined %}   
 ###### Total Messages Received: {{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].bgp_neighbor_counters.messages.received.total }}
 ###### Total Messages Sent: {{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].bgp_neighbor_counters.messages.sent.total }}
+{%-                 endif %}
 ###### Last Reset: {{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].bgp_session_transport.connection.last_reset }}
 ###### Reset Reason{{ to_parse_bgp[instance].vrf[vrf].neighbor[neighbor].bgp_session_transport.connection.reset_reason }}
 {%-                     endfor %}
