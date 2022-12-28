@@ -5228,7 +5228,7 @@ def IOS_learn_acl(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Learn ACL to JSON
             try:
@@ -5295,7 +5295,7 @@ def IOS_learn_arp(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Learn ARP to JSON
 
@@ -5383,7 +5383,7 @@ def IOS_learn_bgp(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Learn BGP to JSON
 
@@ -5450,7 +5450,7 @@ def IOS_learn_dot1x(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Learn dot1x to JSON
 
@@ -5534,7 +5534,7 @@ def IOS_learn_hsrp(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Learn HSRP to JSON
 
@@ -5602,7 +5602,7 @@ def IOS_learn_interface(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Learn Interace to JSON
 
@@ -5670,7 +5670,7 @@ def IOS_learn_lldp(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Learn LLDP to JSON
 
@@ -5761,7 +5761,7 @@ def IOS_learn_ntp(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Learn NTP to JSON
 
@@ -5874,7 +5874,7 @@ def IOS_learn_ospf(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Learn OSPF to JSON
 
@@ -5942,7 +5942,7 @@ def IOS_learn_routing(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Learn Routing to JSON
 
@@ -6010,7 +6010,7 @@ def IOS_learn_stp(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Learn STP to JSON
 
@@ -6123,7 +6123,7 @@ def IOS_learn_vlan(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Learn VLAN to JSON
             try:
@@ -6190,7 +6190,7 @@ def IOS_learn_vrf(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Learn VRF to JSON
             try:
@@ -6292,7 +6292,7 @@ def IOS_show_access_lists(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show Access Lists to JSON
 
@@ -6360,7 +6360,7 @@ def IOS_show_cdp_neighbors(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show CDP Neighbors to JSON
 
@@ -6441,7 +6441,7 @@ def IOS_show_cdp_neighbors_detail(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show CDP Neighbors Detail to JSON
 
@@ -6532,7 +6532,7 @@ def IOS_show_environment_all(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show Environment All to JSON
 
@@ -6600,7 +6600,7 @@ def IOS_show_etherchannel_summary(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show Etherchannel Summary to JSON
 
@@ -6688,7 +6688,7 @@ def IOS_show_interfaces(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show Interfaces to JSON
 
@@ -6756,7 +6756,7 @@ def IOS_show_interfaces_status(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show Interfaces Status to JSON
 
@@ -6824,7 +6824,7 @@ def IOS_show_interfaces_trunk(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show Interfaces Trunk to JSON
 
@@ -6892,7 +6892,7 @@ def IOS_show_inventory_9000(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show Inventory 9000 to JSON
 
@@ -6960,7 +6960,7 @@ def IOS_show_ip_arp(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show IP ARP to JSON
 
@@ -7028,7 +7028,7 @@ def IOS_show_ip_interface_brief(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show IP Interface Brief to JSON
 
@@ -7096,7 +7096,7 @@ def IOS_show_ip_ospf(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show IP OSPF to JSON
 
@@ -7164,7 +7164,7 @@ def IOS_show_ip_ospf_database(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show IP OSPF Database to JSON
 
@@ -7232,7 +7232,7 @@ def IOS_show_ip_ospf_interface(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show IP OSPF Interface to JSON
 
@@ -7300,7 +7300,7 @@ def IOS_show_ip_ospf_neighbor(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show IP OSPF Neighbor to JSON
 
@@ -7368,7 +7368,7 @@ def IOS_show_ip_ospf_neighbor_detail(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show IP OSPF Neighbor Detail to JSON
 
@@ -7436,7 +7436,7 @@ def IOS_show_ip_route(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show IP Route to JSON
 
@@ -7504,7 +7504,7 @@ def IOS_show_license_summary(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show License Summary to JSON
 
@@ -7572,7 +7572,7 @@ def IOS_show_mac_address_table(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show MAC Address Table to JSON
 
@@ -7640,7 +7640,7 @@ def IOS_show_ntp_associations(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show NTP Associations to JSON
 
@@ -7708,7 +7708,7 @@ def IOS_show_wlan_summary(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show WLAN Summary to JSON
 
@@ -7776,7 +7776,7 @@ def IOS_show_wlan_all(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show WLAN all to JSON
 
@@ -7844,7 +7844,7 @@ def IOS_show_wlan_client_stats(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show WLAN Summary to JSON
 
@@ -7926,7 +7926,7 @@ def IOS_show_wireless_profile_policy_summary(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show Wireless Profile Policy Summary to JSON
 
@@ -7995,7 +7995,7 @@ def IOS_show_wireless_profile_policy_detailed(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show Wireless Profile Policy Summary to JSON
 
@@ -8078,7 +8078,7 @@ def IOS_show_version(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show Version to JSON
 
@@ -8146,7 +8146,7 @@ def IOS_show_vlan(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show VLAN to JSON
 
@@ -8214,7 +8214,7 @@ def IOS_show_vrf(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show VRF to JSON
 
@@ -8375,7 +8375,7 @@ def NXOS_learn_acl(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Learn ACL to JSON
             try:
@@ -8442,7 +8442,7 @@ def NXOS_learn_arp(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Learn ARP to JSON
 
@@ -8547,7 +8547,7 @@ def NXOS_learn_bgp(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Learn BGP to JSON
 
@@ -8617,7 +8617,7 @@ def NXOS_learn_hsrp(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Learn HSRP to JSON
 
@@ -8699,7 +8699,7 @@ def NXOS_learn_interface(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Learn Interace to JSON
 
@@ -8791,7 +8791,7 @@ def NXOS_learn_ospf(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Learn OSPF to JSON
 
@@ -8859,7 +8859,7 @@ def NXOS_learn_platform(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Learn Platform to JSON
 
@@ -8927,7 +8927,7 @@ def NXOS_learn_routing(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Learn Routing to JSON
 
@@ -8995,7 +8995,7 @@ def NXOS_learn_platform(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Learn Platform to JSON
 
@@ -9063,7 +9063,7 @@ def NXOS_learn_vlan(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Learn VLAN to JSON
 
@@ -9131,7 +9131,7 @@ def NXOS_learn_vrf(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Learn VRF to JSON
 
@@ -9234,7 +9234,7 @@ def NXOS_show_access_lists(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show Access Lists to JSON
 
@@ -9302,7 +9302,7 @@ def NXOS_show_bgp_process_vrf_all(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show BGP Process VRF All to JSON
 
@@ -9370,7 +9370,7 @@ def NXOS_show_bgp_sessions(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show BGP Sessions to JSON
 
@@ -9438,7 +9438,7 @@ def NXOS_show_cdp_neighbors(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show CDP Neighbors to JSON
 
@@ -9520,7 +9520,7 @@ def NXOS_show_cdp_neighbors_detail(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show CDP Neighbor Details to JSON
 
@@ -9588,7 +9588,7 @@ def NXOS_show_environment(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show Environment to JSON
 
@@ -9656,7 +9656,7 @@ def NXOS_show_interface(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show Interface to JSON
 
@@ -9724,7 +9724,7 @@ def NXOS_show_interface_status(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show Interface Status to JSON
 
@@ -9792,7 +9792,7 @@ def NXOS_show_interface_transceiver(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show Interface Transceiver to JSON
 
@@ -9860,7 +9860,7 @@ def NXOS_show_inventory(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show Inventory to JSON
 
@@ -9928,7 +9928,7 @@ def NXOS_show_ip_arp_vrf(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show VLAN to JSON
 
@@ -10011,7 +10011,7 @@ def NXOS_show_ip_interface_brief(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show IP Interface Brief to JSON
 
@@ -10079,7 +10079,7 @@ def NXOS_show_ip_ospf(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show IP OSPF to JSON
 
@@ -10147,7 +10147,7 @@ def NXOS_show_ip_ospf_vrf(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show VLAN to JSON
 
@@ -10230,7 +10230,7 @@ def NXOS_show_ip_ospf_interface(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show IP OSPF Interface to JSON
 
@@ -10298,7 +10298,7 @@ def NXOS_show_ip_ospf_interface_vrf(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show VLAN to JSON
 
@@ -10381,7 +10381,7 @@ def NXOS_show_ip_ospf_neighbors_detail(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show IP OSPF Neighbors Detail to JSON
 
@@ -10449,7 +10449,7 @@ def NXOS_show_ip_ospf_neighbors_detail_vrf(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show VLAN to JSON
 
@@ -10532,7 +10532,7 @@ def NXOS_show_ip_route(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show IP Route to JSON
 
@@ -10600,7 +10600,7 @@ def NXOS_show_ip_route_vrf(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show VLAN to JSON
 
@@ -10683,7 +10683,7 @@ def NXOS_show_mac_address_table(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show MAC Address Table to JSON
 
@@ -10751,7 +10751,7 @@ def NXOS_show_port_channel_summary(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show Port Channel Summary to JSON
 
@@ -10819,7 +10819,7 @@ def NXOS_show_version(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show Version to JSON
 
@@ -10887,7 +10887,7 @@ def NXOS_show_vlan(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show VLAN to JSON
 
@@ -10955,7 +10955,7 @@ def NXOS_show_vrf(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show VLAN to JSON
 
@@ -11023,7 +11023,7 @@ def NXOS_show_vrf_detail(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show VLAN to JSON
 
@@ -11106,7 +11106,7 @@ def NXOS_show_vrf_all_detail(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show VLAN to JSON
 
@@ -11174,7 +11174,7 @@ def NXOS_show_vrf_all_interface(hostname, username, password, ip):
         # Loop over devices
         # ---------------------------------------
         for device in new_testbed:
-            device.connect()
+            device.connect(learn_hostname=True)
 
         # Show VLAN to JSON
 
