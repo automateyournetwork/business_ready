@@ -94,7 +94,7 @@ C:\>demo\Scripts\activate
 #####
 ``` console
 
-(demo) C:\>pip install buisnessready
+(demo) C:\>pip install businessready
 
 ```
 
